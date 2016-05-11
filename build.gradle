@@ -1,0 +1,150 @@
+import org.apache.tools.ant.filters.FixCrLfFilter
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.apache.tools.ant.taskdefs.condition.Os
+
+// Marshall all of the variables and properties.
+def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
+
+def source = buildDir.parent
+def destination = !project.hasProperty("destination") ? file("${buildFile.parent}/build/pipeline") : file("${destination}") as String
+def url = "${xnatUrl.replaceAll('/+$', '')}" as String
+def email = "${adminEmail}" as String
+def smtp = "${smtpServer}" as String
+def siteName = "${siteName}" as String
+
+println """Building pipeline engine
+
+ * From:        ${source}
+ * To:          ${destination}
+ * Email:       ${email}
+ * Site name:   ${siteName}
+ * Site URL:    ${url}
+ * SMTP server: ${smtp}
+"""
+
+def configExt = (isWindows ? "bat" : "config") as String
+def demoScript = (isWindows ? "demo.bat" : "demo.sh") as String
+def envVar1 = (isWindows ? "%" : "\$") as String
+def envVar2 = (isWindows ? "%" : "") as String
+def jarExt = (isWindows ? ".jar;" : ".jar:") as String
+def osArgSym = (isWindows ? "%*" : "\$@") as String
+def platformCall = (isWindows ? "call" : "source") as String
+def shellLine = (isWindows ? "@echo off" : "#!/bin/bash") as String
+
+def tokens = [CONFIG_EXT           : configExt,
+              JAR_EXT              : jarExt,
+              OS_ARG_SYM           : osArgSym,
+              PIPELINE_DIR_PATH    : "${destination}" as String,
+              PLATFORM_CALL        : platformCall,
+              PLATFORM_ENV_VAR1    : envVar1,
+              PLATFORM_ENV_VAR2    : envVar2,
+              SCRIPT_NAME          : demoScript,
+              SHELL_LINE           : shellLine,
+              XNAT_SITE_NAME       : siteName,
+              YOUR_EMAIL_HERE      : email,
+              YOUR_SMTP_SERVER_HERE: smtp,
+              YOUR_XNAT_URL_HERE   : url]
+
+// Now get all of the script and resource folders.
+def scripts = file("${source}/templates/scripts").exists() ? [file("${source}/templates/scripts")] : []
+def resources = file("${source}/templates/resources").exists() ? [file("${source}/templates/resources")] : []
+def binaries = file("${source}/templates/bin").exists() ? [file("${source}/templates/bin")] : []
+
+def moduleRoots = file("${source}/modules").exists() ? [file("${source}/modules")] : []
+if (hasProperty("modulePaths")) {
+    "${modulePaths}".split(/\s*,\s*/).each { modulePath ->
+        def path = file(modulePath)
+        if (path.exists()) {
+            println "Adding module root ${path}"
+            moduleRoots.add path
+        } else {
+            println "The suggested module root ${path} does not exist, skipping."
+        }
+    }
+}
+println ""
+moduleRoots.each { root ->
+    root.eachDirMatch(~/^(?!\.).*/) { File module ->
+        def folders = []
+        module.eachDirMatch(~/resources/) { match ->
+            folders.add match
+        }
+        module.eachDirMatch(~/scripts/) { match ->
+            folders.add match
+        }
+        module.eachDirMatch(~/bin/) { match ->
+            folders.add match
+        }
+        if (folders.size() == 0) {
+            resources.add module
+        } else {
+            folders.each { File folder ->
+                if (folder.name.endsWith("resources")) {
+                    resources.add folder
+                } else if (folder.name.endsWith("scripts")) {
+                    scripts.add folder
+                } else if (folder.name.endsWith("bin")) {
+                    binaries.add folder
+                }
+            }
+        }
+    }
+}
+
+println "Resource folders:"
+resources.each { resource ->
+    println " * ${resource.path}"
+}
+println "Script folders:"
+scripts.each { script ->
+    println " * ${script.path}"
+}
+println "Binary folders:"
+binaries.each { binary ->
+    println " * ${binary.path}"
+}
+println ""
+
+task copyResources(type: Copy) {
+    from resources
+    into destination
+    exclude '.*/**'
+    filter(FixCrLfFilter)
+    filter(ReplaceTokens, tokens: tokens)
+}
+
+task copyScripts(type: Copy) {
+    from scripts
+    into destination
+    exclude '.*/**'
+    fileMode 0755
+    rename { String filename ->
+        if (isWindows) {
+            "${filename}.bat" as String
+        } else {
+            filename
+        }
+    }
+    filter(FixCrLfFilter)
+    filter(ReplaceTokens, tokens: tokens)
+}
+
+task copyBinaries(type: Copy) {
+    from binaries
+    into destination
+    exclude '.*/**'
+    fileMode 0755
+}
+
+task copyLibs(type: Copy) {
+    from "${source}/lib"
+    into "${destination}/lib"
+    exclude '.*/**'
+}
+
+task copyAll {
+    dependsOn tasks.withType(Copy)
+}
+
+defaultTasks 'copyAll'
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nrgString="java:org.nrg.pipeline.utils.StringUtils" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd">
+	<name>Demo_Loop</name>
+	<location>@PIPELINE_DIR_PATH@/sample_pipelines</location>
+	<!-- Filesystem path to the pipeline XML -->
+	<description>A pipeline to demo use of Loop</description>
+	<outputFileNamePrefix>^concat('@PIPELINE_DIR_PATH@','/sample_pipelines/Demo')^</outputFileNamePrefix>
+	<!-- Description of the Pipeilne -->
+	<loop id="folders" xpath="^/Pipeline/parameters/parameter[name='folder']/values/list^"/>
+	<parameters>
+		<parameter>
+			<name>folder</name>
+			<values>
+				<list>Loop1</list>
+				<list>Loop2</list>
+				<list>Loop3</list>
+			</values>
+		</parameter>
+		<parameter>
+			<name>i</name>
+			<values>
+				<unique>1</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>parameter1</name>
+			<values>
+				<unique>/path/to/file/name_of_file.ext</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>parameter2</name>
+			<values>
+				<unique>^nrgString:afterLastSlash(substring-before(/Pipeline/parameters/parameter[name='parameter1']/values/unique/text(),'.'))^</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>userfullname</name>
+			<values>
+				<unique>John Doe</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>adminemail</name>
+			<values>
+				<unique>pipelinerunner@wustl.edu</unique>
+			</values>
+		</parameter>
+	</parameters>
+	<steps>
+		<step id="INIT" description="Create sample demo directory" workdirectory="@PIPELINE_DIR_PATH@">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>sample_demo</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="0" description="Using loops. Create subfolders in the directory specified by workdirectory" workdirectory="@PIPELINE_DIR_PATH@/sample_demo">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>^PIPELINE_LOOPON(folders)^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1" description="Demo goto and XPath Notation used in precondition" gotoStepId="4" precondition="^/Pipeline/parameters/parameter[name='i']/values/unique/text()=1^"/>
+		<step id="2" description="Demo Await Approval to proceed" awaitApprovalToProceed="true" workdirectory="@PIPELINE_DIR_PATH@/sample_demo">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>AWAIT</value>
+				</argument>
+			</resource>
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="to">
+					<value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>Pipeline Awaiting Action</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt;',  'Demo process is awaiting for your approval. The file ',/Pipeline/parameters/parameter[name='parameter2']/values/unique/text(),' has been created.  Please click here YOUR XNAT LINK HERE for results &lt;br&gt; &lt;p&gt;', ' Support Team')^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="3" description="Demo Continue on Failure and XPath notation" continueOnFailure="true" workdirectory="@PIPELINE_DIR_PATH@/sample_demo">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>^/Pipeline/parameters/parameter[name='folder']/values/list[1]/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="3a" description="Demo use of PIPELINE_LOOPVALUE and launching wrapping script">
+			<resource name="demo" location="@PIPELINE_DIR_PATH@/sample_pipelines/resources">
+				<argument id="arg">
+					<value>^PIPELINE_LOOPVALUE(folders)^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="4" description="Demo Custom Email Notification with attachment">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="to">
+					<value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>Pipeline Update</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="attachment">
+					<value>@PIPELINE_DIR_PATH@/sample_pipelines/etc/attachment.dat</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt;',  'Demo process is complete. Please see the attached file for results &lt;br&gt; &lt;p&gt;', ' Support Team')^</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

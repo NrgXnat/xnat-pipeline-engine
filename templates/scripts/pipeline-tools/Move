@@ -1,0 +1,6 @@
+@SHELL_LINE@ 
+java -classpath "@PIPELINE_DIR_PATH@"/lib/jsr173_1.0_api@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/xbean@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/xmlpublic@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/commons-lang-2.6@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/pipelineBase@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/java-getopt-1.0.12@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/PipelineTools.jar Move $@
+
+
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>bxhabsorb</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Extracts image metadata into an XCEDE file</pip:description>
+	<pip:input>
+		<pip:argument id="xcede" prefix="--">
+			<pip:name>xcede</pip:name>
+			<pip:description>The image xml format</pip:description>
+		</pip:argument>
+		<pip:argument id="files">
+			<pip:description>List of files</pip:description>
+		</pip:argument>			
+		<pip:argument id="outfile">
+			<pip:description>Output xcede file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

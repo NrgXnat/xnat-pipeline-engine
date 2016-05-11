@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>rm-newline</pip:name>
+    <!-- You shouldn't need to specify pip:location if this command is on your default path.
+         If for some reason your pipeline engine can't find the command, you can uncomment it
+         and set the path appropriately for your system.
+    <pip:location>/usr/bin</pip:location>
+    -->
+	<pip:type>Executable</pip:type>
+	<pip:description>tr [string...]</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="in">
+			<pip:description>Controls new line character</pip:description>
+		</pip:argument>
+		<pip:argument id="out">
+			<pip:description>Controls new line character</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

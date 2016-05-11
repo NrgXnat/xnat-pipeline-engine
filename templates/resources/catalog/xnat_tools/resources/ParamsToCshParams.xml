@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>Transformer</pip:name>
+	<pip:type>Transformer</pip:type>
+	<pip:description>Parameters to CSH Converter</pip:description>
+	<pip:input>
+		<pip:argument id="outfile">
+		    <pip:name>outfile</pip:name>
+			<pip:description>Path to create the CSH Param file</pip:description>
+		</pip:argument>
+		<pip:argument id="skip">
+		    <pip:name>skip</pip:name>
+			<pip:description>Parameters that are not to be exported</pip:description>
+		</pip:argument>
+		<pip:argument id="script">
+		        <pip:name>script</pip:name>
+			<pip:description>XSLT Transformer Script</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>qdec_glmfit</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>https://surfer.nmr.mgh.harvard.edu/fswiki/qdec_5fglmfit</pip:description>
+	<pip:estimated_time>00:02:20</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="data-table" prefix="--">
+			<pip:name>data-table</pip:name>
+			<pip:description>Input qdec.table.dat file</pip:description>
+		</pip:argument>
+		<pip:argument id="average-subject" prefix="--">
+			<pip:name>average-subject</pip:name>
+			<pip:description>Average subject name</pip:description>
+		</pip:argument>
+		<pip:argument id="analysis-name" prefix="--">
+			<pip:name>analysis-name</pip:name>
+			<pip:description>Name for analysis</pip:description>
+		</pip:argument>
+		<pip:argument id="measurement" prefix="--">
+			<pip:name>measurement</pip:name>
+			<pip:description>Measurement Name</pip:description>
+		</pip:argument>
+		<pip:argument id="hemisphere" prefix="--">
+			<pip:name>hemisphere</pip:name>
+			<pip:description>Hemisphere to use [rh|lh]</pip:description>
+		</pip:argument>
+		<pip:argument id="smoothness" prefix="--">
+			<pip:name>smoothness</pip:name>
+			<pip:description>Smoothness to use</pip:description>
+		</pip:argument>
+		<pip:argument id="output" prefix="--">
+			<pip:name>output</pip:name>
+			<pip:description>Output .qdec filename</pip:description>
+		</pip:argument>
+		<pip:argument id="working-dir" prefix="--">
+			<pip:name>working-dir</pip:name>
+			<pip:description>Directory in which to generate temporary data (default /tmp)</pip:description>
+		</pip:argument>
+		<pip:argument id="subjects-dir" prefix="--">
+			<pip:name>subjects-dir</pip:name>
+			<pip:description>Subjects directory</pip:description>
+		</pip:argument>
+		<pip:argument id="discrete-factor" prefix="--">
+			<pip:name>discrete-factor</pip:name>
+			<pip:description>Discrete factor</pip:description>
+		</pip:argument>
+		<pip:argument id="continuous-factor" prefix="--">
+			<pip:name>continuous-factor</pip:name>
+			<pip:description>Continuous factor</pip:description>
+		</pip:argument>
+	</pip:input>
+	<pip:outputs>
+		<pip:output id="QDEC Project File">
+			<pip:file xsiType="xnat:resource">
+				<pip:name>^/pip:Resource/pip:input/pip:argument[@id='output']/pip:value/text()^</pip:name>
+				<pip:format>QDEC</pip:format>
+			</pip:file>
+		</pip:output>
+	</pip:outputs> 
+</pip:Resource>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>unzip</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Unzip a file</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="options">
+			<pip:description>Command line options to add at the beginning of the command</pip:description>
+		</pip:argument>
+		<pip:argument id="source">
+			<pip:description>File(s) to unzip</pip:description>
+		</pip:argument>
+		<pip:argument id="destination">
+			<pip:name>d</pip:name>
+			<pip:description>directory to unzip to</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

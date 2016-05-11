@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>XnatDataClient</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/xnat-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Invokes XNAT's data client</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="user">
+			<pip:name>u</pip:name>
+			<pip:description>Username</pip:description>
+		</pip:argument>
+		<pip:argument id="password" isSensitive="true">
+			<pip:name>p</pip:name>
+			<pip:description>Password</pip:description>
+		</pip:argument>
+		<pip:argument id="remote">
+			<pip:name>r</pip:name>
+			<pip:description>Remote URI</pip:description>
+		</pip:argument>
+		<pip:argument id="infile">
+			<pip:name>l</pip:name>
+			<pip:description>Input file</pip:description>
+		</pip:argument>
+		<pip:argument id="outfile">
+			<pip:name>o</pip:name>
+			<pip:description>Output file</pip:description>
+		</pip:argument>
+		<pip:argument id="overwrite">
+			<pip:name>xx</pip:name>
+			<pip:description>Indicates whether the specified output file should be overwritten if it exists.</pip:description>
+		</pip:argument>
+		<pip:argument id="method">
+			<pip:name>m</pip:name>
+			<pip:description>Method</pip:description>
+		</pip:argument>
+		<pip:argument id="batch">
+			<pip:name>b</pip:name>
+			<pip:description>Batch mode</pip:description>
+		</pip:argument>
+		<pip:argument id="absolutePath">
+			<pip:name>a</pip:name>
+			<pip:description>Indicates that XDC should try to use the absolute path of specified resources for copy operations</pip:description>
+		</pip:argument>
+		<pip:argument id="sessionId">
+			<pip:name>s</pip:name>
+			<pip:description>Indicates the session ID to be used for transactions.</pip:description>
+		</pip:argument>
+        <pip:argument id="pathPrefix">
+			<pip:name>pp</pip:name>
+			<pip:description>Indicates a substitution for the path prefix.</pip:description>
+		</pip:argument>
+        <pip:argument id="listUris">
+			<pip:name>ls</pip:name>
+			<pip:description>Directs the client to render results as a list of files to the application output.</pip:description>
+		</pip:argument>
+		<pip:argument id="allowUnsmoothedUrls">
+			<pip:name>auu</pip:name>
+			<pip:description>Indicates whether unsmooth URIs (e.g. with contiguous forward slashes in the URI path) should be allowed. By default, XDC smooths URI paths.</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_output" prefix="">
+			<pip:name>&gt;</pip:name>
+			<pip:description>Redirect output to file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

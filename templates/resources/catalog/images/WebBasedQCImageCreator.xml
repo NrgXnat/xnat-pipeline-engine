@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\..\schema\pipeline.xsd">
+	<name>WebBasedQCImageCreator</name>
+	<!--Should be  Name of the pipeline XML file -->
+	<location>@PIPELINE_DIR_PATH@/catalog/images</location>
+	<!-- Filesystem path to the pipeline XML -->
+	<description>Pipeline  for generation of QC Images</description>
+	<documentation>
+		<authors>
+			<author>
+				<lastname>Mohana</lastname>
+				<firstname>Ramaratnam</firstname>
+			</author>
+		</authors>
+		<version>1</version>
+		<input-parameters>
+			<parameter>
+				<name>sessionLabel</name>
+				<values>
+					<schemalink>xnat:experimentData.label</schemalink>
+				</values>
+				<description>The experiments label</description>
+			</parameter>
+			<parameter>
+				<name>session</name>
+				<values>
+					<schemalink>xnat:experimentData.ID</schemalink>
+				</values>
+				<description>The experiments XNAT ID</description>
+			</parameter>
+			<parameter>
+				<name>xnat_project</name>
+				<values>
+					<schemalink>xnat:experimentData.project</schemalink>
+				</values>
+				<description>The experiments project id</description>
+			</parameter>
+			<parameter>
+				<name>notify</name>
+				<values>
+					<csv>0</csv>
+				</values>
+				<description>Set the value to 1 if you want the pipeline to notify the user when complete. 0 otherwise</description>
+			</parameter>
+		</input-parameters>
+	</documentation>
+	<parameters>
+		<!-- Supply the following parameters
+		<parameter>
+			<name>sessionLabel</name>
+			<values>
+				<unique>VB19094</unique>
+			</values>
+			<description>Project Imaging Session Label</description>
+		</parameter>
+		<parameter>
+			<name>session</name>
+			<values>
+				<unique>VB19094</unique>
+			</values>
+			<description>XNAT Imaging Session Id</description>
+		</parameter>
+		<parameter>
+			<name>xnat_project</name>
+			<values>
+				<unique>TEST</unique>
+			</values>
+			<description>Project Id of the Imaging Session</description>
+		</parameter>
+		<parameter>
+			<name>host</name>
+			<values>
+				<unique>http://cninds03.neuroimage.wustl.edu:8070/cnda_xnat</unique>
+			</values>
+			<description>XNAT Host</description>
+		</parameter>
+		<parameter>
+			<name>user</name>
+			<values>
+				<unique>mohanar</unique>
+			</values>
+			<description>XNAT User Id</description>
+		</parameter>
+		<parameter>
+			<name>pwd</name>
+			<values>
+				<unique>PWD</unique>
+			</values>
+			<description>XNAT Password</description>
+		</parameter>
+		<parameter>
+			<name>notify</name>
+			<values>
+				<unique>0</unique>
+			</values>
+			<description>Decides if the pipeline notifies after completion</description>
+		</parameter>
+		-->
+	</parameters>
+	<steps>
+		<step id="1" description="Create QC Images">
+			<resource name="WebBasedQCImageCreator" location="images/resources">
+				<argument id="session">
+					<value>^/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text()^</value>
+				</argument>
+				<argument id="xnatId">
+					<value>^/Pipeline/parameters/parameter[name='session']/values/unique/text()^</value>
+				</argument>
+				<argument id="project">
+					<value>^/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text()^</value>
+				</argument>
+				<argument id="host">
+					<value>^if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="pwd">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="raw"/>
+			</resource>
+		</step>
+		<step id="2" description="Notify" precondition="^/Pipeline/parameters/parameter[name='notify']/values/unique/text()=1^">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="to">
+					<value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+				</argument>
+				<argument id="cc">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>^concat('@XNAT_SITE_NAME@ update: ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' snapshot generation complete')^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Snapshots have been generated for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(), '@XNAT_SITE_NAME@ Team.')^
+					</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

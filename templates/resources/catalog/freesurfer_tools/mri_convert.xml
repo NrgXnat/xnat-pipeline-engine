@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>mri_convert</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Launches mri_convert</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="input">
+			<pip:name>i</pip:name>
+			<pip:description>An  input image</pip:description>
+		</pip:argument>
+		<pip:argument id="input-type" prefix="--">
+			<pip:name>in_type</pip:name>
+			<pip:description>Input image type/format</pip:description>
+		</pip:argument>
+		<pip:argument id="output-type" prefix="--">
+			<pip:name>out_type</pip:name>
+			<pip:description>Output image type/format</pip:description>
+		</pip:argument>
+		<pip:argument id="output-orientation" prefix="--">
+			<pip:name>out_orientation</pip:name>
+			<pip:description>Output image orientation</pip:description>
+		</pip:argument>
+		<pip:argument id="output">
+			<pip:name>o</pip:name>
+			<pip:description>Name of the output file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline
+..\schema\pipeline.xsd" xmlns:nrgString="http://www.xnat.org/java/org.nrg.pipeline.utils.StringUtils" xmlns:fileUtils="http://www.xnat.org/java/org.nrg.imagingtools.utils.FileUtils">
+	<name>PhantomBirnQAPreprocessing</name>
+	<location>birn_tools</location>
+	<description>A pipeline for creating Automated Phantom QA data</description>
+	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text())^</outputFileNamePrefix>
+	<!-- Description of the Pipeilne -->
+	<loop id="bolds" xpath="^/Pipeline/parameters/parameter[name='bold']/values/list^"/>
+	<parameters>
+		<!-- Supply the following parameters  -->
+		<!-- <parameter>
+			<name>sessionId</name>
+			<values>
+				<unique>VB19094</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>xnat_id</name>
+			<values>
+				<unique>3</unique>
+			</values>
+			<description>Sessions XNAT ID</description>
+		</parameter>
+		<parameter>
+			<name>archivedir</name>
+			<values>
+				<unique>/data/cninds01/data2/WORK/PIPELINE_TEST</unique>
+			</values>
+			<description>Parent Path to sessions directory</description>
+		</parameter>
+		<parameter>
+			<name>bold</name>
+			<values>
+				<list>3</list>
+			</values>
+			<description>List of BOLD Scan Ids for the session</description>
+		</parameter> -->
+		<parameter>
+			<name>workdir</name>
+			<values>
+				<unique>^concat(/Pipeline/parameters/parameter[name='archivedir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text())^</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>processeddir</name>
+			<values>
+				<unique>^concat(/Pipeline/parameters/parameter[name='workdir']/values/unique/text(),'/ASSESSORS/BIRN_QA')^</unique>
+			</values>
+		</parameter>
+		<parameter>
+			<name>epicount</name>
+			<values>
+				<unique>^if (count(/Pipeline/parameters/parameter[name='bold']/values/unique) > 0) then  1 else 0^</unique>
+			</values>
+		</parameter>
+	</parameters>
+	<steps>
+		<step id="0" description="Prepare Folder Structure" workdirectory="^/Pipeline/parameters/parameter[name='workdir']/values/unique/text()^" precondition="!EXISTS(^/Pipeline/parameters/parameter[name='processeddir']/values/unique/text()^)" continueOnFailure="true">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="p"/>
+				<argument id="dirname">
+					<value>ASSESSORS/BIRN_QA</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1" description="Prepare Folder Structure" workdirectory="^/Pipeline/parameters/parameter[name='processeddir']/values/unique/text()^" precondition="!EXISTS(^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds))^)">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>^concat('scan',PIPELINE_LOOPON(bolds))^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1a-1" description="Copy Dicom files into temp folder" workdirectory="^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds))^">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>temp</value>
+				</argument>
+			</resource>
+			<resource name="CopyDicomFiles" location="pipeline-tools">
+				<argument id="xnatId">
+					<value>^/Pipeline/parameters/parameter[name='xnat_id']/values/unique/text()^</value>
+				</argument>
+				<argument id="scan">
+					<value>^PIPELINE_LOOPON(bolds)^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="u">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="pwd">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="destinationDir">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds),'/temp')^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1a-2" description="Unzip Bold Data" workdirectory="^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds),'/temp')^" continueOnFailure="true">
+			<resource name="gunzip" location="commandlineTools">
+				<argument id="source">
+					<value>*.gz</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="2" description="Extract the metadata into an XCEDE File" workdirectory="^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds))^">
+			<resource name="bxhabsorb" location="birn_tools">
+				<argument id="xcede"/>
+				<argument id="files">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds),'/temp/*')^</value>
+				</argument>
+				<argument id="outfile">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds),'_image.xml')^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="3" description="Extract the image statistic" workdirectory="^/Pipeline/parameters/parameter[name='processeddir']/values/unique/text()^">
+			<resource name="phantom_qa_wrapper" location="birn_tools">
+				<argument id="xnatId">
+					<value>^/Pipeline/parameters/parameter[name='xnat_id']/values/unique/text()^</value>
+				</argument>
+				<argument id="projectId">
+					<value>^/Pipeline/parameters/parameter[name='project']/values/unique/text()^</value>
+				</argument>
+				<argument id="outfile">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/QCAssessment.xml')^</value>
+				</argument>
+			</resource>
+			<resource name="StoreXml" location="xnat_tools">
+				<argument id="u">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="p">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="location">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/QCAssessment.xml')^</value>
+				</argument>
+				<argument id="allowDataDeletion">
+					<value>true</value>
+				</argument>
+			</resource>
+		</step> 
+		<step id="4" description="Clean up" workdirectory="^/Pipeline/parameters/parameter[name='processeddir']/values/unique/text()^">
+			<resource name="rm" location="commandlineTools">
+				<argument id="r"/>
+				<argument id="f"/>
+				<argument id="file">
+					<value>^concat(/Pipeline/parameters/parameter[name='processeddir']/values/unique/text(),'/scan',PIPELINE_LOOPON(bolds),'/temp')^</value>
+				</argument>
+			</resource>
+		</step> 
+	</steps>
+</Pipeline>
+	

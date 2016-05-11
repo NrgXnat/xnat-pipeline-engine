@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<xs:schema targetNamespace="http://nrg.wustl.edu/pipeline" xmlns:prov="http://www.nbirn.net/prov" xmlns:pipeline="http://nrg.wustl.edu/pipeline" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="pipeline.xsd"/>
+	<xs:import namespace="http://www.nbirn.net/prov" schemaLocation="./birn/birnprov.xsd"/>
+	<xs:element name="ResolvedStep">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="resolvedResource" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="pipeline:resourceData">
+								<xs:attribute name="id" type="xs:string" use="optional"/>
+								<xs:attribute name="ssh2Host" type="xs:string" use="optional"/>
+								<xs:attribute name="ssh2User" type="xs:string" use="optional"/>
+								<xs:attribute name="ssh2Password" type="xs:string" use="optional"/>
+								<xs:attribute name="ssh2Identity" type="xs:string" use="optional"/>
+								<xs:attribute name="prefix" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="resolvedOutput" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="pipeline:outputData"/>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="provenance" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="processStep" type="prov:processStep" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+			<xs:attribute name="precondition" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>specify the condition under which this step is to be executed </xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="preconditionType" use="optional" default="relaxed">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="strict"/>
+						<xs:enumeration value="relaxed"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="description" type="xs:string" use="required"/>
+			<xs:attribute name="workdirectory" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>The directory from which the resource stmts are to be executed. Equivalent to pushd
+</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="status" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Complete"/>
+						<xs:enumeration value="Failed"/>
+						<xs:enumeration value="Awaiting Action"/>
+						<xs:enumeration value="Skipped"/>
+						<xs:enumeration value="Running"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="awaitApprovalToProceed" type="xs:boolean" use="optional" default="false"/>
+			<xs:attribute name="continueOnFailure" type="xs:boolean" use="optional" default="false"/>
+			<xs:attribute name="gotoStepId" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AllResolvedSteps">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="location" type="xs:string"/>
+				<xs:element name="outputFileNamePrefix" type="xs:string" minOccurs="0"/>
+				<xs:element name="parameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="parameter" type="pipeline:parameterData" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>global parameters to the pipeline</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="pipeline:ResolvedStep" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

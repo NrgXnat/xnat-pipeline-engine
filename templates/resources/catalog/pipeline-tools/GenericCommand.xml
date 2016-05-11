@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>GenericCommand.sh</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/bin</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>A place holder to launch any command</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="cmd">
+			<pip:description>The command to execute</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

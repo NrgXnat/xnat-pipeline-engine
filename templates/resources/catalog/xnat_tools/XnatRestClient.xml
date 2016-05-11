@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>XNATRestClient</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/xnat-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Invokes XNAT's Rest Client</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="user">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT user</pip:description>
+		</pip:argument>
+		<pip:argument id="password" isSensitive="true">
+			<pip:name>p</pip:name>
+			<pip:description>Xnat Password</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>Xnat Host</pip:description>
+		</pip:argument>
+		<pip:argument id="remote">
+			<pip:name>remote</pip:name>
+			<pip:description>Remote URI</pip:description>
+		</pip:argument>
+		<pip:argument id="local">
+			<pip:name>local</pip:name>
+			<pip:description>Local file</pip:description>
+		</pip:argument>
+		<pip:argument id="user_session">
+			<pip:name>user_session</pip:name>
+			<pip:description>XNAT JSESSION</pip:description>
+		</pip:argument>		
+		<pip:argument id="method">
+			<pip:name>m</pip:name>
+			<pip:description>Method</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_output" prefix="">
+			<pip:name>&gt;</pip:name>
+			<pip:description>Redirect output to file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>CopyDicomFiles</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/pipeline-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Copies dicom files for a scan of a session</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="xnatId">
+			<pip:name>xnatId</pip:name>
+			<pip:description>XNAT Session ID for which files are to copied</pip:description>
+		</pip:argument>
+		<pip:argument id="scan">
+			<pip:name>scan</pip:name>
+			<pip:description>Scan Id(s) for which files are to be copied</pip:description>
+		</pip:argument>
+		<pip:argument id="u">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT Username</pip:description>
+		</pip:argument>
+		<pip:argument id="pwd">
+			<pip:name>pwd</pip:name>
+			<pip:description>XNAT Password</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>URL to XNAT website</pip:description>
+		</pip:argument>
+		<pip:argument id="destinationDir">
+			<pip:name>destinationDir</pip:name>
+			<pip:description>Path to directory to which files are to be copied </pip:description>
+		</pip:argument>
+		<pip:argument id="archiveDir">
+			<pip:name>archiveDir</pip:name>
+			<pip:description>Path directory within which the session directory exists.</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>ArcGet</pip:name>
+	<pip:location>/home/xnat/bin/xnat_tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Gets Files from XNAT</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="user">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT user</pip:description>
+		</pip:argument>
+		<pip:argument id="password" isSensitive="true">
+			<pip:name>p</pip:name>
+			<pip:description>Xnat Password</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>Xnat Host</pip:description>
+		</pip:argument>
+		<pip:argument id="sessionId">
+			<pip:name>s</pip:name>
+			<pip:description>Session Id</pip:description>
+		</pip:argument>
+		<pip:argument id="output">
+			<pip:name>o</pip:name>
+			<pip:description>Path to output</pip:description>
+		</pip:argument>
+		<pip:argument id="raw">
+			<pip:name>r</pip:name>
+			<pip:description>Raw id or ALL</pip:description>
+		</pip:argument>
+		<pip:argument id="unzip">
+			<pip:name>z</pip:name>
+			<pip:description>Unzip dierctory</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

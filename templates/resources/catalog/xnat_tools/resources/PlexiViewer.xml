@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>PlexiViewer-1.6.5.jar</pip:name>
+	<pip:commandPrefix>java -jar </pip:commandPrefix> 
+	<pip:type>Executable</pip:type>
+	<pip:description>PlexiViewer</pip:description>
+	<pip:input>
+		<pip:argument id="overwrite">
+			<pip:name>o</pip:name>
+			<pip:description>overwrite existing images</pip:description>
+		</pip:argument>
+		<pip:argument id="session">
+			<pip:name>session</pip:name>
+			<pip:description>Session id</pip:description>
+		</pip:argument>
+		<pip:argument id="xnat_home">
+			<pip:name>x</pip:name>
+			<pip:description>Xnat Home</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

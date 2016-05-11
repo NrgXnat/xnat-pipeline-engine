@@ -1,0 +1,19 @@
+#!/bin/csh
+
+    @ vncNum = 50
+    while (1)
+	@ vncNum++;
+	@ alreadyRunning = 0;
+	foreach proc (`ps -ef | grep Xvnc | awk '{print $9}'`)
+	    if ($proc == ":$vncNum") then 
+	    	@ alreadyRunning = 1;
+	  	break;
+	    endif
+	end
+	if ($alreadyRunning == 0) then
+	    break;
+	endif
+    end
+
+    echo $vncNum
+    exit $vncNum

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline
+..\..\schema\pipeline.xsd">
+	<name>PrepareBuildFolder</name>
+	<location>@PIPELINE_DIR_PATH@/pipeline-tools/catalog</location>
+	<description>This pipeline would copy the RAW folder from the session folder into the buildpath</description>
+	<parameters>
+		<!-- Variables Expected
+		<parameter>
+			<name>sessionId</name>
+			<description>Session ID which is to be built/processed</description>
+		</parameter>
+		<parameter>
+			<name>archivedir</name>
+			<description>Archive path to the session. Expect upto arc* only</description>
+		</parameter>
+		<parameter>
+			<name>builddir</name>
+			<description>Location where the session is to be built</description>
+		</parameter> 
+
+		<parameter>
+			<name>copyRaw</name>
+			<values>
+				<unique>1</unique>
+			</values>
+			<description>Decides if the RAW folder is to be copied in the builddir</description>
+		</parameter>
+		<parameter>
+			<name>copyProcessed</name>
+			<values>
+				<unique>0</unique>
+			</values>
+			<description>Decides if the PROCESSED folder is to be copied in the builddir</description>
+		</parameter>
+		<parameter>
+			<name>copyAssessors</name>
+			<values>
+				<unique>0</unique>
+			</values>
+			<description>Decides if the ASSESSORS folder is to be copied into the builddir</description>
+		</parameter>
+
+		<parameter>
+			<name>rm_prev_folder</name>
+			<values>
+				<unique>0</unique>
+			</values>
+			<description>Decides if the previous existing sessionId folder is to be removed before copying. See step 0b</description>
+		</parameter>
+
+-->
+		<!-- Fixed section -->
+		<parameter>
+			<name>sessionbuilddir</name>
+			<values>
+				<unique>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text())^</unique>
+			</values>
+			<description>Location where the session is to be built</description>
+		</parameter>
+	</parameters>
+	<steps>
+		<step id="0a" description="Create a folder for  builddir" continueOnFailure="true">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="p"/>
+				<argument id="dirname">
+					<value>^/Pipeline/parameters/parameter[name='builddir']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="0b" description="Remove pre-existing a folder for session in the builddir" workdirectory="^/Pipeline/parameters/parameter[name='builddir']/values/unique/text()^" precondition="^/Pipeline/parameters/parameter[name='rm_prev_folder']/values/unique/text()=1^ " continueOnFailure="true">
+			<resource name="rm" location="commandlineTools">
+			      <argument id="r"/>
+			      <argument id="f"/>
+				<argument id="file">
+					<value>^/Pipeline/parameters/parameter[name='sessionId']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="0" description="Create a folder for session in the builddir" workdirectory="^/Pipeline/parameters/parameter[name='builddir']/values/unique/text()^"  continueOnFailure="true">
+			<resource name="mkdir" location="commandlineTools" >
+				<argument id="dirname">
+					<value>^/Pipeline/parameters/parameter[name='sessionId']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1" description="Copy RAW folder from the archive into the builddir for session" precondition="^/Pipeline/parameters/parameter[name='copyRaw']/values/unique/text()=1^ ">
+			<resource name="cp" location="commandlineTools">
+				<argument id="r"/>
+				<argument id="source">
+					<value>^concat(/Pipeline/parameters/parameter[name='archivedir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text(),'/RAW')^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='sessionbuilddir']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1a" description="Unzip RAW FILES" precondition="^/Pipeline/parameters/parameter[name='copyRaw']/values/unique/text()=1^ " workdirectory="^concat(/Pipeline/parameters/parameter[name='sessionbuilddir']/values/unique/text(),'/RAW')^" continueOnFailure="true">
+			<resource name="gunzip" location="commandlineTools">
+				<argument id="source">
+					<value>*.gz</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="2" description="Copy PROCESSED folder from the archive into the builddir for session" precondition="^/Pipeline/parameters/parameter[name='copyProcessed']/values/unique/text()=1^ " continueOnFailure="true">
+			<resource name="cp" location="commandlineTools">
+				<argument id="r"/>
+				<argument id="source">
+					<value>^concat(/Pipeline/parameters/parameter[name='archivedir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text(),'/PROCESSED')^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='sessionbuilddir']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="3" description="Copy ASSESSORS folder from the archive into the builddir for session" precondition="^/Pipeline/parameters/parameter[name='copyAssessors']/values/unique/text()=1^ " continueOnFailure="true">
+			<resource name="cp" location="commandlineTools">
+				<argument id="r"/>
+				<argument id="source">
+					<value>^concat(/Pipeline/parameters/parameter[name='archivedir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text(),'/ASSESSORS')^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='sessionbuilddir']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

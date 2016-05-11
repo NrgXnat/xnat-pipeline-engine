@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>snap_montage.csh</pip:name>
+	<pip:location>/data/nil-external/nrg/packages/linux/freesurfer/QAtools/data_checker</pip:location>
+        <pip:commandPrefix>/data/cninds01/data2/nrg-tools/vnc_launch</pip:commandPrefix> 
+	<pip:type>Executable</pip:type>
+	<pip:description>Create the Freesurfer Snaps</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="subjectId">
+			<pip:description>Subject Id</pip:description>
+		</pip:argument>
+		<pip:argument id="subjects_dir">
+			<pip:description>Subject Id</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

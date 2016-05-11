@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>StoreXML</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Store Data into XNAT</pip:description>
+	<pip:input>
+		<pip:argument id="u">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT Username</pip:description>
+		</pip:argument>
+		<pip:argument id="p" isSensitive="true">
+			<pip:name>p</pip:name>
+			<pip:description>XNAT Password</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>XNAT Host</pip:description>
+		</pip:argument>
+		<pip:argument id="location">
+			<pip:name>location</pip:name>
+			<pip:description>XML File location</pip:description>
+		</pip:argument>
+		<pip:argument id="dir">
+			<pip:name>dir</pip:name>
+			<pip:description>Dir location containing files</pip:description>
+		</pip:argument>
+		<pip:argument id="r">
+			<pip:name>r</pip:name>
+			<pip:description>recursive flag</pip:description>
+		</pip:argument>
+		<pip:argument id="allowDataDeletion">
+			<pip:name>allowDataDeletion</pip:name>
+			<pip:description>Allow Data Deletion</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

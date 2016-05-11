@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>mv</pip:name>
+    <!-- You shouldn't need to specify pip:location if this command is on your default path.
+         If for some reason your pipeline engine can't find the command, you can uncomment it
+         and set the path appropriately for your system.
+    <pip:location>/usr/bin</pip:location>
+    -->
+	<pip:type>Executable</pip:type>
+	<pip:description>Move a dir/file</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="source">
+			<pip:description>Dir to move</pip:description>
+		</pip:argument>
+		<pip:argument id="destination">
+			<pip:description>Dir to move to</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

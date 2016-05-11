@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>zip</pip:name>
+    <!-- You shouldn't need to specify pip:location if this command is on your default path.
+         If for some reason your pipeline engine can't find the command, you can uncomment it
+         and set the path appropriately for your system.
+    -->
+	<pip:type>Executable</pip:type>
+	<pip:description>Zip a dir/file</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="recursive">
+			<pip:name>r</pip:name>
+			<pip:description>Recursive</pip:description>
+		</pip:argument>
+		<pip:argument id="archive">
+			<pip:description>Archive name</pip:description>
+		</pip:argument>
+		<pip:argument id="folder">
+			<pip:description>Dir/file to zip</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>rsync</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Rsync</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="a">
+			<pip:name>a</pip:name>
+			<pip:description>Preserve Time stamp</pip:description>
+		</pip:argument>
+		<pip:argument id="r">
+			<pip:name>r</pip:name>
+			<pip:description>Recursive</pip:description>
+		</pip:argument>
+		<pip:argument id="source">
+			<pip:description>Source path</pip:description>
+		</pip:argument>
+		<pip:argument id="destination">
+			<pip:description>Destination path</pip:description>
+		</pip:argument>		
+	</pip:input>
+</pip:Resource>

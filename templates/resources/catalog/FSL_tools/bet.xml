@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>bet</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>FMIB's Automated Segmentation Tool v3.53
+</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="infile" >
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="outfile" >
+			<pip:description></pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

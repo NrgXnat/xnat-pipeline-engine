@@ -1,0 +1,35 @@
+@SHELL_LINE@
+
+#Author: Mohana Ramaratnam/Dan Marcus
+
+n=$#
+
+program="vnc_launch"
+idstr="\$Id: vnc_launch,v 1.1.2.1 2010/02/01 16:44:40 mohanar Exp $"
+
+
+if [ $n -lt 1 ]
+then
+ echo $idstr
+ echo "USAGE:   $program <executable with its arguments>"
+ echo "PURPOSE: For executables which are dependent on DISPLAY"
+ echo "         $program will set a DISPLAY using vncserver"
+ echo "         and launch the executable. $program will kill "
+ echo "         the vncserver at the end"
+ exit 1
+fi
+
+CALL_CMD=""
+
+for args in $*
+do
+    CALL_CMD=$CALL_CMD" "$args
+done
+
+vncNum=`@PIPELINE_DIR_PATH@/image-tools/getvnc`
+
+HOSTNAME=`hostname`
+
+EXECSEQ=`vncserver :$vncNum -nolisten local;  DISPLAY=$HOSTNAME":"$vncNum; export DISPLAY; $CALL_CMD; vncserver -kill :$vncNum`
+
+exit $status

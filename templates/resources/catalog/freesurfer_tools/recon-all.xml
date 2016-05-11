@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>recon-all</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Launches grad_unwarp to perform distortion correction</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="all">
+			<pip:description>Do all steps</pip:description>
+		</pip:argument>
+		<pip:argument id="s">
+			<pip:name>subjid</pip:name>
+			<pip:description>Subject</pip:description>
+		</pip:argument>
+		<pip:argument id="sd">
+			<pip:name>sd</pip:name>
+			<pip:description>Subject Dir</pip:description>
+		</pip:argument>
+		<pip:argument id="i">
+			<pip:name>i</pip:name>
+			<pip:description>In volume</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

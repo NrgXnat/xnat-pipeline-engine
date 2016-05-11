@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>@SCRIPT_NAME@</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/sample_pipelines/wrapper_script</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>A custom script to demo features of Pipeline Engine</pip:description>
+	<pip:estimated_time>00:00:02</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="arg">
+			<pip:description>Unnamed arguments to the script</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

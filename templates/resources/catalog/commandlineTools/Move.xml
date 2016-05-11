@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>Move</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/pipeline-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Move files from build dir to session archive dir</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="source">
+			<pip:name>source</pip:name>
+			<pip:description>Dir in which session was built</pip:description>
+		</pip:argument>
+		<pip:argument id="destination">
+			<pip:name>destination</pip:name>
+			<pip:description>Archive Dir of the session </pip:description>
+		</pip:argument>
+		<pip:argument id="skip">
+			<pip:name>skip</pip:name>
+			<pip:description>Folders which are not to be moved </pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

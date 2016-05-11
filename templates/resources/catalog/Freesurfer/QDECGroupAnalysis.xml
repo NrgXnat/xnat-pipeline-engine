@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<name>QDECGroupAnalysis</name>
+	<!--Should be  Name of the pipeline XML file -->
+	<location>Freesurfer</location>
+	<!-- Filesystem path to the pipeline XML -->
+	<description>QDEC Analysis Pipeline for XNAT </description>
+	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='working-dir']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
+	<loop id="continuous-factors" xpath="^/Pipeline/parameters/parameter[name='continuous-factor']/values/list^"/>
+	<parameters>
+		<!--
+		<parameter>
+			<name>data-table</name>
+			<values>
+				<unique>/data/cninds01/data2/WORK/mohana_test/XNAT_1_3_3/data/cache/admin/MyTest_130400_10012007/qdec.table.dat</unique>
+			</values>
+			<description>Path to the qdec.table.dat file</description>
+		</parameter>
+		<parameter>
+			<name>analysis-name</name>
+			<values>
+				<unique>MyTest</unique>
+			</values>
+			<description>Name for analysis</description>
+		</parameter>
+		<parameter>
+			<name>measurement</name>
+			<values>
+				<unique>thickness</unique>
+			</values>
+			<description>Measurement name</description>
+		</parameter>
+		<parameter>
+			<name>hemisphere</name>
+			<values>
+				<unique>lh</unique>
+			</values>
+			<description>Hemisphere to use</description>
+		</parameter>
+		<parameter>
+			<name>smoothness</name>
+			<values>
+				<unique>10</unique>
+			</values>
+			<description>Smoothness</description>
+		</parameter>
+		<parameter>
+			<name>output</name>
+			<values>
+				<unique>MyTest.qdec</unique>
+			</values>
+			<description>Output qdec file name</description>
+		</parameter>
+		<parameter>
+			<name>output-relative-path</name>
+			<values>
+				<unique>20071002_100000_MyTest/MyTest.qdec</unique>
+			</values>
+			<description>Output qdec file name</description>
+		</parameter>
+		<parameter>
+			<name>working-dir</name>
+			<values>
+				<unique>/data/cninds01/data2/WORK/mohana_test/XNAT_1_3_3/data/cache/admin/MyTest_130400_10012007</unique>
+			</values>
+			<description>Directory in which to generate temporary data</description>
+		</parameter>
+		 <parameter>
+			<name>discrete-factor</name>
+			<values>
+				<list>gender</list>
+			</values>
+			<description>Discrete factor for the analysis</description>
+		</parameter>
+		 <parameter>
+			<name>continous-factor</name>
+			<values>
+				<list>age</list>
+				<list>age</list>
+			</values>
+			<description>Continous factor for the analysis</description>
+		</parameter>
+		<parameter>
+			<name>useremail</name>
+			<values>
+				<unique>mohanar@npg.wustl.edu</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>userfullname</name>
+			<values>
+				<unique>Mohana Ramaratnam</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>mailhost</name>
+			<values>
+				<unique>nrglin1.wustl.edu</unique>
+			</values>
+			<description>Mail host</description>
+		</parameter> 
+		<parameter>
+			<name>xnatserver</name>
+			<values>
+				<unique>CNDA</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>adminemail</name>
+			<values>
+				<unique>nrgtech@npg.wustl.edu</unique>
+			</values>
+			<description>MR Session Id</description>
+		</parameter>
+		 -->
+		<parameter>
+			<name>average-subject</name>
+			<values>
+				<unique>fsaverage</unique>
+			</values>
+			<description>Average subject name</description>
+		</parameter>
+		<parameter>
+			<name>average-subject-folder</name>
+			<values>
+				<unique>/data/nil-external/nrg/packages/linux/freesurfer/subjects/fsaverage</unique>
+			</values>
+			<description>Average subject path</description>
+		</parameter>
+		<parameter>
+			<name>from-subdir</name>
+			<values>
+				<unique>ASSESSORS/FREESURFER</unique>
+			</values>
+			<description>Average subject name</description>
+		</parameter>
+		<parameter>
+			<name>tmp-working-subdir</name>
+			<values>
+				<unique>^concat(/Pipeline/parameters/parameter[name='working-dir']/values/unique/text(),'/tmp')^</unique>
+			</values>
+			<description>Tmp directory</description>
+		</parameter>
+		<parameter>
+			<name>subjects-dir</name>
+			<values>
+				<unique>^concat(/Pipeline/parameters/parameter[name='working-dir']/values/unique/text(),'/subjects_dir')^</unique>
+			</values>
+			<description>Directory in which to find the average subject</description>
+		</parameter>
+	</parameters>
+	<steps>
+		<step id="1" description="Create SUBJECTS_DIR folder">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>^/Pipeline/parameters/parameter[name='subjects-dir']/values/unique/text()^</value>
+				</argument>
+				<argument id="p"/>
+			</resource>
+		</step>
+		<step id="1a" description="Create TMP subfolder">
+			<resource name="mkdir" location="commandlineTools">
+				<argument id="dirname">
+					<value>^/Pipeline/parameters/parameter[name='tmp-working-subdir']/values/unique/text()^</value>
+				</argument>
+				<argument id="p"/>
+			</resource>
+		</step>
+		<step id="2" description="Create Softlinks in the SUBJECTS_DIR for each session">
+			<resource name="LnList" location="pipeline-tools/resources">
+				<argument id="parameter-file">
+					<value>^/Pipeline/parameters/parameter[name='parameterFile']/values/unique/text()^</value>
+				</argument>
+				<argument id="parameter-name">
+					<value>session-ids</value>
+				</argument>
+				<argument id="working-dir">
+					<value>^/Pipeline/parameters/parameter[name='subjects-dir']/values/unique/text()^</value>
+				</argument>
+				<argument id="from-subdir">
+					<value>^/Pipeline/parameters/parameter[name='from-subdir']/values/unique/text()^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="pwd">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step> 
+   	<step id="3" description="Link fsaverage folder">
+			<resource name="ln" location="commandlineTools">
+				<argument id="source">
+					<value>^/Pipeline/parameters/parameter[name='average-subject-folder']/values/unique/text()^</value>
+				</argument>
+				<argument id="target">
+					<value>^/Pipeline/parameters/parameter[name='subjects-dir']/values/unique/text()^</value>
+				</argument>
+				<argument id="s"/>
+			</resource>
+		</step>
+		<step id="4" description="Launch QDEC Analysis" workdirectory="^/Pipeline/parameters/parameter[name='subjects-dir']/values/unique/text()^">
+			<resource name="qdec_glmfit" location="Freesurfer/resources" >
+				<argument id="data-table">
+					<value>^/Pipeline/parameters/parameter[name='data-table']/values/unique/text()^</value>
+				</argument>
+				<argument id="average-subject">
+					<value>^/Pipeline/parameters/parameter[name='average-subject']/values/unique/text()^</value>
+				</argument>
+				<argument id="analysis-name">
+					<value>^/Pipeline/parameters/parameter[name='analysis-name']/values/unique/text()^</value>
+				</argument>
+				<argument id="measurement">
+					<value>^/Pipeline/parameters/parameter[name='measurement']/values/unique/text()^</value>
+				</argument>
+				<argument id="hemisphere">
+					<value>^/Pipeline/parameters/parameter[name='hemisphere']/values/unique/text()^</value>
+				</argument>
+				<argument id="smoothness">
+					<value>^/Pipeline/parameters/parameter[name='smoothness']/values/unique/text()^</value>
+				</argument>
+				<argument id="output">
+					<value>^/Pipeline/parameters/parameter[name='output']/values/unique/text()^</value>
+				</argument>
+				<argument id="working-dir">
+					<value>^/Pipeline/parameters/parameter[name='tmp-working-subdir']/values/unique/text()^</value>
+				</argument>
+				<argument id="subjects-dir">
+					<value>^/Pipeline/parameters/parameter[name='subjects-dir']/values/unique/text()^</value>
+				</argument>
+				<argument id="continuous-factor">
+					<value>^PIPELINE_LOOPVALUE(continuous-factors)^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="5" description="Notify">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="cc">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>^concat(/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(), ' update: ', /Pipeline/parameters/parameter[name='session']/values/unique/text(),' Archiving complete')^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; QDEC Analysis', /Pipeline/parameters/parameter[name='analysis-name']/values/unique/text(),' completed without errors.&lt;/p&gt;&lt;br&gt; &lt;p&gt;Details for this analysis are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/UserCacheAction?popup=true&amp;folder=',/Pipeline/parameters/parameter[name='output-relative-path']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					</value>
+				</argument>
+			</resource>
+		</step> 
+	</steps>
+</Pipeline>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>echo</pip:name>
+	<pip:type>Executable</pip:type>
+    <!-- You shouldn't need to specify pip:location if this command is on your default path.
+         If for some reason your pipeline engine can't find the command, you can uncomment it
+         and set the path appropriately for your system.
+    <pip:location>/usr/bin</pip:location>
+    -->
+	<pip:description>echo [string...]</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="n">
+			<pip:name>n</pip:name>
+			<pip:description>Controls new line character</pip:description>
+		</pip:argument>
+		<pip:argument id="string">
+			<pip:description>string</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout" prefix="">
+			<pip:name>></pip:name>
+			<pip:description>Redirect Std Out</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout_append" prefix="">
+			<pip:name>>></pip:name>
+			<pip:description>Redirect Std Out Append</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout_emphatic" prefix="">
+			<pip:name>>!</pip:name>
+			<pip:description>Redirect Std Out Emphatic</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdin" prefix="">
+			<pip:name>&lt;</pip:name>
+			<pip:description>Redirect Std In</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdin_append" prefix="">
+			<pip:name>&lt;&lt;</pip:name>
+			<pip:description>Redirect Std In Append</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdin_emphatic" prefix="">
+			<pip:name>&lt;!</pip:name>
+			<pip:description>Redirect Std In Emphatic</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout_append" prefix="">
+			<pip:name>&gt;&gt;</pip:name>
+			<pip:description>Redirect Std Out Append</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout_stderr" prefix="">
+			<pip:name>&gt;&amp;</pip:name>
+			<pip:description>Redirect Std Out and Std Error</pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout_stderr_append" prefix="">
+			<pip:name>&gt;&gt;&amp;</pip:name>
+			<pip:description>Redirect Std Out and Std Error Append</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

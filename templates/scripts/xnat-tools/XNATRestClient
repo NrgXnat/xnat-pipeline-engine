@@ -1,0 +1,2 @@
+@SHELL_LINE@ 
+java -jar @PIPELINE_DIR_PATH@/lib/xnat-rest-client-1.6.4.jar @OS_ARG_SYM@

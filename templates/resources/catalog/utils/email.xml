@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>email</pip:name>
+	<pip:type>Human</pip:type>
+	<pip:description>Use this resource to notify personnel</pip:description>
+	<pip:input>
+		<pip:argument id="to">
+			<pip:description>Email id to whom message is to be sent</pip:description>
+		</pip:argument>
+		<pip:argument id="from">
+			<pip:description>Email id from whom this message has been sent</pip:description>
+		</pip:argument>
+		<pip:argument id="cc">
+			<pip:description>Email ids to whom the email is to be cced</pip:description>
+		</pip:argument>
+		<pip:argument id="bcc">
+			<pip:description>Email ids to whom the email is to be bcced</pip:description>
+		</pip:argument>
+		<pip:argument id="subject">
+			<pip:description>Subject of the email notification</pip:description>
+		</pip:argument>
+		<pip:argument id="body">
+			<pip:description>Body of the email message</pip:description>
+		</pip:argument>
+		<pip:argument id="attachment">
+			<pip:description>Attachements for the email</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

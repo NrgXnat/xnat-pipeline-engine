@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>AntCopy</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/ant-tools/bin</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Uses Ant to copy files </pip:description>
+	<pip:input>
+		<pip:argument id="source">
+			<pip:name>src</pip:name>
+			<pip:description>Source directory to copy from</pip:description>
+		</pip:argument>
+		<pip:argument id="destination">
+			<pip:name>dest</pip:name>
+			<pip:description>Destination directory to copy to</pip:description>
+		</pip:argument>
+		<pip:argument id="overwrite">
+			<pip:name>overwrite</pip:name>
+			<pip:description>Flag to indicate if copy should overwrite files</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

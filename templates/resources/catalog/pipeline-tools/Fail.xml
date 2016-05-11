@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resource xmlns="http://nrg.wustl.edu/pipeline">
+	<name>fail.sh</name>
+	<location>pipeline-tools/scripts</location>
+	<type>Executable</type>
+	<description>Prints an error string and causes pipeline to fail</description>
+	<estimated_time>00:00:01</estimated_time>
+	<input>
+		<argument id="errstring">
+			<name>e</name>
+			<description>The error string to print</description>
+		</argument>
+	</input>
+</Resource>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>LnList</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/nrg-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Creates softlinks in the working-dir for each subfolder of a XNAT session id. The list of session ids is selected from a Parameter file by specifying which column represents the session ids. </pip:description>
+	<pip:estimated_time>00:00:20</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="parameter-file" prefix="--">
+			<pip:name>parameter-file</pip:name>
+			<pip:description>Input parameter file</pip:description>
+		</pip:argument>
+		<pip:argument id="parameter-name" prefix="--">
+			<pip:name>parameter-name</pip:name>
+			<pip:description>The parameter name which corresponds to session ids in the Parameters document</pip:description>
+		</pip:argument>
+		<pip:argument id="working-dir" prefix="--">
+			<pip:name>working-dir</pip:name>
+			<pip:description>The directory into the softlinks are to be created</pip:description>
+		</pip:argument>
+		<pip:argument id="from-subdir" prefix="--">
+			<pip:name>from-subdir</pip:name>
+			<pip:description>The subdirectory of each session which is to be linked</pip:description>
+		</pip:argument>
+		<pip:argument id="host" prefix="--">
+			<pip:name>host</pip:name>
+			<pip:description>Xnat host</pip:description>
+		</pip:argument>
+		<pip:argument id="user" prefix="--">
+			<pip:name>user</pip:name>
+			<pip:description>Xnat user</pip:description>
+		</pip:argument>
+		<pip:argument id="pwd" prefix="--" isSensitive="true"> 
+			<pip:name>pwd</pip:name>
+			<pip:description>XNAT user password</pip:description>
+		</pip:argument>
+		<pip:argument id="log" prefix="--">
+			<pip:name>log</pip:name>
+			<pip:description>Log4j properties file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

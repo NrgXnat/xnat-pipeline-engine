@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>compress</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Compress a file</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="file">
+			<pip:description>Compress a file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>fast</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description> FAST - FMRIB's Automated Segmentation Tool
+FAST Version 3.53
+
+Usage: fast [-options] imagefile
+options:
+    -t&lt;n>:      input image type. 1-T1, 2-T2, 3-PD (default T1)
+    -c &lt;n>:     number of classes (default 3)
+    -a:         use apriori probability maps (for initialisation only)
+    -A:         use apriori probability maps (for initialisation and for posteriors)
+    -ap &lt;prefix> | -Ap &lt;prefix>:        path+filename prefix to pre-registered (to input data) apriori probability maps, &lt;prefix>_gm _wm and _csf (uncompressed Analyze format)
+    -od &lt;base>: output basename (default &lt;input>)
+    -os:        output segmentation with one class per image
+    -op:        output probability maps (one for each class)
+    -or:        output restored image
+    -ob:        output bias correction field
+    -n:         do not output segmentation
+    -v&lt;n>:      verbose level (0-5; default 1)
+    -h:         advanced options
+</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="v" nospace="true">
+			<pip:name>v</pip:name>
+			<pip:description>Verbose level</pip:description>
+		</pip:argument>
+		<pip:argument id="od">
+			<pip:name>od</pip:name>
+			<pip:description>Output basename</pip:description>
+		</pip:argument>
+		<pip:argument id="imagefile">
+			<pip:description>ImageFile</pip:description>
+		</pip:argument>
+	    <pip:argument id="redirect_stdout_stderr" prefix="">
+			<pip:name>&gt;amp</pip:name>
+			<pip:description>Redirect Std Out and Std Error</pip:description>
+		</pip:argument>
+
+	</pip:input>
+</pip:Resource>

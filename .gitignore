@@ -1,0 +1,13 @@
+.classpath
+gradle.properties
+.gradle
+.project
+*.DS_Store
+*.log
+*.bak
+Thumbs.db
+build
+modules
+*.iml
+*_wrk.xml
+

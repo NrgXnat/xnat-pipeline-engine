@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>Notifier</pip:name>
+	<pip:location>notifications</pip:location>
+	<pip:type>Human</pip:type>
+	<pip:description>Transfer Notifier</pip:description>
+	<pip:input>
+		<pip:argument id="user">
+			<pip:name>user</pip:name>
+			<pip:description>Mail service user</pip:description>
+		</pip:argument>
+		<pip:argument id="password">
+			<pip:name>password</pip:name>
+			<pip:description>Mail service password</pip:description>
+		</pip:argument>
+		<pip:argument id="from">
+			<pip:name>from</pip:name>
+			<pip:description>Email from</pip:description>
+		</pip:argument>
+		<pip:argument id="to">
+			<pip:name>to</pip:name>
+			<pip:description>Email to</pip:description>
+		</pip:argument>
+		<pip:argument id="tolist">
+			<pip:name>tolist</pip:name>
+			<pip:description>Emails file path. Emails are to be separated by , or newline</pip:description>
+		</pip:argument>
+		<pip:argument id="cc">
+			<pip:name>cc</pip:name>
+			<pip:description>CC Email to</pip:description>
+		</pip:argument>
+		<pip:argument id="bcc">
+			<pip:name>bcc</pip:name>
+			<pip:description>Bcc Email to</pip:description>
+		</pip:argument>
+		<pip:argument id="subject">
+			<pip:name>subject</pip:name>
+			<pip:description>Email subject</pip:description>
+		</pip:argument>
+		<pip:argument id="body">
+			<pip:name>body</pip:name>
+			<pip:description>Email body</pip:description>
+		</pip:argument>
+		<pip:argument id="bodycontents">
+			<pip:name>bodycontents</pip:name>
+			<pip:description>Email body as a file. File would be read to contruct the email body</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>SMTP host</pip:description>
+		</pip:argument>
+		<pip:argument id="attachment">
+			<pip:name>attachment</pip:name>
+			<pip:description>Email attachment</pip:description>
+		</pip:argument>
+		<pip:argument id="notifyAdmin">
+			<pip:name>notifyAdmin</pip:name>
+			<pip:description>Decides if email will be sent to all in cc; if value is set to 1</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

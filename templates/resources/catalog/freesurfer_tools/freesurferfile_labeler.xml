@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>FreesurferFileLabeler</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Associate Freesurfer Files to an MR Session</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="sessionId">
+			<pip:name>sessionId</pip:name>
+			<pip:description>Session Label</pip:description>
+		</pip:argument>
+		<pip:argument id="xnatId">
+			<pip:name>xnatId</pip:name>
+			<pip:description>XNAT Session id</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>XNAT Host</pip:description>
+		</pip:argument>
+		<pip:argument id="user">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT Username</pip:description>
+		</pip:argument>
+		<pip:argument id="password" isSensitive="true">
+			<pip:name>pwd</pip:name>
+			<pip:description>XNAT Password</pip:description>
+		</pip:argument>
+		<pip:argument id="folder">
+			<pip:name>folder</pip:name>
+			<pip:description>Root location of all freesurfer files of the session</pip:description>
+		</pip:argument>
+		<pip:argument id="config">
+			<pip:name>config</pip:name>
+			<pip:description>Config file of the labeller</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

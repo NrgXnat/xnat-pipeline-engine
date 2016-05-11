@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>phantom_qa_wrapper</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Creates the QCAssessment element</pip:description>
+	<pip:input>
+		<pip:argument id="xnatId" >
+			<pip:description>Xnat ID for the Session</pip:description>
+		</pip:argument>
+		<pip:argument id="projectId">
+			<pip:description>Project ID</pip:description>
+		</pip:argument>
+		<pip:argument id="outfile">
+			<pip:description>Path to the QCAssessment file</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

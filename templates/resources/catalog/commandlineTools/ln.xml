@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>ln</pip:name>
+    <!-- You shouldn't need to specify pip:location if this command is on your default path.
+         If for some reason your pipeline engine can't find the command, you can uncomment it
+         and set the path appropriately for your system.
+    <pip:location>/usr/bin</pip:location>
+    -->
+	<pip:type>Executable</pip:type>
+	<pip:description>  ln - make hard or symbolic links to files
+    SYNOPSIS
+     /usr/bin/ln [-fns] source_file [target]
+
+     /usr/bin/ln [-fns] source_file... target
+
+     /usr/xpg4/bin/ln [-fs] source_file [target]
+
+     /usr/xpg/bin/ln [-fs] source_file... target
+</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="f">
+			<pip:name>f</pip:name>
+			<pip:description/>
+		</pip:argument>
+		<pip:argument id="n">
+			<pip:name>n</pip:name>
+			<pip:description/>
+		</pip:argument>
+		<pip:argument id="s">
+			<pip:name>s</pip:name>
+			<pip:description/>
+		</pip:argument>
+		<pip:argument id="source">
+			<pip:description>Source File</pip:description>
+		</pip:argument>
+		<pip:argument id="target">
+			<pip:description>Target</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

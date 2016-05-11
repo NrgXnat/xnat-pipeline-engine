@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>WebBasedQCImageCreator</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/image-tools</pip:location>
+	<!-- <pip:commandPrefix>@PIPELINE_DIR_PATH@/image-tools/vnc_launch</pip:commandPrefix> -->
+	<pip:type>Executable</pip:type>
+	<pip:description>
+		Generates the Quality Control Images for the RAW files using REST calls
+	</pip:description>
+	<pip:input>
+		<pip:argument id="session">
+			<pip:name>session</pip:name>
+			<pip:description>Project Session Label</pip:description>
+		</pip:argument>
+		<pip:argument id="project">
+			<pip:name>project</pip:name>
+			<pip:description>XNAT Project ID to which the Session belongs</pip:description>
+		</pip:argument>
+		<pip:argument id="xnatId">
+			<pip:name>xnatId</pip:name>
+			<pip:description>XNAT Session Id</pip:description>
+		</pip:argument>
+		<pip:argument id="host">
+			<pip:name>host</pip:name>
+			<pip:description>XNAT Host</pip:description>
+		</pip:argument>
+		<pip:argument id="user">
+			<pip:name>u</pip:name>
+			<pip:description>XNAT Username</pip:description>
+		</pip:argument>
+		<pip:argument id="pwd" isSensitive="true">
+			<pip:name>pwd</pip:name>
+			<pip:description>XNAT Password</pip:description>
+		</pip:argument>
+		<pip:argument id="raw">
+			<pip:name>raw</pip:name>
+			<pip:description>Create QC Images for RAW Files</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

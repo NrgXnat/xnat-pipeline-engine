@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nrgString="java:org.nrg.pipeline.utils.StringUtils" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd">
+	<name>SimpleEchoPipeline</name>
+	<location>/Users/rherrick/Documents/Code/Projects/pipeline/pipeline_1_6dev/sample_pipelines</location>
+	<!-- Filesystem path to the pipeline XML -->
+	<description>A simple pipeline to verify basic pipeline functionality</description>
+	<outputFileNamePrefix>^concat('/Users/rherrick/Documents/Code/Projects/pipeline/pipeline_1_6dev','/sample_pipelines/SimpleEchoPipelineOut')^</outputFileNamePrefix>
+	<!-- Description of the Pipeilne -->
+	<parameters>
+	</parameters>
+	<steps>
+		<step id="0" description="Very simple echo command." workdirectory="/Users/rherrick/Documents/Code/Projects/pipeline/pipeline_1_6dev/sample_pipelines">
+			<resource name="echo" location="commandlineTools">
+				<argument id="string">
+					<value>This is a string that's being echoed.</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

@@ -1,0 +1,309 @@
+<!--
+  ~ D:/Development/XNAT/1.6/pipeline_1_6dev/doc/pipeline_tutorial.html
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2014, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  ~
+  ~ Last modified 7/2/13 10:27 AM
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>XNAT Pipeline Tutorial</title>
+</head>
+<body>
+<h1>Pipeline Quick Tutorial </h1>
+
+<strong>
+<ol>
+  <li><a href="#pipeline_overview">Pipeline Overview</a></li>
+  <li><a href="#pipeline_features">Pipeline Features</a></li>
+  <li><a href="#pipeline_descriptor">Pipeline descriptor </a></li>
+  <li><a href="#resource_descriptor">Resource descriptor </a></li>
+  <li><a href="#pipeline_launch">Launching a pipeline </a></li>
+   <li><a href="#pipeline_cluster">Pipeline and Cluster </a></li>
+</ol>
+</strong>
+
+<hr>
+
+<ol start="1" type="1">
+  <li><strong><a name="pipeline_overview">Pipeline Overview<br>
+    </a></strong></li>
+</ol>
+
+<p>Pipeline Engine, henceforth referred to as engine, is a JAVA based framework, which links sequential activities, human and computer, into a defined process flow and manages how the data moves from step to step based on the results of each step.
+  In most laboratories, some processes (or pipelines) are carried out automatically without any human intervention and others, such as QC or other inspections which require a person to make judgments or drawing of ROI etc, are necessarily done by hand.
+The pipeline engine manages how the data moves from step to step based on the results of each step.
+The process flow is defined in a XML document called the pipeline descriptor and the executables are defined in a separate XML document called resource descriptors.
+With a catalog of resource descriptors one could thus start creating pipelines.
+</p>
+
+<p>
+A process is a collection of steps to be executed and a step is a collection of resources (human or computer) to be invoked.
+When an executable is invoked, the  engine monitors its exit status and if the executable was succesfully launched, continues onto the next resource/step.
+In case the executable fails, unless the step specifically is set to continue on failure (using the attribute continueOnFailure), the engine terminates the entire pipeline and sends an email notification.
+In order to temporarily pause the pipeline for some human intervention, use the attribute awaitApprovalToProceed to specify that the current step is to be executed and the engine should stop executing any other step beyond the current step.
+One can then restart the pipeline from the next step at a later point in time.
+</p>
+
+<p>
+The resource descriptor document defines the executable wrt to the input arguments and the outputs. The engine is launched using two execucatables viz. PipelineRunner and the XnatPipelineLauncher. The difference between the two is that XnatPipelineLauncher updates the XNAT workflow element as the steps execute.
+
+</p>
+
+<p>
+The engine comes bundled with a tool ResourceImporter which generates the Resource Descriptors (see <Installation folder>/bin/ResourceImporter[.bat]).
+</p>
+
+
+
+<ol start="2" type="1">
+  <li><strong><a name="pipeline_features">Pipeline Features<br>
+    </a></strong></li>
+</ol>
+<p>
+	XML Based Pipeline and Resource descriptors. Parameters can be passed to the Pipeline descriptor either in a separate Parameter document or as arguments at the command prompt. The engine uses the features of XPath and hence within a pipeline one can create loops, use if conditions. The engine also has goto capabilities.
+</p>
+<p>
+	Execuatbles are launched either locally or on a remote machine using ssh. The engine is not yet capable of transferring data to the remote machine but if the machines share a common file system then jobs can be executed remotely
+</p>
+<p>
+	Each step of the pipeline is monitored. If a step fails to execute, unless overidden with continueOnFailure, the engine aborts the pipeline and is capable of notifying by email.
+</p>
+<p>
+	A pipeline can be restarted at any step. A step could be another pipeline (called a pipelet). In this case the engine exports all the parameters to the pipelet and launches the pipelet.
+</p>
+<p>
+	The engine captures provenance information as it executes the steps.
+</p>
+<p>
+	The engine can interact with XNAT to update the workflow element as it completes a step.
+</p>
+
+<ol start="3" type="1">
+  <li><strong><a name="pipeline_descriptor">Pipeline Descriptor<br>
+    </a></strong></li>
+</ol>
+
+
+<table>
+<tr>
+<b>Transfer Pipeline Descriptor: /catalog/xnat_tools/Transfer.xml</b>
+</tr>
+<tr>
+<iframe width="100%" height="400px" style="width:100%;height:400px;background-color:ffffff" name="view" src="../catalog/xnat_tools/Transfer.xml"></iframe>
+</tr>
+</table>
+
+<p>
+In the following paragraphs, we will analyze the various tags in the Pipeline descriptor used by XNAT to transfer a session from the Pre-Archive folder to the permanent archive. This file, Transfer.xml, is  located within catalog/xnat_tools folder.
+</p>
+
+<p>
+Notice the element
+</p>
+
+<p>
+<font color="#0000FF">&lt;outputFileNamePrefix&gt;<br />
+^concat(/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text(),'/',/Pipeline/name/text())^<br />
+&lt;/outputFileNamePrefix&gt;</font>
+</p>
+
+<p>
+<i>outputFileNamePrefix</i> is an optional tag which is used to specify the prefix for the output files that the engine generates, viz, log, err and an internal xml representation of the Pipeline. In the xml snippet above, the text uses XPATH string function <i>concat</i> and the XPATH notation <i>/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text()</i> and is enclosed within ^(caret character). The presence of the ^ symbol is an indication for the engine to resolve the XPATH before launching. In fact, the engine first reads an xml document, resolves all XPATH statements and then resolves all the steps against the resource descriptors and then launches the steps.
+</p>
+
+<p>
+The commented portion of the xml contains
+
+<table>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+Schema Representation of the Parameter element
+</td>
+</tr>
+<tr>
+<td>
+<font color="#00CC33">
+&lt;parameter&gt;<br />
+			&lt;name&gt;destinationDir&lt;/name&gt; <br />
+			&lt;values&gt; <br />
+				&lt;unique&gt;/data/dest&lt;/unique&gt;<br />
+			&lt;/values&gt;<br />
+			&lt;description&gt;The path to the destination directory&lt;/description&gt;<br />
+		&lt;/parameter&gt;<br />
+		</font>
+</td>
+<td width="85%">
+<iframe width="100%" height="400px" style="width:100%;height:400px;background-color:ffffff" name="viewParameter" src="./schemadoc/pipeline.html#element_parameter_Link05EA9090"></iframe>
+</td>
+</tr>
+</table>
+
+</p>
+<p>
+This snippet is describing a parameter for the pipeline. The name of the parameter is <i>destinationDir</i>. The value of the parameter, <i>destinationDir</i>,  in this example is unique and is specified as <i>/data/dest</i>. Note that as there is no ^(caret) symbol surrounding the text and so the engine will take the content as is. One can specify a list of values for a parameter.
+</p>
+
+<p>
+<table>
+<tr>
+<td align="center"><b> Snippet from /catalog/xnat_tools/Transfer.xml</b></td>
+<td align="center"><b>Schema Representation of the Step element</b></td>
+</tr>
+<tr>
+<td>
+<font color="#990099">
+ &lt;step id="1" description="Copy files from prearc to archive"&gt; <br />
+			&lt;resource name="AntCopy" location="%PIPELINE_DIR_PATH%/catalog/ant-tools"&gt; <br />
+				&lt;argument id="source"&gt;<br />
+					&lt;value&gt;<br /> ^/Pipeline/parameters/parameter[name='sourceDir']/values/unique/text()^<br />&lt;/value&gt; <br />
+				&lt;/argument&gt;<br />
+				&lt;argument id="destination"&gt;<br />
+					&lt;value&gt;<br />^/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text()^<br />&lt;/value&gt;
+				&lt;/argument&gt;<br />
+				&lt;argument id="overwrite"/&gt;<br />
+			&lt;/resource&gt;<br />
+		&lt;/step&gt; <br /></font>
+</td>
+<td width="50%">
+<iframe width="100%" height="400px" style="width:100%;height:400px;background-color:ffffff" name="viewRsc" src="./schemaDoc/pipeline.html#element_step_Link04078200"></iframe>
+</td>
+</tr></table>
+</p>
+
+<p>
+A step is a collection of actions to be performed. These could be calls to executable events or email notifications (Step id=5 is a email notification sent by the transfer pipeline (Transfer.xml above)). A step could be a pipelet, which is another pipeline. The engine exports all the parameters of the pipeline which invokes a pipelet.  The engine captures provenance information as it executes the steps and one can define the output(s) (typically files) which a step will generate. These can then be used to populate XNAT.
+</p>
+
+<ol start="4" type="1">
+  <li><strong><a name="resource_descriptor">Resource Descriptor<br>
+    </a></strong></li>
+</ol>
+
+
+<br />
+<table>
+<tr align="center">
+Schema Representation of the Resource Descriptor
+</tr>
+<tr>
+<iframe width="100%" height="400px" style="width:100%;height:400px;background-color:ffffff" name="viewRscSchema" src="schemaDoc/pipeline.html#element_Resource_Link040D9BD8"></iframe>
+</tr>
+</table>
+
+
+
+<p>
+Going back to the Step 1 of the Transfer Pipeline, when the engine executes this step, after resolving the XPATH values, the contents of the  resource tag are reconciled against the Resource descriptor. The attributes <b>step.resource.name</b> and <b>step.resource.location</b> link the <b>step.resource</b> to the Resource descriptor. The elements, <b>Resource.name</b> and <b>Resource.location</b> in the Resource descriptor, together, on the other hand, point to the executable which gets invoked by this Resource.
+</p>
+
+<p>
+<table>
+<tr>
+<td align="center"><b> Snippet from /catalog/xnat_tools/Transfer.xml</b></td>
+<td align="center"><b>Resource Descriptor from /catalog/ant-tools/AntCopy.xml</b></td>
+</tr>
+<tr>
+<td>
+<font color="#990099">
+ &lt;step id="1" description="Copy files from prearc to archive"&gt; <br />
+			&lt;resource name="AntCopy" location="%PIPELINE_DIR_PATH%/catalog/ant-tools"&gt; <br />
+				&lt;argument id="source"&gt;<br />
+					&lt;value&gt;<br /> ^/Pipeline/parameters/parameter[name='sourceDir']/values/unique/text()^<br />&lt;/value&gt; <br />
+				&lt;/argument&gt;<br />
+				&lt;argument id="destination"&gt;<br />
+					&lt;value&gt;<br />^/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text()^<br />&lt;/value&gt;
+				&lt;/argument&gt;<br />
+				&lt;argument id="overwrite"/&gt;<br />
+			&lt;/resource&gt;<br />
+		&lt;/step&gt; <br /></font>
+</td>
+<td>
+<iframe width="100%" height="400px" style="width:100%;height:400px;background-color:ffffff" name="viewRsc" src="../catalog/ant-tools/AntCopy.xml"></iframe>
+</td>
+</tr></table>
+</p>
+
+<p>
+Consider the element <b>Resource.input.argument</b>. </p>
+<p>
+&lt;pip:argument id="source"&gt; <br />
+&lt;pip:name>src&lt;/pip:name&gt; <br/>
+&lt;pip:description&gt;Source directory to copy from&lt;/pip:description&gt; <br />
+&lt;/pip:argument&gt;<br />
+
+</p>
+
+<p>
+This defines an input argument of the executable represented by the resource descriptor AntCopy.xml. The attribute <b>id</b> is used in the Pipeline Descriptor to refer to the argument (See Step above). Let us assume that the value for the parameter <i>sourceDir</i> was /data/dir1 and the value for the parameter <i>destinationDir</i> was /data/dir2. Then the command that the engine would execute would be:
+</p>
+
+<p>
+%PIPELINE_DIR_PATH%/ant-tools/bin/AntCopy -src /data/dir1 -dest /data/dir2 -overwrite
+</p>
+
+<p>
+
+<a href="schemadoc/pipeline.html#element_Resource_Link040D9BD8">More info on Resource descriptor </a>
+
+</p>
+
+
+<ol start="5" type="1">
+  <li><strong><a name="pipeline_launch">Launching a pipeline<br>
+    </a></strong></li>
+</ol>
+<p>
+	A pipeline can be launched using either the script PipelineRunner or XnatPipelineLauncher. These scripts are located in the bin folder. As mentioned before the difference between these two scripts is that XnatPipelineLauncher is XNAT aware and hence updates the workflow element as it executes the steps. Each of these scripts need the name of the pipeline which is to be executed. A pipeline descriptor may define the required parameters or one can pass the parameters as command prompt arguments to the scripts PipelineRunner or XnatPipelineLauncher.
+</p>
+
+
+<ol start="6" type="1">
+  <li><strong><a name="pipeline_features">Pipeline and Cluster<br>
+    </a></strong></li>
+</ol>
+
+
+<p>
+All calls to org.nrg.pipeline.XnatPipelineLauncher.launch() method are intercepted by PIPELINE_HOME/bin/schedule.  You could overload this method to :
+
+<ul>
+	<li>Log job command string into a log file (very useful for debug purposes)</li>
+	<li>Submit the job on a cluster</li>
+</ul>
+
+When the job is not to be intercepted by schedule, use org.nrg.pipeline.XnatPipelineLauncher.launch(null)
+</p>
+
+<p>
+Pipeline engine supports the Sun Grid Engine (SGE).   The class org.nrg.pipeline.client.PipelineJobSubmitter, using the DRMAA API, interacts with the SGE.  These are the steps that are performed by the PipelineJobSubmitter:
+<ul>
+ <li>
+  Looks up the Pipeline XML document for resource requirements (machine architecture/memory/license etc). For example, a freesurfer pipeline could include in Pipeline XML:
+<br/>
+ &lt; resourceRequirements&gt;
+   &lt;property name="DRMAA_JobTemplate_JobResource"&gt;-l arch=lx24-amd64,mem_free=1.9G&lt;/property&gt;
+&lt;/resourceRequirements&gt;
+
+</li>
+<li>
+   Holds the job on the grid. Gets the SGE assigned job id. Assigns the job id to the workflow entry in XNAT.</li>
+  <li>  Releases the hold on the job. Sun Grid Engine is now responsible for scheduling the job.</li>
+</p>
+<p>
+<b>Integrating SGE and XNAT: </b>
+Setup the machine which is hosting TOMCAT as a submit host.
+
+
+</p>
+
+</body>
+</html>

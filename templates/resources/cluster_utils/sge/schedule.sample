@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#AUTHOR: Mohana Ramaratnam
+#This script will submit the jobs to the SUN Grid Job Submitter.
+#The shell chosen is the sh shell as escaping characters is easier in sh
+# Pre-requisite set environment variable SGE_ROOT
+
+
+logfile=PATH_TO_LOG/xnat-jobs.log
+
+
+logstart () {
+ echo `date` >> $1
+ echo -------------------------------------------------- >> $1
+}
+
+
+logend () {
+ echo -------------------------------------------------- >> $1
+}
+
+
+logstart $logfile
+      echo @PIPELINE_DIR_PATH@/bin/PipelineJobSubmitter $*      >> $logfile
+      @PIPELINE_DIR_PATH@/bin/PipelineJobSubmitter $*
+logend $logfile
+ 
+
+
+exit 0;

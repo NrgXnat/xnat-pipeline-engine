@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<xs:schema targetNamespace="http://nrg.wustl.edu/pipeline" xmlns:pipeline="http://nrg.wustl.edu/pipeline" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:prov="http://www.nbirn.net/prov" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.nbirn.net/prov" schemaLocation="./birn/birnprov.xsd"/>
+	<xs:complexType name="resourceData">
+		<xs:annotation>
+			<xs:documentation>A  resource specifier</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Unique name of the resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="location" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>uri to the resource</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="commandPrefix" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>java -jar or -cp etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>WebService/Executable/Human </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="WebService"/>
+						<xs:enumeration value="Executable"/>
+						<xs:enumeration value="Human"/>
+						<xs:enumeration value="Transformer"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="estimated_time" type="xs:time" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>in minutes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="input" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="argument" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="pipeline:argumentData">
+										<xs:attribute name="prefix" use="optional" default="-">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="-"/>
+													<xs:enumeration value="/"/>
+													<xs:enumeration value="--"/>
+													<xs:enumeration value=""/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+										<xs:attribute name="id" type="xs:string" use="required"/>
+										<xs:attribute name="nospace" use="optional" default="false">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="true"/>
+													<xs:enumeration value="false"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+										<xs:attribute name="isSensitive" type="xs:string" use="optional" default="false"/>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="outputs" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="output" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="pipeline:outputData"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="provenance" type="pipeline:provenanceData" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="pipeId" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="parameterData">
+		<xs:annotation>
+			<xs:documentation>A parameter specifier</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>unique name identifying the output</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="values">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="pipeline:abstractValueData">
+							<xs:choice>
+								<xs:element name="unique" type="xs:string"/>
+								<xs:element name="list" type="xs:string" maxOccurs="unbounded"/>
+							</xs:choice>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="override" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="pipelineData">
+		<xs:annotation>
+			<xs:documentation>A pipeline specifier</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="location" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>uri to the pipeline file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="resourceRequirements" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Describe as name value pairs the resource requirements for this pipeline. This could be specifying an architecture, specifying free memory. As of now this will be used by the Cluster Scheduler to define the task. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="name" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="documentation" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="website" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Website describing the pipeline</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="authors" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="author" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="lastname" type="xs:string"/>
+												<xs:element name="firstname" type="xs:string"/>
+												<xs:element name="contact" minOccurs="0">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="phone" type="xs:string" minOccurs="0"/>
+															<xs:element name="email" type="xs:string" minOccurs="0"/>
+															<xs:element name="address" minOccurs="0">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="line1">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:maxLength value="10000"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="line2" minOccurs="0">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:maxLength value="10000"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="city" type="xs:string"/>
+																		<xs:element name="state" type="xs:string"/>
+																		<xs:element name="country" type="xs:string"/>
+																		<xs:element name="zipcode" type="xs:string"/>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="affiliation" type="xs:string" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="publications" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="publication" maxOccurs="unbounded">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="10000"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="version" type="xs:string" minOccurs="0"/>
+						<xs:element name="input-parameters" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="parameter" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="name" type="xs:string"/>
+												<xs:element name="values" minOccurs="0">
+													<xs:complexType>
+														<xs:choice>
+															<xs:element name="csv" type="xs:string"/>
+															<xs:element name="schemalink" type="xs:string"/>
+														</xs:choice>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="description">
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:maxLength value="10000"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="appliesTo" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>The xnat dataType to which this pipeline is applicable</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="xnatInfo" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="generatesElements" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="element" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="appliesTo" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="outputFileNamePrefix" type="xs:string" minOccurs="0"/>
+			<xs:element name="loop" type="pipeline:loop" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="parameters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="parameter" type="pipeline:parameterData" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>global parameters to the pipeline</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="steps">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="step" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:choice>
+										<xs:element name="resource" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="argument" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+															</xs:sequence>
+															<xs:attribute name="id" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="id" type="xs:string" use="optional"/>
+												<xs:attribute name="name" type="xs:string" use="required">
+													<xs:annotation>
+														<xs:documentation>name of the resource. This name should be the same as the resource XML filename</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="location" type="xs:string" use="required">
+													<xs:annotation>
+														<xs:documentation>The location where the resource xml can be found</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="pipeId" type="xs:string" use="optional">
+													<xs:annotation>
+														<xs:documentation>Set the pipeId to link all resources which are to be piped</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="ssh2Host" type="xs:string" use="optional"/>
+												<xs:attribute name="ssh2User" type="xs:string" use="optional"/>
+												<xs:attribute name="ssh2Password" type="xs:string" use="optional"/>
+												<xs:attribute name="ssh2Identity" type="xs:string" use="optional"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="pipelet" type="pipeline:pipeletData" minOccurs="0"/>
+									</xs:choice>
+									<xs:sequence>
+										<xs:element name="output" type="pipeline:outputData" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:sequence>
+								<xs:attribute name="id" type="xs:string" use="required"/>
+								<xs:attribute name="precondition" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>specify the condition under which this step is to be executed </xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="preconditionType" use="optional" default="relaxed">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="strict"/>
+											<xs:enumeration value="relaxed"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="description" type="xs:string" use="required"/>
+								<xs:attribute name="workdirectory" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>The directory from which the resource stmts are to be executed. Equivalent to pushd
+</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="gotoStepId" type="xs:string" use="optional"/>
+								<xs:attribute name="awaitApprovalToProceed" type="xs:boolean" use="optional" default="false"/>
+								<xs:attribute name="continueOnFailure" type="xs:boolean" use="optional" default="false"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Resource" type="pipeline:resourceData">
+		<xs:annotation>
+			<xs:documentation>Root element for resourceData</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Pipeline" type="pipeline:pipelineData">
+		<xs:annotation>
+			<xs:documentation>Root element for pipelineData</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Resources">
+		<xs:annotation>
+			<xs:documentation>Root element for all the resources</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="resource" type="pipeline:resourceData" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="argumentData">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0"/>
+			<xs:element name="value" type="xs:string" minOccurs="0"/>
+			<xs:element name="description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="loop">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Include either the value or the  xpath attribute to specify the values.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+		<xs:attribute name="xpath" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="^.+^"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Parameters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="parameter" type="pipeline:parameterData" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="outputData">
+		<xs:choice>
+			<xs:element name="file">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="xs:string" minOccurs="0"/>
+						<xs:element name="path" minOccurs="0">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="relativePath" type="xs:boolean" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="format" type="xs:string" minOccurs="0"/>
+						<xs:element name="description" type="xs:string" minOccurs="0"/>
+						<xs:element name="content" type="xs:string" minOccurs="0"/>
+						<xs:element name="dimensions" minOccurs="0">
+							<xs:complexType>
+								<xs:attribute name="x" type="xs:integer"/>
+								<xs:attribute name="y" type="xs:integer"/>
+								<xs:attribute name="z" type="xs:integer"/>
+								<xs:attribute name="volumes" type="xs:integer"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="voxelRes" minOccurs="0">
+							<xs:complexType>
+								<xs:attribute name="x" type="xs:float"/>
+								<xs:attribute name="y" type="xs:float"/>
+								<xs:attribute name="z" type="xs:float"/>
+								<xs:attribute name="units" type="xs:string"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="orientation" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="xs:string"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="fileCount" type="xs:integer" minOccurs="0"/>
+						<xs:element name="pattern" type="xs:string" minOccurs="0"/>
+						<xs:element name="fileList" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="xsiType" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="value" type="xs:string"/>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="provenanceData">
+		<xs:complexContent>
+			<xs:extension base="prov:processStep"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="abstractValueData"/>
+	<xs:complexType name="uniqueValueData">
+		<xs:complexContent>
+			<xs:extension base="pipeline:abstractValueData">
+				<xs:sequence>
+					<xs:element name="value" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="valueListData">
+		<xs:complexContent>
+			<xs:extension base="pipeline:abstractValueData">
+				<xs:sequence>
+					<xs:element name="list" type="xs:string" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="pipeletData">
+		<xs:sequence>
+			<xs:element name="parameters" type="pipeline:parameterData" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="location" type="xs:string" use="required"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+</xs:schema>

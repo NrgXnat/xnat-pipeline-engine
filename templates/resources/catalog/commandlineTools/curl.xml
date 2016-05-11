@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>curl</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>Curl</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="userpassword" isSensitive="true">
+			<pip:name>u</pip:name>
+			<pip:description>The user:password to use</pip:description>
+		</pip:argument>
+		<pip:argument id="options">
+			<pip:description>Options for curl</pip:description>
+		</pip:argument>
+		<pip:argument id="url">
+			<pip:description>The URL to retrieve</pip:description>
+		</pip:argument>
+		<pip:argument id="outfile">
+			<pip:name>o</pip:name>
+			<pip:description>The name of the output file to use</pip:description>
+		</pip:argument>
+		
+	</pip:input>
+</pip:Resource>

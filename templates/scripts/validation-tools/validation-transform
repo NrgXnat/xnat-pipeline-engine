@@ -1,0 +1,2 @@
+@SHELL_LINE@
+java  -mx250m -ms250m  -cp "@PIPELINE_DIR_PATH@"/lib/provenanceutils@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/saxon9@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/xercesImpl-2.4.0.jar  net.sf.saxon.Transform    -x org.apache.xerces.parsers.SAXParser -w1    @OS_ARG_SYM@

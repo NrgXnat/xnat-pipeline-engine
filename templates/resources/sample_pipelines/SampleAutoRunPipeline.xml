@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd"  xmlns:fileUtils="http://www.xnat.org/java/org.nrg.imagingtools.utils.FileUtils">
+	<name>Sample Auto Run Pipeline</name>
+	<!--Should be  Name of the pipeline XML file -->
+	<location>D:/MERCURIAL/xdat_release/pipeline/sample_pipelines</location>
+	<!-- Filesystem path to the pipeline XML -->
+	<description>Demo pipeline which generates the session folder and creates a csh params file from the parameters supplied</description>
+	<documentation>
+	   <authors>
+	   	<author>
+	   		<lastname>Mohana</lastname>
+			<firstname>Ramaratnam</firstname>
+	   	</author>
+	   </authors>
+		<version>1</version>
+		<input-parameters>
+			<parameter>
+				<name>scanids</name>
+				<values><schemalink>xnat:mrSessionData/scans/scan/ID</schemalink></values>
+				<description>The scan ids of all the scans of the session</description>
+			</parameter>
+		</input-parameters>
+	</documentation>
+	<xnatInfo appliesTo="xnat:mrSessionData"/>
+	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/SampleAutoRunPipeline')^</outputFileNamePrefix>
+	<!-- Description of the Pipeilne -->
+	<parameters>
+		<parameter>
+			<name>mailhost</name>
+			<values>
+			  <unique>artsci.wustl.edu</unique>
+			  </values>
+		</parameter>
+	</parameters>
+	<steps>
+		<step id="0" description="Create a folder session folder" workdirectory="^/Pipeline/parameters/parameter[name='builddir']/values/unique/text()^">
+			<resource name="mkdir" location="commandlineTools" >
+				<!-- <argument id="p"/> -->
+				<argument id="dirname">
+					<value>auto</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="1" description="Create the CSH Params File" >
+			<resource name="ParamsToCshParams" location="xnat_tools/resources">
+				<argument id="outfile">
+					<value>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/auto/auto.params')^</value>
+				</argument>
+				<argument id="skip">
+					<value>pwd</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="END-Notify" description="Notify">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="to">
+					<value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+				</argument>
+				<argument id="cc">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>^concat(/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(), ' update: Session ',/Pipeline/parameters/parameter[name='sessionId']/values/unique/text() ,' processed')^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt;', ' Session ', /Pipeline/parameters/parameter[name='sessionId']/values/unique/text(),' has been processed. Details of the  session are available  &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/xnat:mrSessionData/search_field/xnat:mrSessionData.ID/search_value/',/Pipeline/parameters/parameter[name='xnat_id']/values/unique/text(),'"&gt;', ' here. &lt;/a&gt; &lt;/p&gt;&lt;br&gt;', ' &lt;/p&gt;&lt;br&gt;', 'CNDA Team.')^
+					</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

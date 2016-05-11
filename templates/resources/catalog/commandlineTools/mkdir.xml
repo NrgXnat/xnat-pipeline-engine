@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>mkdir</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:input>
+		<!-- <pip:argument id="m">
+			<pip:name>m</pip:name>
+			<pip:description>mode</pip:description>
+		</pip:argument> -->
+		<pip:argument id="p">
+			<pip:name>p</pip:name>
+			<pip:description>With this option, mkdir creates dir  by  creating
+                all  the  non-existing  parent directories first.</pip:description>
+		</pip:argument> 
+		<pip:argument id="dirname">
+			<pip:description>name of the directory to create</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

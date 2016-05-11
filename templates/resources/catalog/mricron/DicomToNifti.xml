@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd" xmlns:fileUtils="http://www.xnat.org/java/org.nrg.imagingtools.utils.FileUtils">
+    <name>DicomToNifti</name>
+    <location>mricron</location>
+    <description>Pipeline creates NIFTI files from DICOM files.</description>
+    <documentation>
+        <authors>
+            <author>
+                <lastname>Mohana</lastname>
+                <firstname>Ramaratnam</firstname>
+            </author>
+            <author>
+                <lastname>Flavin</lastname>
+                <firstname>John</firstname>
+                <contact>
+                    <email>flavinj@mir.wustl.edu</email>
+                </contact>
+            </author>
+        </authors>
+        <version>20150114</version>
+        <input-parameters>
+            <parameter>
+                <name>scanids</name>
+                <values>
+                    <schemalink>xnat:imageSessionData/scans/scan/ID</schemalink>
+                </values>
+                <description>Scan ids of all the scans of the session</description>
+            </parameter>
+            <parameter>
+                <name>xnat_id</name>
+                <values>
+                    <schemalink>xnat:imageSessionData/ID</schemalink>
+                </values>
+                <description>XNAT ID (Accession Number) of the session</description>
+            </parameter>
+            <parameter>
+                <name>sessionId</name>
+                <values>
+                    <schemalink>xnat:imageSessionData/label</schemalink>
+                </values>
+                <description>Session label</description>
+            </parameter>
+            <parameter>
+                <name>project</name>
+                <values>
+                    <schemalink>xnat:imageSessionData/project</schemalink>
+                </values>
+                <description>Project ID</description>
+            </parameter>
+            <parameter>
+                <name>subject</name>
+                <values>
+                    <schemalink>xnat:imageSessionData/subject_ID</schemalink>
+                </values>
+                <description>Subject ID</description>
+            </parameter>
+            <parameter>
+                <name>create_nii</name>
+                <values>
+                    <csv>Y,N</csv>
+                </values>
+                <description>Set this value to Y if .nii file should be created. Set it to N if .img/.hdr files should be created</description>
+            </parameter>
+        </input-parameters>
+    </documentation>
+    <outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='logdir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='label']/values/unique/text())^</outputFileNamePrefix>
+    <loop id="series" xpath="^/Pipeline/parameters/parameter[name='scanids']/values/list^"/>
+    <parameters>
+        <parameter>
+            <name>workdir</name>
+            <values>
+                <unique>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='label']/values/unique/text())^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>logdir</name>
+            <values>
+                <unique>^concat(/Pipeline/parameters/parameter[name='workdir']/values/unique/text(),'/LOGS')^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>rawdir</name>
+            <values>
+                <unique>^concat(/Pipeline/parameters/parameter[name='workdir']/values/unique/text(),'/RAW')^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>niidir</name>
+            <values>
+                <unique>^concat(/Pipeline/parameters/parameter[name='workdir']/values/unique/text(),'/NIFTI')^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>resolved_host</name>
+            <values>
+                <unique>^if(boolean(/Pipeline/parameters/parameter[name='aliasHost'])) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>email_subject</name>
+            <values>
+                <unique>^concat('@XNAT_SITE_NAME@ update: NIFTI files generated for ',/Pipeline/parameters/parameter[name='label']/values/unique/text())^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>email_body</name>
+            <values>
+                <unique>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt;NIFTI files have been generated for ', /Pipeline/parameters/parameter[name='label']/values/unique/text(),'. Details of the session are available &lt;a href="',/Pipeline/parameters/parameter[name='resolved_host']/values/unique/text(),'/data/experiments',/Pipeline/parameters/parameter[name='id']/values/unique/text(),'?format=html"&gt;here.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;&lt;/p&gt;&lt;br&gt;@XNAT_SITE_NAME@ Team.')^</unique>
+            </values>
+        </parameter>
+    </parameters>
+    <steps>
+        <step id="MKDIR_RAW" description="Create RAW folder">
+            <resource name="mkdir" location="commandlineTools">
+                <argument id="dirname">
+                    <value>^/Pipeline/parameters/parameter[name='rawdir']/values/unique/text()^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="MKDIR_NII" description="Create NIFTI folder">
+            <resource name="mkdir" location="commandlineTools">
+                <argument id="dirname">
+                    <value>^/Pipeline/parameters/parameter[name='niidir']/values/unique/text()^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="MKDIR_RAW_SCAN" description="Create folder for each series in RAW subfolder" workdirectory="^/Pipeline/parameters/parameter[name='rawdir']/values/unique/text()^">
+            <resource name="mkdir" location="commandlineTools">
+                <argument id="dirname">
+                    <value>^PIPELINE_LOOPON(series)^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="MKDIR_NII_SCAN" description="Create folder for each series in NIFTI subfolder" workdirectory="^/Pipeline/parameters/parameter[name='niidir']/values/unique/text()^">
+            <resource name="mkdir" location="commandlineTools">
+                <argument id="dirname">
+                    <value>^PIPELINE_LOOPON(series)^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="GET_SCANS" description="Download scan DICOMs" workdirectory="^concat(/Pipeline/parameters/parameter[name='rawdir']/values/unique/text(),'/',PIPELINE_LOOPON(series))^">
+            <resource name="XnatDataClient" location="xnat_tools">
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
+                <!-- <argument id="user">
+                    <value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+                </argument>
+                <argument id="password">
+                    <value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+                </argument> -->
+                <argument id="absolutePath"/>
+                <argument id="batch"/>
+                <argument id="method">
+                    <value>GET</value>
+                </argument>
+                <argument id="remote">
+                    <value>^concat('"',/Pipeline/parameters/parameter[name='resolved_host']/values/unique/text(),'/data/experiments/',/Pipeline/parameters/parameter[name='id']/values/unique/text(),'/scans/',PIPELINE_LOOPON(series),'/resources/DICOM/files"')^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="CONVERT" description="Convert each DICOM series into a 4d NIFTI file">
+            <resource name="dcm2nii" location="mricron/resources">
+                <argument id="date">
+                    <value>N</value>
+                </argument>
+                <argument id="events">
+                    <value>N</value>
+                </argument>
+                <argument id="source">
+                    <value>N</value>
+                </argument>
+                <argument id="gzip">
+                    <value>N</value>
+                </argument>
+                <argument id="protocol">
+                    <value>N</value>
+                </argument>
+                <argument id="n">
+                    <value>^/Pipeline/parameters/parameter[name='create_nii']/values/unique/text()^</value>
+                </argument>
+                <argument id="x">
+                    <value>N</value>
+                </argument>
+                <argument id="r">
+                    <value>N</value>
+                </argument>
+                <argument id="output">
+                    <value>^concat(/Pipeline/parameters/parameter[name='niidir']/values/unique/text(),'/',PIPELINE_LOOPON(series))^</value>
+                </argument>
+                <argument id="input">
+                    <value>^concat(/Pipeline/parameters/parameter[name='rawdir']/values/unique/text(),'/',PIPELINE_LOOPON(series))^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="UPLOAD" description="Upload NIFTI files">
+            <resource name="XnatDataClient" location="xnat_tools">
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
+                <!-- <argument id="user">
+                    <value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+                </argument>
+                <argument id="password">
+                    <value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+                </argument> -->
+                <argument id="method">
+                    <value>PUT</value>
+                </argument>
+                <argument id="remote">
+                    <value>^concat('"',/Pipeline/parameters/parameter[name='resolved_host']/values/unique/text(),'/data/experiments/',/Pipeline/parameters/parameter[name='id']/values/unique/text(),'/scans/',PIPELINE_LOOPON(series),'/resources/NIFTI/files?overwrite=true&amp;format=NIFTI&amp;content=NIFTI_RAW&amp;reference=',/Pipeline/parameters/parameter[name='niidir']/values/unique/text(),'/',PIPELINE_LOOPON(series),'&amp;event_id=',/Pipeline/parameters/parameter[name='workflowid']/values/unique/text(),'"')^</value>
+                </argument>
+            </resource>
+        </step>
+        <step id="END-Notify" description="Notify">
+            <resource name="Notifier" location="notifications">
+                <argument id="user">
+                    <value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+                </argument>
+                <argument id="password">
+                    <value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+                </argument>
+                <argument id="to">
+                    <value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+                </argument>
+                <argument id="cc">
+                    <value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+                </argument>
+                <argument id="from">
+                    <value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+                </argument>
+                <argument id="subject">
+                    <value>^/Pipeline/parameters/parameter[name='email_subject']/values/unique/text()^</value>
+                </argument>
+                <argument id="host">
+                    <value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+                </argument>
+                <argument id="body">
+                    <value>^/Pipeline/parameters/parameter[name='email_body']/values/unique/text()^</value>
+                </argument>
+            </resource>
+        </step>
+    </steps>
+</Pipeline>

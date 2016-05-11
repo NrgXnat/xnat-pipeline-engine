@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resource xmlns="http://nrg.wustl.edu/pipeline">
+    <name>sed</name>
+    <type>Executable</type>
+    <description>Stream editor</description>
+    <estimated_time>00:00:01</estimated_time>
+    <input>
+        <argument id="inplace">
+            <name>i</name>
+            <description>Modify file in-place</description>
+        </argument>
+        <argument id="script">
+            <name>e</name>
+            <description>Script to run</description>
+        </argument>
+        <argument id="infile">
+            <description>Input file</description>
+        </argument>
+        <argument id="outfile" prefix="">
+            <name>&gt;</name>
+            <description>Output file</description>
+        </argument>
+    </input>
+</Resource>

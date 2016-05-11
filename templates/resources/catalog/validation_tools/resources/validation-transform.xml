@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (NRG India) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>validation-transform</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/validation-tools</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Saxon based Schematron and XSLT Transformer </pip:description>
+	<pip:input>
+		<pip:argument id="output">
+			<pip:name>o</pip:name>
+			<pip:description>Path to output file</pip:description>
+		</pip:argument>
+		<pip:argument id="file">
+			<pip:description>Path to file on which the transform is to be applied</pip:description>
+		</pip:argument>
+		<pip:argument id="xsl">
+			<pip:description>Path to xsl file</pip:description>
+		</pip:argument>
+		<pip:argument id="parameter">
+			<pip:description>Parameter name=value</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

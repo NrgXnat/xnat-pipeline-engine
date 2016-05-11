@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>fast</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>FMIB's Automated Segmentation Tool v3.53
+</pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="t" nospace="true">
+			<pip:name>t</pip:name>
+			<pip:description>Input image type. 1-T1, 2-T2, 3-PD (default T1)</pip:description>
+		</pip:argument>
+		<pip:argument id="c">
+			<pip:name>c</pip:name>
+			<pip:description>Number of classes (default 3)</pip:description>
+		</pip:argument>
+		<pip:argument id="a">
+			<pip:name>a</pip:name>
+			<pip:description>use apriori probability maps (for initialisation only)</pip:description>
+		</pip:argument>
+		<pip:argument id="A">
+			<pip:name>A</pip:name>
+			<pip:description>use apriori probability maps (for initialisation and for posteriors) </pip:description>
+		</pip:argument>
+		<pip:argument id="ap">
+			<pip:name>ap</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="Ap">
+			<pip:name>Ap</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="od">
+			<pip:name>od</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="os">
+			<pip:name>os</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="op">
+			<pip:name>op</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="or">
+			<pip:name>or</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="ob">
+			<pip:name>ob</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="n">
+			<pip:name>n</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="v" nospace="true">
+			<pip:name>v</pip:name>
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="file" >
+			<pip:description></pip:description>
+		</pip:argument>
+		<pip:argument id="redirect_stdout" prefix="">
+			<pip:name>&gt;</pip:name>
+			<pip:description>Redirect Std Out and Std Error</pip:description>
+		</pip:argument>
+		<pip:argument id="sh_redirect_stdout" prefix="">
+			<pip:name>2&gt;&amp;1</pip:name>
+			<pip:description>Redirect Std Out and Std Error</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:autorun="http://www.xnat.org/java/org.nrg.pipeline.client.webservices.WebserviceClient" xmlns:fileUtils="org.nrg.imagingtools.utils.FileUtils" xsi:schemaLocation="http://nrg.wustl.edu/pipeline
+..\..\schema\pipeline.xsd" >
+	<name>Transfer</name>
+	<location>@PIPELINE_DIR_PATH@/catalog/xnat_tools</location>
+	<description>Tranfer Pipeline for XNAT </description>
+	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='logDir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
+	<parameters>
+		<!-- 
+		<parameter>
+			<name>destinationDir</name>
+			<values>
+				<unique>/data/dest</unique>
+			</values>
+			<description>The path to the destination directory</description>
+		</parameter>
+		 <parameter>
+			<name>sourceDir</name>
+			<values>
+				<unique>/data/XNAT_CACHE/Prearc/20070313_133824/head_Black_1</unique>
+			</values>
+			<description>The path to the source directory to transfer from</description>
+		</parameter>
+		<parameter>
+			<name>cachepath</name>
+			<values>
+				<unique>/data/destcache/20070313_133824</unique>
+			</values>
+			<description>Path to Cache folder into</description>
+		</parameter>  
+		<parameter>
+			<name>useremail</name>
+			<values>
+				<unique>mohanar@npg.wustl.edu</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>userfullname</name>
+			<values>
+				<unique>Mohana Ramaratnam</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>mailhost</name>
+			<values>
+				<unique>nrglin1.wustl.edu</unique>
+			</values>
+			<description>Mail host</description>
+		</parameter> 
+		<parameter>
+			<name>aliasHost</name>
+			<values>
+				<unique>http://localhost:8080</unique>
+			</values>
+			<description>Mail host</description>
+		</parameter> 
+		<parameter>
+			<name>xnatserver</name>
+			<values>
+				<unique>CNDA</unique>
+			</values>
+			<description>User email to notify to</description>
+		</parameter> 
+		<parameter>
+			<name>sessionType</name>
+			<values>
+				<unique>xnat:mrSessionData</unique>
+			</values>
+			<description>Search Element to be used for the link sent out in Step 5</description>
+		</parameter> 
+		<parameter>
+			<name>session</name>
+			<values>
+				<unique>VB19094</unique>
+			</values>
+			<description>XNAT MR Session Id</description>
+		</parameter>
+		<parameter>
+			<name>sessionLabel</name>
+			<values>
+				<unique>label</unique>
+			</values>
+			<description>Project MR Session Id</description>
+		</parameter>
+		<parameter>
+			<name>adminemail</name>
+			<values>
+				<unique>nrgtech@npg.wustl.edu</unique>
+			</values>
+			<description>MR Session Id</description>
+		</parameter>
+	
+		 -->
+		<!-- 		<parameter>
+			<name>host</name>
+			<values>
+				<unique>http://cninds03.neuroimage.wustl.edu:8070/cnda_xnat</unique>
+			</values>
+			<description>XNAT Host</description>
+		</parameter>
+		<parameter>
+			<name>user</name>
+			<values>
+				<unique>mohanar</unique>
+			</values>
+			<description>XNAT User Id</description>
+		</parameter>
+		<parameter>
+			<name>pwd</name>
+			<values>
+				<unique>PWD</unique>
+			</values>
+			<description>XNAT Password</description>
+		</parameter>
+ -->
+ 		<parameter>
+   			<name>emaillistfileExists</name>
+   			<values>
+   				<unique>^fileUtils:FileExists(if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(), 'notifications','archival.lst')^</unique>
+   			</values>
+   			<description>Intermediate Schematron XSL File</description>
+   		</parameter>
+  		<parameter>
+   			<name>subjectlabel</name>
+   			<values>
+   				<unique>^fileUtils:GetColumn(if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),concat('REST/experiments?ID=',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'&amp;columns=subject_label,subject_ID&amp;format=json'),'subject_label')^</unique>
+   			</values>
+   			<description>Intermediate Schematron XSL File</description>
+   		</parameter>
+  
+  		<parameter>
+  			<name>email_list_file</name>
+  			<values><unique>^concat(/Pipeline/parameters/parameter[name='cachepath']/values/unique/text(),'/archival.lst')^</unique></values>
+  			<description>Email list file</description>
+  		</parameter>
+
+	</parameters>
+	<steps>
+		<step id="1" description="Copy files from prearc to archive">
+			<resource name="AntCopy" location="ant-tools">
+				<argument id="source">
+					<value>^/Pipeline/parameters/parameter[name='sourceDir']/values/unique/text()^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text()^</value>
+				</argument>
+				<argument id="overwrite"/>
+			</resource>
+		</step>
+		<step id="2" description="Create Quality Control Images"  continueOnFailure="true">
+			<resource name="WebBasedQCImageCreator" location="images/resources">
+							<argument id="session">
+								<value>^/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text()^</value>
+							</argument>
+							<argument id="xnatId">
+								<value>^/Pipeline/parameters/parameter[name='session']/values/unique/text()^</value>
+							</argument>
+							<argument id="project">
+								<value>^/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text()^</value>
+							</argument>
+							<argument id="host">
+								<value>^if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+							</argument>
+							<argument id="user">
+								<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+							</argument>
+							<argument id="pwd">
+								<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+							</argument>
+							<argument id="raw"/>
+			</resource>
+		</step>
+	<!--	<step id="3" description="GZip files in the archive">
+			<resource name="AntGZip" location="ant-tools">
+				<argument id="source">
+					<value>^/Pipeline/parameters/parameter[name='destinationDir']/values/unique/text()^</value>
+				</argument>
+				<argument id="delete"/>
+			</resource>
+		</step> -->
+		<step id="4" description="Move folder to the Cache" precondition="^count(/Pipeline/parameters/parameter[name='cachepath']/values/unique/text())=1^" continueOnFailure="true">
+			<resource name="AntMove" location="ant-tools">
+				<argument id="source">
+					<value>^/Pipeline/parameters/parameter[name='sourceDir']/values/unique/text()^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='cachepath']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="4a" description="Move Session XML" precondition="^count(/Pipeline/parameters/parameter[name='cachepath']/values/unique/text())=1^" continueOnFailure="true">
+			<resource name="AntMove" location="ant-tools">
+				<argument id="source">
+					<value>^concat(/Pipeline/parameters/parameter[name='sourceDir']/values/unique/text(),'.xml')^</value>
+				</argument>
+				<argument id="destination">
+					<value>^/Pipeline/parameters/parameter[name='cachepath']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="4b" description="Launch auto-run pipelines" >
+			<resource name="XnatRestClient" location="xnat_tools">
+				<argument id="host">
+						<value>^if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="password">
+						<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="user">
+						<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="method">
+						<value>POST</value>
+				</argument>
+				<argument id="remote">
+						<value>^concat('"/REST/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/pipelines/AUTO_ARCHIVE/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'?match=LIKE"')^</value>
+				</argument>
+	         </resource>
+	</step> 
+		<step id="5" description="Get Email notification list" precondition="^/Pipeline/parameters/parameter[name='emaillistfileExists']/values/unique/text()='true'^">
+			<resource name="XnatRestClient" location="xnat_tools">
+				<argument id="host">
+						<value>^if (count(/Pipeline/parameters/parameter[name='aliasHost']/values) > 0) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</value>
+				</argument>
+				<argument id="password">
+						<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="user">
+						<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+				<argument id="method">
+						<value>GET</value>
+				</argument>
+				<argument id="remote">
+						<value>^concat('"/REST/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/notifications/files/archival.lst"')^</value>
+				</argument>
+				<argument id="redirect_output">
+						<value>^/Pipeline/parameters/parameter[name='email_list_file']/values/unique/text()^</value>
+				</argument>
+
+	         </resource>
+	</step> 
+		<step id="6" description="Notify" precondition="^/Pipeline/parameters/parameter[name='emaillistfileExists']/values/unique/text()='true'^">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="tolist">
+					<value>^/Pipeline/parameters/parameter[name='email_list_file']/values/unique/text()^</value>
+				</argument>
+				<argument id="cc">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>^concat(/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(), ' update: ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' Archiving complete')^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' User, &lt;br&gt; &lt;p&gt; &lt;br&gt; &lt;p&gt; The following session was archived in ',/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),':&lt;br&gt; &lt;p&gt;&lt;br&gt; &lt;p&gt; Project: ',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'&lt;br&gt; &lt;p&gt; Subject: ',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'&lt;br&gt; &lt;p&gt; Session:', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Additional details for this session are available  &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'here.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					</value>
+				</argument>
+				<argument id="notifyAdmin">
+					<value>^/Pipeline/parameters/parameter[name='notifyAdmin']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="7" description="Notify">
+			<resource name="Notifier" location="notifications">
+                <argument id="user">
+					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+				</argument>
+                <argument id="password">
+					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+				</argument>
+				<argument id="to">
+					<value>^/Pipeline/parameters/parameter[name='useremail']/values/unique/text()^</value>
+				</argument>
+				<argument id="cc">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="from">
+					<value>^/Pipeline/parameters/parameter[name='adminemail']/values/unique/text()^</value>
+				</argument>
+				<argument id="subject">
+					<value>^concat(/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(), ' update: ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' Archiving complete')^</value>
+				</argument>
+				<argument id="host">
+					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
+				</argument>
+				<argument id="body">
+					<value>^concat('Dear ', /Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),', &lt;br&gt; &lt;p&gt; &lt;br&gt; &lt;p&gt; The following session was archived in ',/Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),':&lt;br&gt; &lt;p&gt;&lt;br&gt; &lt;p&gt; Project: ',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'&lt;br&gt; &lt;p&gt; Subject: ',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'&lt;br&gt; &lt;p&gt; Session:', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Additional details for this session are available  &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'here.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					</value>
+				</argument>
+				<argument id="notifyAdmin">
+					<value>^/Pipeline/parameters/parameter[name='notifyAdmin']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+	</steps>
+</Pipeline>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>head</pip:name>
+	<pip:type>Executable</pip:type>
+	<pip:description>  head </pip:description>
+	<pip:estimated_time>00:00:01</pip:estimated_time>
+	<pip:input>
+		<pip:argument id="line">
+			<pip:description>Line to display</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>

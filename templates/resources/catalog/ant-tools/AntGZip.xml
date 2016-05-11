@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
+<pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
+	<pip:name>AntGZip</pip:name>
+	<pip:location>@PIPELINE_DIR_PATH@/ant-tools/bin</pip:location>
+	<pip:type>Executable</pip:type>
+	<pip:description>Uses Ant to copy files </pip:description>
+	<pip:input>
+		<pip:argument id="source">
+			<pip:name>src</pip:name>
+			<pip:description>Source directory to copy from</pip:description>
+		</pip:argument>
+		<pip:argument id="delete">
+			<pip:name>delete</pip:name>
+			<pip:description>Flag to indicate if original files are to be deleted or not</pip:description>
+		</pip:argument>
+	</pip:input>
+</pip:Resource>
