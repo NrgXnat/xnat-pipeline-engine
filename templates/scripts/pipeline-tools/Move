@@ -1,5 +1,5 @@
 @SHELL_LINE@ 
-java -classpath "@PIPELINE_DIR_PATH@"/lib/jsr173_1.0_api@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/xbean@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/xmlpublic@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/commons-lang-2.6@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/pipelineBase@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/java-getopt-1.0.12@JAR_EXT@"@PIPELINE_DIR_PATH@"/lib/PipelineTools.jar Move $@
+java -classpath "@PIPELINE_DIR_PATH@"/lib/jsr173_1.0_api.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/xbean.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/xmlpublic.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/commons-lang-2.6.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/pipelineBase.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/java-getopt-1.0.12.jar@CP_SEP@"@PIPELINE_DIR_PATH@"/lib/PipelineTools.jar Move $@
 
 
 

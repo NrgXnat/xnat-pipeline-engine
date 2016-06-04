@@ -57,13 +57,13 @@ def configExt = (isWindows ? "bat" : "config") as String
 def demoScript = (isWindows ? "demo.bat" : "demo.sh") as String
 def envVar1 = (isWindows ? "%" : "\$") as String
 def envVar2 = (isWindows ? "%" : "") as String
-def jarExt = (isWindows ? ".jar;" : ".jar:") as String
+def classpathSeparator = (isWindows ? ";" : ":") as String
 def osArgSym = (isWindows ? "%*" : "\$@") as String
 def platformCall = (isWindows ? "call" : "source") as String
 def shellLine = (isWindows ? "@echo off" : "#!/bin/bash") as String
 
 def tokens = [CONFIG_EXT           : configExt,
-              JAR_EXT              : jarExt,
+              CP_SEP               : classpathSeparator,
               OS_ARG_SYM           : osArgSym,
               PIPELINE_DIR_PATH    : "${destination}" as String,
               PLATFORM_CALL        : platformCall,

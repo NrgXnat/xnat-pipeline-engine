@@ -20,7 +20,7 @@
   <classpathentry kind="lib" path="lib/commons-beanutils-1.8.3.jar"/>
   <classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
   <classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
-  <classpathentry kind="lib" path="lib/commons-configuration-1.0.jar"/>
+  <classpathentry kind="lib" path="lib/commons-configuration-1.10.jar"/>
   <classpathentry kind="lib" path="lib/commons-dbcp-1.2.1.jar"/>
   <classpathentry kind="lib" path="lib/commons-discovery-0.5.jar"/>
   <classpathentry kind="lib" path="lib/commons-email-1.2.jar"/>
