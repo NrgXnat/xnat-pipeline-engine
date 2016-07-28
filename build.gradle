@@ -137,7 +137,9 @@ binaries.each { binary ->
 println ""
 
 dependencies {
-    compile("org.nrg.xnat:data-client:${vXnat}") { transitive = false }
+    // Let's let data-client be transitive and bring along its dependencies.
+    compile "org.nrg.xnat:data-client:${vXnat}"
+
     compile("org.nrg.xnat:xnat-data-models:${vXnat}") { transitive = false }
     compile("org.nrg.xdat:core:${vXnat}") { transitive = false }
     compile("org.nrg:mail:${vXnat}") { transitive = false }
@@ -148,6 +150,9 @@ dependencies {
     compile("org.springframework:spring-beans:4.2.5.RELEASE") { transitive = false }
     compile("org.springframework:spring-context:4.2.5.RELEASE") { transitive = false }
     compile("commons-configuration:commons-configuration:1.10") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-annotations:2.6.5") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-core:2.6.5") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-databind:2.6.5") { transitive = false }
     compile("org.apache.commons:commons-lang3:3.4") { transitive = false }
     compile("org.reflections:reflections:0.9.10") { transitive = false }
     compile "org.slf4j:slf4j-api:${vSlf4j}"
