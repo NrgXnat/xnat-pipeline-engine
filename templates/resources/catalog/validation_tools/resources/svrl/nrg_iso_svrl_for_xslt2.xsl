@@ -1,5 +1,14 @@
 <?xml version="1.0" ?>
-<!-- 
+<!--
+  ~ pipeline: nrg_iso_svrl_for_xslt2.xsl
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
+<!--
    ISO_SVRL.xsl   
 
    Implementation of Schematron Validation Report Language from ISO Schematron

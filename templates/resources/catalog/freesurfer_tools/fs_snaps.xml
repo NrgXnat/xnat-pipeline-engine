@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: fs_snaps.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
 	<pip:name>snap_montage.csh</pip:name>
 	<pip:location>/data/nil-external/nrg/packages/linux/freesurfer/QAtools/data_checker</pip:location>

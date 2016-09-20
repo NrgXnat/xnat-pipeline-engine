@@ -1,3 +1,12 @@
+<!--
+  ~ pipeline: ExtractProvenance.xsl
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:pip="http://nrg.wustl.edu/pipeline" xmlns:prov="http://www.nbirn.net/prov" xmlns:xnat="ttp://nrg.wustl.edu/xnat"  exclude-result-prefixes="pip xnat prov">
 <xsl:output method="xml" indent="yes" />
 <xsl:variable name="newline" select="'&#xA;'" />

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: SampleAutoRunPipeline.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
 <Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd"  xmlns:fileUtils="http://www.xnat.org/java/org.nrg.imagingtools.utils.FileUtils">
 	<name>Sample Auto Run Pipeline</name>

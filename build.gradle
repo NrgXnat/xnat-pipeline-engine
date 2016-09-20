@@ -1,3 +1,12 @@
+/*
+ * pipeline: build.gradle
+ * XNAT http://www.xnat.org
+ * Copyright (c) 2016, Washington University School of Medicine
+ * All Rights Reserved
+ *
+ * Released under the Simplified BSD.
+ */
+
 import org.apache.tools.ant.filters.FixCrLfFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -29,7 +38,7 @@ repositories {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-def vXnat = "1.7.0-SNAPSHOT"
+def vXnat = "1.7.0"
 def vSlf4j = '1.7.21'
 def vLog4j = '1.2.17'
 

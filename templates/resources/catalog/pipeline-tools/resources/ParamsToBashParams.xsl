@@ -1,3 +1,12 @@
+<!--
+  ~ pipeline: ParamsToBashParams.xsl
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:pip="http://nrg.wustl.edu/pipeline">
 <xsl:output method="text" indent="yes" encoding="US-ASCII" />
 <xsl:variable name="newline" select="'&#xA;'" />

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: Validate.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:ext="org.nrg.validate.utils.ProvenanceUtils" xmlns:fileUtils="org.nrg.imagingtools.utils.FileUtils" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:autorun="http://www.xnat.org/java/org.nrg.pipeline.client.webservices.WebserviceClient" xsi:schemaLocation="http://nrg.wustl.edu/pipeline
 ..\..\schema\pipeline.xsd" >
 	<name>Validate</name>

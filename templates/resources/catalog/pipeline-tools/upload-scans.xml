@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: upload-scans.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <Resource xmlns="http://nrg.wustl.edu/pipeline">
     <name>upload-scans.py</name>
     <commandPrefix>source @PIPELINE_DIR_PATH@/scripts/epd-python_setup.sh; python</commandPrefix>

@@ -10,4 +10,5 @@ build
 modules
 *.iml
 *_wrk.xml
+/.idea
 

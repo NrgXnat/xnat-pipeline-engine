@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: GenericCommand.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
 	<pip:name>GenericCommand.sh</pip:name>
 	<pip:location>@PIPELINE_DIR_PATH@/bin</pip:location>

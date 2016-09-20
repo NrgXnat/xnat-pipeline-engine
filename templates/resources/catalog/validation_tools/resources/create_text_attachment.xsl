@@ -1,3 +1,12 @@
+<!--
+  ~ pipeline: create_text_attachment.xsl
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:val="http://nrg.wustl.edu/val" xmlns:xnat="http://nrg.wustl.edu/xnat" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:nrgxsl="http://nrg.wustl.edu/validate" xmlns:prov="http://www.nbirn.net/prov" xmlns:ext="org.nrg.validate.utils.ProvenanceUtils">
 <xsl:output method="text" indent="yes" encoding="US-ASCII" />
 

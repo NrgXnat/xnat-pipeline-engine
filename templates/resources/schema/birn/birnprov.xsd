@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: birnprov.xsd
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2016, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
 <!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Mohana Ramaratnam (Washington University) -->
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Dan Marcus (Washington University) -->
 <xs:schema targetNamespace="http://www.nbirn.net/prov" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:prov="http://www.nbirn.net/prov" xmlns:xdat="http://nrg.wustl.edu/xdat" elementFormDefault="qualified" attributeFormDefault="unqualified">

@@ -1,7 +1,7 @@
 XNAT Pipeline Engine
 ====================
 
-Version 1.7.0-SNAPSHOT
+Version 1.7.0
 Neuroinformatics Research Group (http://nrg.wustl.edu), Washington University in Saint Louis
 
 Developers
