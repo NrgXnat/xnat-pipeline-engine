@@ -1,5 +1,5 @@
 .classpath
-gradle.properties
+gradle.properties*
 .gradle
 .project
 *.DS_Store
