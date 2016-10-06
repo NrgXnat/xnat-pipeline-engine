@@ -3,8 +3,8 @@
   <classpathentry kind="lib" path="lib/pipelineClient-1.6.5.jar"/>
   <classpathentry kind="lib" path="lib/xnat_tools-1.6.5.jar"/>
   <classpathentry kind="lib" path="lib/xnat_pipeline-1.6.5.jar"/>
-  <classpathentry kind="lib" path="lib/xnat-data-models-1.7.0.jar"/>
-  <classpathentry kind="lib" path="lib/core-1.7.0.jar"/>
+  <classpathentry kind="lib" path="lib/xnat-data-models-1.7.1-SNAPSHOT.jar"/>
+  <classpathentry kind="lib" path="lib/core-1.7.1-SNAPSHOT.jar"/>
   <classpathentry kind="lib" path="lib/data-client-1.7.0.jar"/>
   <classpathentry kind="lib" path="lib/xnat-rest-client-1.6.4.jar"/>
   <classpathentry kind="lib" path="lib/activation-1.1.1.jar"/>
@@ -56,8 +56,8 @@
   <classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
   <classpathentry kind="lib" path="lib/log4j.properties"/>
   <classpathentry kind="lib" path="lib/mail-1.4.5.jar"/>
-  <classpathentry kind="lib" path="lib/framework-1.7.0.jar"/>
-  <classpathentry kind="lib" path="lib/mail-1.7.0.jar"/>
+  <classpathentry kind="lib" path="lib/framework-1.7.1-SNAPSHOT.jar"/>
+  <classpathentry kind="lib" path="lib/mail-1.7.1-SNAPSHOT.jar"/>
   <classpathentry kind="lib" path="lib/guava-19.0.jar"/>
   <classpathentry kind="lib" path="lib/org.restlet-1.1rc1.jar"/>
   <classpathentry kind="lib" path="lib/spring-aop-4.2.7.RELEASE.jar"/>
