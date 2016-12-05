@@ -38,7 +38,7 @@ repositories {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-def vXnat = "1.7.1-SNAPSHOT"
+def vXnat = "1.7.1"
 def vXnatStable = "1.7.0"
 def vSlf4j = '1.7.21'
 def vLog4j = '1.2.17'
