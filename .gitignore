@@ -1,6 +1,6 @@
 .classpath
 gradle.properties*
-.gradle
+.gradle*
 .project
 *.DS_Store
 *.log
@@ -11,4 +11,5 @@ modules
 *.iml
 *_wrk.xml
 /.idea
+*.mf
 

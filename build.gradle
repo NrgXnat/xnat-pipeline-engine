@@ -11,7 +11,19 @@ import org.apache.tools.ant.filters.FixCrLfFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
 
-apply plugin: "java"
+plugins {
+    id 'java'
+    id 'com.palantir.git-version' version '0.5.2'
+}
+
+def vXnat = "1.7.1"
+def vXnatStable = "1.7.0"
+def vSlf4j = "1.7.21"
+def vLog4j = "1.2.17"
+def id = "xnat-pipeline-${vXnat}"
+
+group 'org.nrg.xnat'
+version = vXnat
 
 repositories {
     mavenLocal()
@@ -37,11 +49,6 @@ repositories {
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-
-def vXnat = "1.7.1"
-def vXnatStable = "1.7.0"
-def vSlf4j = '1.7.21'
-def vLog4j = '1.2.17'
 
 // Marshall all of the variables and properties.
 def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
@@ -175,6 +182,43 @@ dependencies {
     compile("log4j:log4j:${vLog4j}") { transitive = false }
 }
 
+// Pulls in the Jenkins BUILD_NUMBER environment variable if available.
+def buildDate = new Date()
+def buildNumber = System.getenv().BUILD_NUMBER?.toInteger() ?: "Manual"
+def revision = gitVersion().replace("${version}-", "")
+
+logger.info "Git version:            ${gitVersion()}"
+logger.info "Build-Date:             ${buildDate}"
+logger.info "Build-Number:           ${buildNumber}"
+logger.info "Implementation-Sha:     ${revision}"
+logger.info "Implementation-Version: ${version}"
+
+task copyArchive(type: Copy) {
+    from "${projectDir}"
+    into "${buildDir}/dist/xnat-pipeline"
+    exclude "build/**"
+    exclude "gradle.properties"
+    exclude ".*"
+    exclude ".*/**"
+    exclude "*.mf"
+}
+
+task buildArchive(type: Zip) {
+    dependsOn copyArchive
+    manifest {
+        attributes 'Application-Name': "XNAT Pipeline Engine ${vXnat}",
+                'Build-Date': buildDate,
+                'Build-Number': buildNumber,
+                'Implementation-Sha': revision,
+                'Implementation-Version': version
+        writeTo "${id}.mf"
+    }
+
+    from("${buildDir}/dist")
+    archiveName "${id}.zip"
+    destinationDir(file('build/libs'))
+}
+
 task copyDependencies(type: Copy) {
     from configurations.runtime
     into "${destination}/lib"
@@ -215,6 +259,12 @@ task copyLibs(type: Copy) {
     from "${source}/lib"
     into "${destination}/lib"
     exclude '.*/**'
+}
+
+task copyBuildInfo(type: Copy) {
+    from "${source}"
+    into "${destination}"
+    include "${id}.mf"
 }
 
 task copyAll {
