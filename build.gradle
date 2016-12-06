@@ -13,7 +13,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id 'java'
-    id 'com.palantir.git-version' version '0.5.2'
 }
 
 def vXnat = "1.7.1"
@@ -189,12 +188,9 @@ dependencies {
 // Pulls in the Jenkins BUILD_NUMBER environment variable if available.
 def buildDate = new Date()
 def buildNumber = System.getenv().BUILD_NUMBER?.toInteger() ?: "Manual"
-def revision = gitVersion().replace("${version}-", "")
 
-logger.info "Git version:            ${gitVersion()}"
 logger.info "Build-Date:             ${buildDate}"
 logger.info "Build-Number:           ${buildNumber}"
-logger.info "Implementation-Sha:     ${revision}"
 logger.info "Implementation-Version: ${version}"
 
 task buildArchive(type: Zip) {
@@ -202,7 +198,6 @@ task buildArchive(type: Zip) {
         attributes 'Application-Name': "XNAT Pipeline Engine ${vXnat}",
                 'Build-Date': buildDate,
                 'Build-Number': buildNumber,
-                'Implementation-Sha': revision,
                 'Implementation-Version': version
         writeTo "${projectDir}/${id}.mf"
     }
