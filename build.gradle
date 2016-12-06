@@ -50,15 +50,19 @@ repositories {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+def String propertyWithDefault(def String property, def Object value) {
+    hasProperty(property) ? getProperty(property) : value
+}
+
 // Marshall all of the variables and properties.
 def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
 def source = buildDir.parent
-def destination = !project.hasProperty("destination") ? file("${buildFile.parent}/build/pipeline") : file("${destination}") as String
-def url = "${xnatUrl.replaceAll('/+$', '')}" as String
-def email = "${adminEmail}" as String
-def smtp = "${smtpServer}" as String
-def siteName = "${siteName}" as String
+def destination = file(propertyWithDefault("destination", "${buildFile.parent}/build/pipeline"))
+def url = "${propertyWithDefault("xnatUrl", "http://localhost:8080").replaceAll('/+$', '')}" as String
+def email = "${propertyWithDefault("adminEmail", "admin@yourxnat.org")}" as String
+def smtp = "${propertyWithDefault("smtpServer", "localhost")}" as String
+def siteName = "${propertyWithDefault("siteName", "XNAT")}" as String
 
 println """Building pipeline engine
 
@@ -193,30 +197,25 @@ logger.info "Build-Number:           ${buildNumber}"
 logger.info "Implementation-Sha:     ${revision}"
 logger.info "Implementation-Version: ${version}"
 
-task copyArchive(type: Copy) {
-    from "${projectDir}"
-    into "${buildDir}/dist/xnat-pipeline"
-    exclude "build/**"
-    exclude "gradle.properties"
-    exclude ".*"
-    exclude ".*/**"
-    exclude "*.mf"
-}
-
 task buildArchive(type: Zip) {
-    dependsOn copyArchive
     manifest {
         attributes 'Application-Name': "XNAT Pipeline Engine ${vXnat}",
                 'Build-Date': buildDate,
                 'Build-Number': buildNumber,
                 'Implementation-Sha': revision,
                 'Implementation-Version': version
-        writeTo "${id}.mf"
+        writeTo "${projectDir}/${id}.mf"
     }
 
-    from("${buildDir}/dist")
+    from("${projectDir}") {
+        into "xnat-pipeline"
+    }
+    exclude "build/**"
+    exclude "gradle.properties"
+    exclude ".*"
+    exclude ".*/**"
     archiveName "${id}.zip"
-    destinationDir(file('build/libs'))
+    destinationDir(file("${buildDir}/libs"))
 }
 
 task copyDependencies(type: Copy) {
@@ -268,7 +267,9 @@ task copyBuildInfo(type: Copy) {
 }
 
 task copyAll {
-    dependsOn tasks.withType(Copy)
+    dependsOn tasks.matching { def Task task ->
+        task instanceof Copy && task.name != "createDist"
+    }
 }
 
 defaultTasks 'copyAll'
