@@ -1,7 +1,7 @@
 /*
  * pipeline: build.gradle
  * XNAT http://www.xnat.org
- * Copyright (c) 2016, Washington University School of Medicine
+ * Copyright (c) 2017, Washington University School of Medicine
  * All Rights Reserved
  *
  * Released under the Simplified BSD.
@@ -15,7 +15,7 @@ plugins {
     id 'java'
 }
 
-def vXnat = "1.7.1"
+def vXnat = "1.7.2"
 def vSlf4j = "1.7.21"
 def vLog4j = "1.2.17"
 def id = "xnat-pipeline-${vXnat}"

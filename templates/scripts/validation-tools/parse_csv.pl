@@ -1,6 +1,12 @@
 #!/usr/bin/perl
-# Copyright (c) 2010 Washington University
-# Author: Mohana Ramaratnam <mohanakannan9@gmail.com>
+#
+# pipeline: templates/scripts/validation-tools/parse_csv.pl
+# XNAT http://www.xnat.org
+# Copyright (c) 2017, Washington University School of Medicine
+# All Rights Reserved
+#
+# Released under the Simplified BSD.
+#
 
  use strict;
  use Getopt::Std;
