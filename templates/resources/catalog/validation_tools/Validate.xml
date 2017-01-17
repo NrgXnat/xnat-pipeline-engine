@@ -295,6 +295,15 @@
 				<argument id="parameter">
 					<value>^concat('experimentfilename=',/Pipeline/parameters/parameter[name='experimentfile']/values/unique/text())^</value>
 				</argument>
+				<argument id="parameter">
+					<value>^concat('xnat_user=',/Pipeline/parameters/parameter[name='user']/values/unique/text())^</value>
+				</argument>
+				<argument id="parameter">
+					<value>^concat('xnat_host=',/Pipeline/parameters/parameter[name='host']/values/unique/text())^</value>
+				</argument>
+				<argument id="parameter">
+					<value>^concat('xnat_password=',/Pipeline/parameters/parameter[name='pwd']/values/unique/text())^</value>
+				</argument>
 			</resource>
 		</step>
 		<step id="3" description="Generate validation xml file" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
