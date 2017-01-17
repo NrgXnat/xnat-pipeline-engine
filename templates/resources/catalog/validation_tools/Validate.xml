@@ -70,7 +70,7 @@
 		<parameter>
 			<name>site_import_xslfile</name>
 			<values>
-				<unique>@PIPELINE_DIR_PATH@@/catalog/validation_tools/resources/site_imports.xsl</unique>
+				<unique>@PIPELINE_DIR_PATH@/catalog/validation_tools/resources/site_imports.xsl</unique>
 			</values>
 			<description>SITE Specific custom decalarations are in this file XSL File</description>
 		</parameter>
