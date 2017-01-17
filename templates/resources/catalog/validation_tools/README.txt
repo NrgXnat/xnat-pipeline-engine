@@ -1,5 +1,14 @@
 README
 
+CHANGELOG:
+
+January 11, 2017
+
+Validation schematron file can now use custom java functions to be used with input parameters specified using the site_imports.xsl file. 
+If a project needs to overwrite these values or add additional parameters, one can have a project specific site_imports.xsl file. 
+
+
+
 Validation plugin for XNAT
 
 Implementation:
