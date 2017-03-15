@@ -9,9 +9,9 @@ Developers
 
 * Mohana Ramaratnam, mohanakannan9@gmail.com
 * Rick Herrick, rick.herrick@wustl.edu
-* John Flavin, flavinj@mir.wustl.edu, [@cndapipelines](https://twitter.com/cndapipelines)
+* John Flavin, jflavin@wustl.edu
 
-This repository was copied directly from the [previous repository on Bitbucket](https://bitbucket.org/nrg/pipeline_1_7dev).
+This repository was copied from a [previous repository on Bitbucket](https://bitbucket.org/xnatdev/xnat-pipeline), which was itself copied from a different [previous repository on Bitbucket](https://bitbucket.org/nrg/pipeline_1_7dev).
 
 Installation
 ------------
@@ -29,7 +29,7 @@ You can build the pipeline engine by three different methods:
 and XNAT server address as parameters (you can also add the optional XNAT site name parameter):
 
         ./setup.sh <admin email> <SMTP server> <XNAT url> [XNAT site name] [destination] [modulePath1 modulePath2 modulePath3... modulePathn]
-        
+
         ./setup.sh you@yourlab.org mail.yourlab.org http://xnat.yourlab.org YourXNAT
 
 2. Call the **gradlew** or **gradlew.bat** script located in the root folder of the pipeline
