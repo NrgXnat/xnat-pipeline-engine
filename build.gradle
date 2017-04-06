@@ -163,6 +163,7 @@ dependencies {
     compile("org.nrg.xdat:core:${vXnat}") { transitive = false }
     compile("org.nrg:mail:${vXnat}") { transitive = false }
     compile("org.nrg:framework:${vXnat}") { transitive = false }
+    compile("org.nrg.xnat.pipeline:pipeline-client:${vXnat}") { transitive = false }
     compile("org.nrg.xnat.pipeline:xnat-pipeline:${vXnat}") { transitive = false }
     compile("org.nrg.xnat.pipeline:xnat-tools:${vXnat}") { transitive = false }
     compile("org.nrg.xnat:xnatsrb:1.0") { transitive = false }
