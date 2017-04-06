@@ -163,8 +163,8 @@ dependencies {
     compile("org.nrg.xdat:core:${vXnat}") { transitive = false }
     compile("org.nrg:mail:${vXnat}") { transitive = false }
     compile("org.nrg:framework:${vXnat}") { transitive = false }
-    compile("org.nrg.xnat.pipeline:xnat_pipeline:1.6.5") { transitive = false }
-    compile("org.nrg.xnat.pipeline:xnat_tools:1.6.5") { transitive = false }
+    compile("org.nrg.xnat.pipeline:xnat-pipeline:${vXnat}") { transitive = false }
+    compile("org.nrg.xnat.pipeline:xnat-tools:${vXnat}") { transitive = false }
     compile("org.nrg.xnat:xnatsrb:1.0") { transitive = false }
     compile("org.springframework:spring-web:${vSpring}") { transitive = false }
     compile("org.springframework:spring-core:${vSpring}") { transitive = false }
