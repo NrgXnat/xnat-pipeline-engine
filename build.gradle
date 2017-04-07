@@ -159,7 +159,7 @@ binaries.each { binary ->
 println ""
 
 dependencies {
-    compile("org.nrg.xnat:data-client:${vXnat}") { transitive = false }
+    compile("org.nrg.xnat:data-client:1.7.2") { transitive = false }
     compile("org.nrg.xnat:xnat-data-models:${vXnat}") { transitive = false }
     compile("org.nrg.xdat:core:${vXnat}") { transitive = false }
     compile("org.nrg:mail:${vXnat}") { transitive = false }
