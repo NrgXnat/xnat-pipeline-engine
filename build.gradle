@@ -172,7 +172,7 @@ dependencies {
     compile("org.nrg.xnat.pipeline:xnat-tools:${vXnat}") { transitive = false }
     compile("org.nrg.xnat:plexiviewer:${vXnat}") { transitive = false }
     compile("org.nrg.xnat.pipeline:imagingtools:${vXnat}") { transitive = false }
-    compile("org.nrg.xnat:xnatsrb:1.0") { transitive = false }
+    compile("org.nrg.xnat:xnatsrb:1.0.1") { transitive = false }
     compile("org.springframework:spring-web:${vSpring}") { transitive = false }
     compile("org.springframework:spring-core:${vSpring}") { transitive = false }
     compile("org.springframework:spring-aop:${vSpring}") { transitive = false }
