@@ -95,7 +95,8 @@ def tokens = [CONFIG_EXT           : configExt,
               XNAT_SITE_NAME       : siteName,
               YOUR_EMAIL_HERE      : email,
               YOUR_SMTP_SERVER_HERE: smtp,
-              YOUR_XNAT_URL_HERE   : url]
+              YOUR_XNAT_URL_HERE   : url,
+              XNAT_VERSION         : vXnat]
 
 // Now get all of the script and resource folders.
 def scripts = file("${source}/templates/scripts").exists() ? [file("${source}/templates/scripts")] : []
