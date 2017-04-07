@@ -220,6 +220,7 @@ dependencies {
     compile("org.slf4j:slf4j-log4j12:${vSlf4j}") { transitive = false }
     compile("org.slf4j:jul-to-slf4j:${vSlf4j}") { transitive = false }
     compile("log4j:log4j:${vLog4j}") { transitive = false }
+    compile("org.sf.saxon:Saxon-B:9.0") { transitive = false }
 }
 
 // Pulls in the Jenkins BUILD_NUMBER environment variable if available.
