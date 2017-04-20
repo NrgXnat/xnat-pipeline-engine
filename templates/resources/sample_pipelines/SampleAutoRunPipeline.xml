@@ -12,7 +12,7 @@
 <Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ..\schema\pipeline.xsd"  xmlns:fileUtils="http://www.xnat.org/java/org.nrg.imagingtools.utils.FileUtils">
 	<name>Sample Auto Run Pipeline</name>
 	<!--Should be  Name of the pipeline XML file -->
-	<location>D:/MERCURIAL/xdat_release/pipeline/sample_pipelines</location>
+	<location>@PIPELINE_DIR_PATH@/sample_pipelines</location>
 	<!-- Filesystem path to the pipeline XML -->
 	<description>Demo pipeline which generates the session folder and creates a csh params file from the parameters supplied</description>
 	<documentation>

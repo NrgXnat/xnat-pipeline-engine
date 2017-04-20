@@ -13,10 +13,22 @@
 	<location>@PIPELINE_DIR_PATH@/sample_pipelines</location>
 	<!-- Filesystem path to the pipeline XML -->
 	<description>A pipeline to demo use of Loop</description>
-	<outputFileNamePrefix>^concat('@PIPELINE_DIR_PATH@','/sample_pipelines/Demo')^</outputFileNamePrefix>
+	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='logdir']/values/unique/text(),'/log')^</outputFileNamePrefix>
 	<!-- Description of the Pipeilne -->
 	<loop id="folders" xpath="^/Pipeline/parameters/parameter[name='folder']/values/list^"/>
 	<parameters>
+        <parameter>
+            <name>outdir</name>
+            <values>
+                <unique>^if(boolean(/Pipeline/parameters/parameter[name='builddir'])) then /Pipeline/parameters/parameter[name='builddir']/values/unique/text() else /Pipeline/location/text()^</unique>
+            </values>
+        </parameter>
+        <parameter>
+            <name>logdir</name>
+            <values>
+                <unique>^concat(/Pipeline/parameters/parameter[name='outdir']/values/unique/text(), '/LOGS')^</unique>
+            </values>
+        </parameter>
 		<parameter>
 			<name>folder</name>
 			<values>
