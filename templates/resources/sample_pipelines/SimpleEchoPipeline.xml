@@ -30,7 +30,7 @@
         </parameter>
 	</parameters>
 	<steps>
-		<step id="0" description="Very simple echo command." workdirectory="/Pipeline/parameters/parameter[name='outdir']/values/unique/text()">
+		<step id="0" description="Very simple echo command." workdirectory="^/Pipeline/parameters/parameter[name='outdir']/values/unique/text()^">
 			<resource name="echo" location="commandlineTools">
 				<argument id="string">
 					<value>This is a string that's being echoed.</value>
