@@ -26,9 +26,8 @@ group 'org.nrg.xnat'
 version = vXnat
 
 repositories {
-    mavenLocal()
-    mavenCentral()
     jcenter()
+    mavenCentral()
     maven {
         url 'http://www.dcm4che.org/maven2'
         name 'dcm4che Maven Repository'
