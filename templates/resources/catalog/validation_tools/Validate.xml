@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ pipeline: Validate.xml
-  ~ XNAT http://www.xnat.org
-  ~ Copyright (c) 2017, Washington University School of Medicine
-  ~ All Rights Reserved
-  ~
-  ~ Released under the Simplified BSD.
-  -->
-
 <Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:ext="org.nrg.validate.utils.ProvenanceUtils" xmlns:fileUtils="org.nrg.imagingtools.utils.FileUtils" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:autorun="http://www.xnat.org/java/org.nrg.pipeline.client.webservices.WebserviceClient" xsi:schemaLocation="http://nrg.wustl.edu/pipeline
 ..\..\schema\pipeline.xsd" >
 	<name>Validate</name>
-	<location>@PIPELINE_DIR_PATH@/catalog/validation_tools</location>
+	<location>validation_tools</location>
 	<description>This pipeline will check the experiment for acquisition parameters. This pipeline is Schematron based and generates a ProtocolValidation assessor. </description>
 	<!-- <resourceRequirements>
 	   <property name="DRMAA_JobTemplate_JobCategory">fast_q</property>
@@ -57,7 +48,7 @@
 			</parameter>
 		</input-parameters>
 	</documentation>
-<!--	<xnatInfo appliesTo="xnat:projectData"/> --> 
+<!--	<xnatInfo appliesTo="xnat:projectData"/> -->
 	<outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
 	<parameters>
 		<parameter>
@@ -195,7 +186,7 @@
 	<steps>
 		<step id="0" description="Prepare Rule Folder" workdirectory="^/Pipeline/parameters/parameter[name='workdir']/values/unique/text()^" >
 			<resource name="mkdir" location="commandlineTools">
-				 <argument id="p"/> 
+				 <argument id="p"/>
 				<argument id="dirname">
 					<value>^/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text()^</value>
 				</argument>
@@ -203,17 +194,14 @@
 		</step>
 		<step id="0a" description="Get Experiment XML from XNAT">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>GET</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"')^</value>
 				</argument>
 				<argument id="outfile">
 					<value>^/Pipeline/parameters/parameter[name='experimentfile']/values/unique/text()^</value>
@@ -222,17 +210,14 @@
 		</step>
 		<step id="0b" description="Get rulefile from XNAT for the datatype">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>GET</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/',/Pipeline/parameters/parameter[name='collection']/values/unique/text(),'/files/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/',/Pipeline/parameters/parameter[name='collection']/values/unique/text(),'/files/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'"')^</value>
 				</argument>
 				<argument id="outfile">
 					<value>^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^</value>
@@ -251,23 +236,20 @@
 		</step>
 		<step id="1b" description="Get Project specific site import file" precondition="^/Pipeline/parameters/parameter[name='projectSpecificSiteImportFileExists']/values/unique/text()='true'^">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="password">
-						<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
-				<argument id="user">
-						<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 						<value>GET</value>
 				</argument>
 				<argument id="remote">
-						<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/',/Pipeline/parameters/parameter[name='collection']/values/unique/text(),'/files/site_imports.xsl"')^</value>
+						<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/',/Pipeline/parameters/parameter[name='collection']/values/unique/text(),'/files/site_imports.xsl"')^</value>
 				</argument>
 				<argument id="outfile">
 						<value>^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),'site_imports.xsl')^</value>
 				</argument>
 	                 </resource>
-	        </step> 
+	        </step>
 		<step id="1" description="Generate the intermediate XSL file which would check the rules" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)" workdirectory="^/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text()^">
 			<resource name="validation-transform" location="validation_tools/resources">
 				<argument id="output">
@@ -373,17 +355,14 @@
 		</step>
 		<step id="4" description="Upload the Validation document" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'?inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'?inbody=true"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^/Pipeline/parameters/parameter[name='validationfile']/values/unique/text()^</value>
@@ -392,33 +371,27 @@
 		</step>
 		<step id="4a" description="Create out catalog" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION"')^</value>
 				</argument>
 			</resource>
 		</step>
 		<step id="4b" description="Upload the rule file used" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'?content=RULEFILE&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'?content=RULEFILE&amp;inbody=true"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^</value>
@@ -427,17 +400,14 @@
 		</step>
 		<step id="4c" description="Upload the report file used" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
-				<argument id="user">
-					<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-				</argument>
-				<argument id="password">
-					<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-				</argument>
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
 				<argument id="method">
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^Pipeline/parameters/parameter[name='reportfile']/values/unique/text()^</value>
@@ -462,7 +432,7 @@
 					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
 				</argument>
 				<argument id="body">
-					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^
 					</value>
 				</argument>
 				<argument id="attachment">
@@ -471,24 +441,21 @@
 			</resource>
 		</step>
 		<step id="5a" description="Get Email notification list" precondition="^/Pipeline/parameters/parameter[name='emaillistfileExists']/values/unique/text()='true'^">
-				<resource name="XnatDataClient" location="xnat_tools">
-					<argument id="password">
-							<value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
-					</argument>
-					<argument id="user">
-							<value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
-					</argument>
-					<argument id="method">
-							<value>GET</value>
-					</argument>
-					<argument id="remote">
-						<value>^concat('&quot;',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/notifications/files/archival.lst"')^</value>
-					</argument>
-					<argument id="outfile">
-							<value>^/Pipeline/parameters/parameter[name='email_list_file']/values/unique/text()^</value>
-					</argument>
-		         </resource>
-	        </step> 
+			<resource name="XnatDataClient" location="xnat_tools">
+                <argument id="sessionId">
+                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+                </argument>
+				<argument id="method">
+						<value>GET</value>
+				</argument>
+				<argument id="remote">
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/resources/notifications/files/archival.lst"')^</value>
+				</argument>
+				<argument id="outfile">
+						<value>^/Pipeline/parameters/parameter[name='email_list_file']/values/unique/text()^</value>
+				</argument>
+	         </resource>
+        </step>
 		<step id="5b" description="Notify" precondition="^/Pipeline/parameters/parameter[name='emaillistfileExists']/values/unique/text()='true' and /Pipeline/parameters/parameter[name='notify']/values/unique/text()=2 and fileUtils:GetValidationStatus(/Pipeline/parameters/parameter[name='host']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),/Pipeline/parameters/parameter[name='session']/values/unique/text(), /Pipeline/parameters/parameter[name='validation_id']/values/unique/text())='fail'^">
 			<resource name="Notifier" location="notifications">
                 <argument id="user">
@@ -513,7 +480,7 @@
 					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
 				</argument>
 				<argument id="body">
-					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^
 					</value>
 				</argument>
 				<argument id="attachment">
@@ -545,7 +512,7 @@
 					<value>^/Pipeline/parameters/parameter[name='mailhost']/values/unique/text()^</value>
 				</argument>
 				<argument id="body">
-					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^ 
+					<value>^concat('Dear ',/Pipeline/parameters/parameter[name='userfullname']/values/unique/text(),',&lt;br&gt; &lt;p&gt; Validation report for ', /Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),' is now available and is attached to this email.&lt;/p&gt;&lt;br&gt; &lt;p&gt;  Details for this session are available at &lt;a href="',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/app/action/DisplayItemAction/search_element/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'/search_field/',/Pipeline/parameters/parameter[name='sessionType']/values/unique/text(),'.ID/search_value/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"&gt;', 'the ', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' website.&lt;/a&gt; &lt;/p&gt;&lt;br&gt;', /Pipeline/parameters/parameter[name='xnatserver']/values/unique/text(),' Team.')^
 					</value>
 				</argument>
 				<argument id="attachment">
