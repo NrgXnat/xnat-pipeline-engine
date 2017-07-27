@@ -15,7 +15,7 @@ plugins {
     id 'java'
 }
 
-def vXnat = "1.7.3-SNAPSHOT"
+def vXnat = "1.7.3"
 def vSpring = "4.2.9.RELEASE"
 def vJackson = "2.6.5"
 def vSlf4j = "1.7.21"
@@ -26,6 +26,7 @@ group 'org.nrg.xnat'
 version = vXnat
 
 repositories {
+    mavenLocal()
     jcenter()
     mavenCentral()
     maven {
