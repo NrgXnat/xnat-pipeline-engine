@@ -51,7 +51,7 @@
 			<pip:name>a</pip:name>
 			<pip:description>Indicates that XDC should try to use the absolute path of specified resources for copy operations</pip:description>
 		</pip:argument>
-		<pip:argument id="sessionId">
+		<pip:argument id="sessionId" isSensitive="true">
 			<pip:name>s</pip:name>
 			<pip:description>Indicates the session ID to be used for transactions.</pip:description>
 		</pip:argument>

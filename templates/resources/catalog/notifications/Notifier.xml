@@ -19,7 +19,7 @@
 			<pip:name>user</pip:name>
 			<pip:description>Mail service user</pip:description>
 		</pip:argument>
-		<pip:argument id="password">
+		<pip:argument id="password" isSensitive="true">
 			<pip:name>password</pip:name>
 			<pip:description>Mail service password</pip:description>
 		</pip:argument>

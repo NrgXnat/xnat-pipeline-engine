@@ -28,7 +28,7 @@
 		<pip:argument id="userName">
 			<pip:description>User name</pip:description>
 		</pip:argument>
-		<pip:argument id="password">
+		<pip:argument id="password" isSensitive="true">
 			<pip:description>password</pip:description>
 		</pip:argument>
 	</pip:input>
