@@ -69,8 +69,8 @@ repositories {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-def String propertyWithDefault(def String property, def Object value) {
-    hasProperty(property) ? getProperty(property) : value
+String propertyWithDefault(String name, Object value) {
+    hasProperty(name) ? property(name) : value
 }
 
 // Marshall all of the variables and properties.
@@ -182,67 +182,77 @@ dependencyManagement.imports {
 }
 
 dependencies {
-    implementation("org.nrg.xnat:data-client") { transitive = false }
-    implementation("org.nrg.xnat:xnat-data-models") { transitive = false }
-    implementation("org.nrg.xdat:core") { transitive = false }
-    implementation("org.nrg:mail") { transitive = false }
-    implementation("org.nrg:framework") { transitive = false }
-    implementation("org.nrg:pipelineBase") { transitive = false }
-    implementation("org.nrg:pipelineWorkflow") { transitive = false }
-    implementation("org.nrg:pipelineXNAT") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:pipeline-client") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:xnat-pipeline") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:xnat-tools") { transitive = false }
-    implementation("org.nrg.xnat:plexiviewer") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:imagingtools") { transitive = false }
-    implementation("org.nrg.xnat:xnatsrb") { transitive = false }
-    implementation("org.springframework:spring-web") { transitive = false }
-    implementation("org.springframework:spring-core") { transitive = false }
-    implementation("org.springframework:spring-aop") { transitive = false }
-    implementation("org.springframework:spring-beans") { transitive = false }
-    implementation("org.springframework:spring-context") { transitive = false }
-    implementation("commons-configuration:commons-configuration") { transitive = false }
-    implementation("commons-collections:commons-collections") { transitive = false }
-    implementation("commons-dbcp:commons-dbcp") { transitive = false }
-    implementation("commons-discovery:commons-discovery") { transitive = false }
-    implementation("commons-httpclient:commons-httpclient") { transitive = false }
-    implementation("commons-io:commons-io") { transitive = false }
-    implementation("commons-lang:commons-lang") { transitive = false }
-    implementation("commons-pool:commons-pool") { transitive = false }
-    implementation("commons-beanutils:commons-beanutils") { transitive = false }
-    implementation("commons-codec:commons-codec") { transitive = false }
-    implementation("commons-logging:commons-logging") { transitive = false }
-    implementation("org.apache.commons:commons-email") { transitive = false }
-    implementation("org.apache.commons:commons-lang3") { transitive = false }
-    implementation("org.apache.httpcomponents:fluent-hc") { transitive = false }
-    implementation("com.fasterxml.jackson.core:jackson-annotations") { transitive = false }
-    implementation("com.fasterxml.jackson.core:jackson-core") { transitive = false }
-    implementation("com.fasterxml.jackson.core:jackson-databind") { transitive = false }
-    implementation("org.codehaus.jackson:jackson-core-asl") { transitive = false }
-    implementation("org.codehaus.jackson:jackson-mapper-asl") { transitive = false }
-    implementation("com.google.guava:guava") { transitive = false }
-    implementation("org.apache.httpcomponents:httpcore") { transitive = false }
-    implementation("org.apache.httpcomponents:httpclient") { transitive = false }
-    implementation("org.javassist:javassist") { transitive = false }
-    implementation("org.dspace:jargon") { transitive = false }
-    implementation("javax.xml:jaxrpc-api") { transitive = false }
-    implementation("com.jcraft:jsch") { transitive = false }
-    implementation("javax.mail:mail") { transitive = false }
-    implementation("velocity:velocity") { transitive = false }
-    implementation("xalan:xalan") { transitive = false }
-    implementation("xerces:xercesImpl") { transitive = false }
-    implementation("xml-apis:xml-apis") { transitive = false }
-    implementation("javax.activation:activation") { transitive = false }
-    implementation("ant:ant") { transitive = false }
-    implementation("axis:axis") { transitive = false }
-    implementation("net.sf.ezmorph:ezmorph") { transitive = false }
-    implementation("aopalliance:aopalliance") { transitive = false }
-    implementation("org.reflections:reflections") { transitive = false }
-    implementation("org.slf4j:slf4j-api") { transitive = false }
-    implementation("org.slf4j:slf4j-log4j12") { transitive = false }
-    implementation("org.slf4j:jul-to-slf4j") { transitive = false }
-    implementation("log4j:log4j") { transitive = false }
-    implementation("net.sf.saxon:Saxon-B") { transitive = false }
+    compile("org.nrg.xnat:data-client") { transitive = false }
+    compile("org.nrg.xnat:xnat-data-models") { transitive = false }
+    compile("org.nrg.xdat:core") { transitive = false }
+    compile("org.nrg:framework") { transitive = false }
+    compile("org.nrg:pipelineBase") { transitive = false }
+    compile("org.nrg:pipelineWorkflow") { transitive = false }
+    compile("org.nrg:pipelineXNAT") { transitive = false }
+    compile("org.nrg.xnat.pipeline:pipeline-client") { transitive = false }
+    compile("org.nrg.xnat.pipeline:xnat-pipeline") { transitive = false }
+    compile("org.nrg.xnat.pipeline:xnat-tools") { transitive = false }
+    compile("org.nrg.xnat:plexiviewer") { transitive = false }
+    compile("org.nrg.xnat.pipeline:imagingtools") { transitive = false }
+    compile("org.nrg.xnat:xnatsrb") { transitive = false }
+    compile("org.springframework:spring-web") { transitive = false }
+    compile("org.springframework:spring-core") { transitive = false }
+    compile("org.springframework:spring-aop") { transitive = false }
+    compile("org.springframework:spring-beans") { transitive = false }
+    compile("org.springframework:spring-context") { transitive = false }
+    compile("commons-configuration:commons-configuration") { transitive = false }
+    compile("commons-collections:commons-collections") { transitive = false }
+    compile("commons-discovery:commons-discovery") { transitive = false }
+    compile("commons-httpclient:commons-httpclient") { transitive = false }
+    compile("commons-io:commons-io") { transitive = false }
+    compile("commons-lang:commons-lang") { transitive = false }
+    compile("commons-beanutils:commons-beanutils") { transitive = false }
+    compile("commons-codec:commons-codec") { transitive = false }
+    compile("commons-logging:commons-logging") { transitive = false }
+    compile("org.apache.commons:commons-email") { transitive = false }
+    compile("org.apache.commons:commons-lang3") { transitive = false }
+    compile("org.apache.httpcomponents:fluent-hc") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-annotations") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-core") { transitive = false }
+    compile("com.fasterxml.jackson.core:jackson-databind") { transitive = false }
+    compile("org.codehaus.jackson:jackson-core-asl") { transitive = false }
+    compile("org.codehaus.jackson:jackson-mapper-asl") { transitive = false }
+    compile("com.google.guava:guava") { transitive = false }
+    compile("org.apache.httpcomponents:httpcore") { transitive = false }
+    compile("org.apache.httpcomponents:httpclient") { transitive = false }
+    compile("org.javassist:javassist") { transitive = false }
+    compile("org.dspace:jargon") { transitive = false }
+    compile("javax.xml:jaxrpc-api") { transitive = false }
+    compile("velocity:velocity") { transitive = false }
+    compile("xalan:xalan") { transitive = false }
+    compile("xerces:xercesImpl") { transitive = false }
+    compile("xml-apis:xml-apis") { transitive = false }
+    compile("javax.activation:activation") { transitive = false }
+    compile("axis:axis") { transitive = false }
+    compile("aopalliance:aopalliance") { transitive = false }
+    compile("org.reflections:reflections") { transitive = false }
+    compile("org.slf4j:slf4j-api") { transitive = false }
+    compile("org.slf4j:slf4j-log4j12") { transitive = false }
+    compile("org.slf4j:jul-to-slf4j") { transitive = false }
+    compile("log4j:log4j") { transitive = false }
+    compile("net.sf.saxon:Saxon-B") { transitive = false }
+
+    // These are old deprecated libraries that we're carrying so we don't break existing functionality.
+    compile("ant:ant:1.6.1") { transitive = false }
+    compile("com.jcraft:jsch:0.1.24") { transitive = false }
+    compile("commons-dbcp:commons-dbcp:1.2.1") { transitive = false }
+    compile("commons-pool:commons-pool:1.2") { transitive = false }
+    compile("javax.mail:mail:1.4.5") { transitive = false }
+    compile("net.sf.ezmorph:ezmorph:1.0.6") { transitive = false }
+    compile("net.sf.saxon:Saxon-B:9.0") { transitive = false }
+    compile("org.apache.httpcomponents:fluent-hc:4.2.3") { transitive = false }
+    compile("org.codehaus.jackson:jackson-core-asl:1.8.11") { transitive = false }
+    compile("org.codehaus.jackson:jackson-mapper-asl:1.8.11") { transitive = false }
+    compile("org.nrg.xnat.pipeline:imagingtools:1.7.3") { transitive = false }
+    compile("org.nrg.xnat.pipeline:pipeline-client:1.7.3") { transitive = false }
+    compile("org.nrg.xnat:data-client:1.7.2") { transitive = false }
+    compile("velocity:velocity:1.3.1") { transitive = false }
+    compile("xml-apis:xml-apis:1.0.b2") { transitive = false }
 }
 
 // Pulls in the Jenkins BUILD_NUMBER environment variable if available.
@@ -293,7 +303,7 @@ task copyScripts(type: Copy) {
     from scripts
     into destination
     exclude '.*/**'
-    fileMode 0755
+    fileMode = 0755
     rename { String filename ->
         if (isWindows) {
             "${filename}.bat" as String
@@ -309,7 +319,7 @@ task copyBinaries(type: Copy) {
     from binaries
     into destination
     exclude '.*/**'
-    fileMode 0755
+    fileMode = 0755
 }
 
 task copyLibs(type: Copy) {
@@ -325,7 +335,7 @@ task copyBuildInfo(type: Copy) {
 }
 
 task copyAll {
-    dependsOn tasks.matching { def Task task ->
+    dependsOn tasks.matching { Task task ->
         task instanceof Copy && task.name != "createDist"
     }
 }
