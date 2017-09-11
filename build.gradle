@@ -114,8 +114,7 @@ def tokens = [CONFIG_EXT           : configExt,
               XNAT_SITE_NAME       : siteName,
               YOUR_EMAIL_HERE      : email,
               YOUR_SMTP_SERVER_HERE: smtp,
-              YOUR_XNAT_URL_HERE   : url,
-              XNAT_VERSION         : project.version as String]
+              YOUR_XNAT_URL_HERE   : url]
 
 // Now get all of the script and resource folders.
 def scripts = file("${source}/templates/scripts").exists() ? [file("${source}/templates/scripts")] : []
@@ -180,12 +179,14 @@ println ""
 dependencyManagement.imports {
     mavenBom "org.nrg:parent:${vXnatDev}"
 }
+tokens.putAll(dependencyManagement.managedVersions)
 
 dependencies {
     compile("org.nrg.xnat:data-client") { transitive = false }
     compile("org.nrg.xnat:xnat-data-models") { transitive = false }
     compile("org.nrg.xdat:core") { transitive = false }
     compile("org.nrg:framework") { transitive = false }
+    compile("org.nrg:mail") { transitive = false }
     compile("org.nrg:pipelineBase") { transitive = false }
     compile("org.nrg:pipelineWorkflow") { transitive = false }
     compile("org.nrg:pipelineXNAT") { transitive = false }
@@ -215,18 +216,14 @@ dependencies {
     compile("com.fasterxml.jackson.core:jackson-annotations") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-core") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-databind") { transitive = false }
-    compile("org.codehaus.jackson:jackson-core-asl") { transitive = false }
-    compile("org.codehaus.jackson:jackson-mapper-asl") { transitive = false }
     compile("com.google.guava:guava") { transitive = false }
     compile("org.apache.httpcomponents:httpcore") { transitive = false }
     compile("org.apache.httpcomponents:httpclient") { transitive = false }
     compile("org.javassist:javassist") { transitive = false }
     compile("org.dspace:jargon") { transitive = false }
     compile("javax.xml:jaxrpc-api") { transitive = false }
-    compile("velocity:velocity") { transitive = false }
     compile("xalan:xalan") { transitive = false }
     compile("xerces:xercesImpl") { transitive = false }
-    compile("xml-apis:xml-apis") { transitive = false }
     compile("javax.activation:activation") { transitive = false }
     compile("axis:axis") { transitive = false }
     compile("aopalliance:aopalliance") { transitive = false }
@@ -235,7 +232,6 @@ dependencies {
     compile("org.slf4j:slf4j-log4j12") { transitive = false }
     compile("org.slf4j:jul-to-slf4j") { transitive = false }
     compile("log4j:log4j") { transitive = false }
-    compile("net.sf.saxon:Saxon-B") { transitive = false }
 
     // These are old deprecated libraries that we're carrying so we don't break existing functionality.
     compile("ant:ant:1.6.1") { transitive = false }
@@ -248,8 +244,6 @@ dependencies {
     compile("org.apache.httpcomponents:fluent-hc:4.2.3") { transitive = false }
     compile("org.codehaus.jackson:jackson-core-asl:1.8.11") { transitive = false }
     compile("org.codehaus.jackson:jackson-mapper-asl:1.8.11") { transitive = false }
-    compile("org.nrg.xnat.pipeline:imagingtools:1.7.3") { transitive = false }
-    compile("org.nrg.xnat.pipeline:pipeline-client:1.7.3") { transitive = false }
     compile("org.nrg.xnat:data-client:1.7.2") { transitive = false }
     compile("velocity:velocity:1.3.1") { transitive = false }
     compile("xml-apis:xml-apis:1.0.b2") { transitive = false }
