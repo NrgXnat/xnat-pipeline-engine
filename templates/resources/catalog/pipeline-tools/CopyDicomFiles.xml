@@ -28,7 +28,7 @@
 			<pip:name>u</pip:name>
 			<pip:description>XNAT Username</pip:description>
 		</pip:argument>
-		<pip:argument id="pwd">
+		<pip:argument id="pwd" isSensitive="true">
 			<pip:name>pwd</pip:name>
 			<pip:description>XNAT Password</pip:description>
 		</pip:argument>

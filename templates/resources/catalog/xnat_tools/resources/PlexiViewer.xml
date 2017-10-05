@@ -9,7 +9,7 @@
   -->
 
 <pip:Resource xmlns:pip="http://nrg.wustl.edu/pipeline">
-	<pip:name>plexiviewer-@XNAT_VERSION@.jar</pip:name>
+	<pip:name>plexiviewer-@org.nrg.xnat:plexiviewer@.jar</pip:name>
 	<pip:commandPrefix>java -jar </pip:commandPrefix>
 	<pip:type>Executable</pip:type>
 	<pip:description>PlexiViewer</pip:description>
