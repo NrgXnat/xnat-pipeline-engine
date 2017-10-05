@@ -4,4 +4,5 @@
 	<xsl:param name="xnat_host"/>
 	<xsl:param name="xnat_user"/>
 	<xsl:param name="xnat_password"/>
+	<xsl:param name="xnat_jsession"/>	
 </xsl:stylesheet>
