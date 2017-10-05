@@ -182,6 +182,27 @@
    			</values>
    			<description>Intermediate Schematron XSL File</description>
    		</parameter>
+ 		<parameter>
+   			<name>validation_logfile</name>
+   			<values>
+				<unique>^concat(/Pipeline/outputFileNamePrefix/text(),fileUtils:GetFileSeparator(),'.log')^</unique>
+   			</values>
+   			<description>Generated Log File</description>
+   		</parameter>   		
+ 		<parameter>
+   			<name>validation_errorfile</name>
+   			<values>
+				<unique>^concat(/Pipeline/outputFileNamePrefix/text(),fileUtils:GetFileSeparator(),'.err')^</unique>
+   			</values>
+   			<description>Generated Error File</description>
+   		</parameter>   		
+		<parameter>
+   			<name>xnat_session_id</name>
+   			<values>
+				<unique>^fileUtils:getJSESSION('DUMMY')^</unique>
+   			</values>
+   			<description>XNAT JSESSION ID</description>
+   		</parameter>   		
 	</parameters>
 	<steps>
 		<step id="0" description="Prepare Rule Folder" workdirectory="^/Pipeline/parameters/parameter[name='workdir']/values/unique/text()^" >
@@ -195,7 +216,7 @@
 		<step id="0a" description="Get Experiment XML from XNAT">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>GET</value>
@@ -211,7 +232,7 @@
 		<step id="0b" description="Get rulefile from XNAT for the datatype">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>GET</value>
@@ -237,7 +258,7 @@
 		<step id="1b" description="Get Project specific site import file" precondition="^/Pipeline/parameters/parameter[name='projectSpecificSiteImportFileExists']/values/unique/text()='true'^">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 						<value>GET</value>
@@ -286,6 +307,9 @@
 				<argument id="parameter">
 					<value>^concat('xnat_password=',/Pipeline/parameters/parameter[name='pwd']/values/unique/text())^</value>
 				</argument>
+				<argument id="parameter">
+					<value>^concat('xnat_jsession=',/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text())^</value>
+				</argument>				
 			</resource>
 		</step>
 		<step id="3" description="Generate validation xml file" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
@@ -324,6 +348,9 @@
 					<value>^concat('xnat_password=',/Pipeline/parameters/parameter[name='pwd']/values/unique/text())^</value>
 				</argument>
 				<argument id="parameter">
+					<value>^concat('xnat_jsession=',/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text())^</value>
+				</argument>				
+				<argument id="parameter">
 					<value>^concat('validationfilename=',/Pipeline/parameters/parameter[name='validationfile']/values/unique/text())^</value>
 				</argument>
 				<argument id="parameter">
@@ -356,7 +383,7 @@
 		<step id="4" description="Upload the Validation document" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>PUT</value>
@@ -372,7 +399,7 @@
 		<step id="4a" description="Create out catalog" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>PUT</value>
@@ -385,7 +412,7 @@
 		<step id="4b" description="Upload the rule file used" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>PUT</value>
@@ -401,7 +428,7 @@
 		<step id="4c" description="Upload the report file used" precondition="EXISTS(^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^)">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 					<value>PUT</value>
@@ -410,7 +437,39 @@
 					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
 				</argument>
 				<argument id="infile">
-					<value>^Pipeline/parameters/parameter[name='reportfile']/values/unique/text()^</value>
+					<value>^/Pipeline/parameters/parameter[name='reportfile']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="4d" description="Upload the log file created">
+			<resource name="XnatDataClient" location="xnat_tools">
+                <argument id="sessionId">
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
+                </argument>
+				<argument id="method">
+					<value>PUT</value>
+				</argument>
+				<argument id="remote">
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+				</argument>
+				<argument id="infile">
+					<value>^/Pipeline/parameters/parameter[name='validation_logfile']/values/unique/text()^</value>
+				</argument>
+			</resource>
+		</step>
+		<step id="4e" description="Upload the error file created">
+			<resource name="XnatDataClient" location="xnat_tools">
+                <argument id="sessionId">
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
+                </argument>
+				<argument id="method">
+					<value>PUT</value>
+				</argument>
+				<argument id="remote">
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+				</argument>
+				<argument id="infile">
+					<value>^/Pipeline/parameters/parameter[name='validation_errorfile']/values/unique/text()^</value>
 				</argument>
 			</resource>
 		</step>
@@ -438,12 +497,15 @@
 				<argument id="attachment">
 					<value>^/Pipeline/parameters/parameter[name='emailreportfile']/values/unique/text()^</value>
 				</argument>
+				<argument id="attachment">
+					<value>^/Pipeline/parameters/parameter[name='validation_logfile']/values/unique/text()^</value>
+				</argument>
 			</resource>
 		</step>
 		<step id="5a" description="Get Email notification list" precondition="^/Pipeline/parameters/parameter[name='emaillistfileExists']/values/unique/text()='true'^">
 			<resource name="XnatDataClient" location="xnat_tools">
                 <argument id="sessionId">
-                    <value>^fileUtils:getJSESSION('DUMMY')^</value>
+			<value>^/Pipeline/parameters/parameter[name='xnat_session_id']/values/unique/text()^</value>
                 </argument>
 				<argument id="method">
 						<value>GET</value>
@@ -486,6 +548,9 @@
 				<argument id="attachment">
 					<value>^/Pipeline/parameters/parameter[name='emailreportfile']/values/unique/text()^</value>
 				</argument>
+				<argument id="attachment">
+					<value>^/Pipeline/parameters/parameter[name='validation_logfile']/values/unique/text()^</value>
+				</argument>
 			</resource>
 		</step>
 		<step id="5c" description="Notify" precondition="^/Pipeline/parameters/parameter[name='notify']/values/unique/text()=1^">
@@ -517,6 +582,9 @@
 				</argument>
 				<argument id="attachment">
 					<value>^/Pipeline/parameters/parameter[name='emailreportfile']/values/unique/text()^</value>
+				</argument>
+				<argument id="attachment">
+					<value>^/Pipeline/parameters/parameter[name='validation_logfile']/values/unique/text()^</value>
 				</argument>
 			</resource>
 		</step>
