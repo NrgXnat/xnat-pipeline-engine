@@ -20,7 +20,7 @@
         <argument id="username" prefix="--">
             <name>username</name>
         </argument>
-        <argument id="password" prefix="--">
+        <argument id="password" prefix="--" isSensitive="true">
             <name>password</name>
         </argument>
         <argument id="sessionId" prefix="--">
