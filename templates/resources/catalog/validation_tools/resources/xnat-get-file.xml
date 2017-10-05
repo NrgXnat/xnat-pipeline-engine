@@ -21,7 +21,7 @@
 		<pip:argument id="user">
 			<pip:description>XNAT user</pip:description>
 		</pip:argument>
-		<pip:argument id="password">
+		<pip:argument id="password" isSensitive="true">
 			<pip:description>XNAT user password</pip:description>
 		</pip:argument>
 		<pip:argument id="project">
