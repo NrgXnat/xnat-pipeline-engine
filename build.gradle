@@ -13,7 +13,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
     ext {
-        vXnat = '1.7.4'
+        vXnat = '1.7.5-SNAPSHOT'
     }
     repositories {
         mavenLocal()
