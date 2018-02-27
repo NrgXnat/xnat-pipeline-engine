@@ -46,23 +46,19 @@ def id = "xnat-pipeline-${version}"
 
 repositories {
     mavenLocal()
+    maven {
+        url "http://maven.imagej.net/content/groups/public"
+        name "ImageJ Maven Repository"
+    }
     jcenter()
     mavenCentral()
     maven {
-        url 'http://www.dcm4che.org/maven2'
-        name 'dcm4che Maven Repository'
+        url "https://nrgxnat.jfrog.io/nrgxnat/libs-release"
+        name "XNAT Release Repository"
     }
     maven {
-        url 'https://nrgxnat.jfrog.io/nrgxnat/libs-release'
-        name 'XNAT Release Repository'
-    }
-    maven {
-        url 'https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot'
-        name 'XNAT Snapshot Repository'
-    }
-    maven {
-        url 'https://nrgxnat.jfrog.io/nrgxnat/ext-release'
-        name 'XNAT External Release Repository'
+        url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot"
+        name "XNAT Snapshot Repository"
     }
 }
 
