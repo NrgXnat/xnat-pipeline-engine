@@ -214,6 +214,7 @@ dependencies {
     compile("commons-logging:commons-logging") { transitive = false }
     compile("org.apache.commons:commons-email") { transitive = false }
     compile("org.apache.commons:commons-lang3") { transitive = false }
+    compile("org.apache.commons:commons-text") { transitive = false }
     compile("org.apache.httpcomponents:fluent-hc") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-annotations") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-core") { transitive = false }
