@@ -1,7 +1,7 @@
 /*
  * pipeline: build.gradle
  * XNAT http://www.xnat.org
- * Copyright (c) 2017, Washington University School of Medicine
+ * Copyright (c) 2018, Washington University School of Medicine
  * All Rights Reserved
  *
  * Released under the Simplified BSD.
@@ -11,55 +11,23 @@ import org.apache.tools.ant.filters.FixCrLfFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
 
-buildscript {
-    ext {
-        vXnat = '1.7.5-SNAPSHOT'
-    }
-    repositories {
-        mavenLocal()
-        jcenter()
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url 'https://nrgxnat.jfrog.io/nrgxnat/libs-release'
-            name 'XNAT Release Repository'
-        }
-        maven {
-            url 'https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot'
-            name 'XNAT Snapshot Repository'
-        }
-    }
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
-    }
+plugins {
+    id "java"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
 
-group 'org.nrg.xnat'
-version = "${vXnat}"
-
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'java'
+group "org.nrg.xnat"
+version = "1.7.5"
 
 def id = "xnat-pipeline-${version}"
 
 repositories {
     mavenLocal()
-    maven {
-        url "http://maven.imagej.net/content/groups/public"
-        name "ImageJ Maven Repository"
-    }
+    maven { url "http://maven.imagej.net/content/groups/public" }
     jcenter()
     mavenCentral()
-    maven {
-        url "https://nrgxnat.jfrog.io/nrgxnat/libs-release"
-        name "XNAT Release Repository"
-    }
-    maven {
-        url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot"
-        name "XNAT Snapshot Repository"
-    }
+    maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-release" }
+    maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
 }
 
 sourceCompatibility = 1.7
@@ -74,7 +42,7 @@ def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
 def source = buildDir.parent
 def destination = file(propertyWithDefault("destination", "${buildFile.parent}/build/pipeline"))
-def url = "${propertyWithDefault("xnatUrl", "http://localhost:8080").replaceAll('/+$', '')}" as String
+def url = "${propertyWithDefault("xnatUrl", "http://localhost:8080").replaceAll("/+\$", "")}" as String
 def email = "${propertyWithDefault("adminEmail", "admin@yourxnat.org")}" as String
 def smtp = "${propertyWithDefault("smtpServer", "localhost")}" as String
 def siteName = "${propertyWithDefault("siteName", "XNAT")}" as String
@@ -173,7 +141,7 @@ binaries.each { binary ->
 println ""
 
 dependencyManagement.imports {
-    mavenBom("org.nrg:parent:${vXnat}") {
+    mavenBom("org.nrg:parent:${project.version}") {
         bomProperties([
                 "commons-logging.version": "1.2",
                 "httpcomponents-client.version": "4.3.3",
@@ -236,7 +204,7 @@ dependencies {
     compile("org.slf4j:jul-to-slf4j") { transitive = false }
     compile("log4j:log4j") { transitive = false }
 
-    // These are old deprecated libraries that we're carrying so we don't break existing functionality.
+    // These are old deprecated libraries that we"re carrying so we don"t break existing functionality.
     compile("ant:ant:1.6.1") { transitive = false }
     compile("com.jcraft:jsch:0.1.24") { transitive = false }
     compile("commons-dbcp:commons-dbcp:1.2.1") { transitive = false }
@@ -265,10 +233,10 @@ task buildArchive(type: Zip) {
         doFirst {
             delete fileTree(dir: projectDir, include: "*.mf", exclude: "${id}.mf")
         }
-        attributes 'Application-Name': "XNAT Pipeline Engine ${project.version}",
-                'Build-Date': buildDate,
-                'Build-Number': buildNumber,
-                'Implementation-Version': version
+        attributes "Application-Name": "XNAT Pipeline Engine ${project.version}",
+                "Build-Date": buildDate,
+                "Build-Number": buildNumber,
+                "Implementation-Version": version
         writeTo "${projectDir}/${id}.mf"
     }
 
@@ -291,7 +259,7 @@ task copyDependencies(type: Copy) {
 task copyResources(type: Copy) {
     from resources
     into destination
-    exclude '.*/**'
+    exclude ".*/**"
     filter(FixCrLfFilter)
     filter(ReplaceTokens, tokens: tokens)
 }
@@ -299,7 +267,7 @@ task copyResources(type: Copy) {
 task copyScripts(type: Copy) {
     from scripts
     into destination
-    exclude '.*/**'
+    exclude ".*/**"
     fileMode = 0755
     rename { String filename ->
         if (isWindows) {
@@ -315,14 +283,14 @@ task copyScripts(type: Copy) {
 task copyBinaries(type: Copy) {
     from binaries
     into destination
-    exclude '.*/**'
+    exclude ".*/**"
     fileMode = 0755
 }
 
 task copyLibs(type: Copy) {
     from "${source}/lib"
     into "${destination}/lib"
-    exclude '.*/**'
+    exclude ".*/**"
 }
 
 task copyBuildInfo(type: Copy) {
@@ -337,5 +305,4 @@ task copyAll {
     }
 }
 
-defaultTasks 'copyAll'
-
+defaultTasks "copyAll"
