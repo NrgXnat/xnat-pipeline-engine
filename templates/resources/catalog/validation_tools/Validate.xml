@@ -185,14 +185,14 @@
  		<parameter>
    			<name>validation_logfile</name>
    			<values>
-				<unique>^concat(/Pipeline/outputFileNamePrefix/text(),fileUtils:GetFileSeparator(),'.log')^</unique>
+				<unique>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'/',/Pipeline/name/text(),'.log')^</unique>
    			</values>
    			<description>Generated Log File</description>
    		</parameter>   		
  		<parameter>
    			<name>validation_errorfile</name>
    			<values>
-				<unique>^concat(/Pipeline/outputFileNamePrefix/text(),fileUtils:GetFileSeparator(),'.err')^</unique>
+				<unique>^concat(/Pipeline/parameters/parameter[name='builddir']/values/unique/text(),'/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'/',/Pipeline/name/text(),'.err')^</unique>
    			</values>
    			<description>Generated Error File</description>
    		</parameter>   		
