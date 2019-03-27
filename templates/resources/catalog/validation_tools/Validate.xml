@@ -389,7 +389,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'?inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'?inbody=true&amp;event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20assessor"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^/Pipeline/parameters/parameter[name='validationfile']/values/unique/text()^</value>
@@ -405,7 +405,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION?event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20resource"')^</value>
 				</argument>
 			</resource>
 		</step>
@@ -418,7 +418,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'?content=RULEFILE&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='rulefile']/values/unique/text(),'?content=RULEFILE&amp;inbody=true&amp;event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20resource"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^concat(/Pipeline/parameters/parameter[name='validationfolder']/values/unique/text(),fileUtils:GetFileSeparator(),/Pipeline/parameters/parameter[name='rulefile']/values/unique/text())^</value>
@@ -434,7 +434,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true&amp;event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20resource"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^/Pipeline/parameters/parameter[name='reportfile']/values/unique/text()^</value>
@@ -450,7 +450,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true&amp;event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20resource"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^/Pipeline/parameters/parameter[name='validation_logfile']/values/unique/text()^</value>
@@ -466,7 +466,7 @@
 					<value>PUT</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/data/archive/projects/',/Pipeline/parameters/parameter[name='xnat_project']/values/unique/text(),'/subjects/',/Pipeline/parameters/parameter[name='subjectlabel']/values/unique/text(),'/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'/assessors/',/Pipeline/parameters/parameter[name='validation_id']/values/unique/text(),'/out/resources/VALIDATION/files','/',/Pipeline/parameters/parameter[name='sessionLabel']/values/unique/text(),'_report.xml','?content=REPORTFILE&amp;req_format=TEXT&amp;inbody=true&amp;event_reason=Standard%20Processing&amp;event_type=PROCESS&amp;event_action=Create%20resource"')^</value>
 				</argument>
 				<argument id="infile">
 					<value>^/Pipeline/parameters/parameter[name='validation_errorfile']/values/unique/text()^</value>
