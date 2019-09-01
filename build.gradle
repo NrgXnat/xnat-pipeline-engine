@@ -187,6 +187,14 @@ dependencies {
     compile("com.fasterxml.jackson.core:jackson-annotations") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-core") { transitive = false }
     compile("com.fasterxml.jackson.core:jackson-databind") { transitive = false }
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml") { transitive = false }
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-hibernate4") { transitive = false }
+    compile("org.apache.ant:ant") { transitive = false }
+    compile("org.nrg:config") { transitive = false }
+    compile("org.nrg:notify") { transitive = false }
+    compile("org.nrg:prefs") { transitive = false }
+    compile("org.springframework.security:spring-security-core") { transitive = false }
+    compile("stratum:stratum") { transitive = false }
     compile("com.google.guava:guava") { transitive = false }
     compile("org.apache.httpcomponents:httpcore") { transitive = false }
     compile("org.apache.httpcomponents:httpclient") { transitive = false }
@@ -212,12 +220,7 @@ dependencies {
     compile("net.sf.ezmorph:ezmorph:1.0.6") { transitive = false }
     compile("net.sf.saxon:Saxon-B:9.0") { transitive = false }
     compile("org.apache.httpcomponents:fluent-hc:4.2.3") { transitive = false }
-    compile("org.codehaus.jackson:jackson-core-asl:1.8.11") { transitive = false }
-    compile("org.codehaus.jackson:jackson-mapper-asl:1.8.11") { transitive = false }
-    compile("org.nrg.xnat:data-client:1.7.2") { transitive = false }
     compile("velocity:velocity:1.3.1") { transitive = false }
-    compile("xerces:xercesImpl:2.12.0") { transitive = false }
-    compile("xml-apis:xml-apis:1.0.b2") { transitive = false }
 }
 
 // Pulls in the Jenkins BUILD_NUMBER environment variable if available.
