@@ -38,7 +38,8 @@ Gradle build parameters are passed in the form **-P**_param_=_value_.
 
         ./gradlew -PadminEmail=you@yourlab.org -Pdestination=/pipeline/folder \
                   -PsiteName=YourXNAT -PxnatUrl=http://xnat.yourlab.org \
-                  -PsmtpServer=mail.yourlab.org -PmodulePaths=/path1/to/modules,/path2/to/modules
+                  -PsmtpServer=mail.yourlab.org -PmodulePaths=/path1/to/modules,/path2/to/modules \
+                  -PpluginsDir=/path/to/plugins -PpluginsDirProd=/path/to/plugins/on/prod
 
 3. Lastly, you can call the **gradlew** or **gradlew.bat** script on its own, with all of the
 values passed on the command line in the previous method now stored in the **gradle.properties**
@@ -70,3 +71,26 @@ folder and all script folders and files in a folder named **scripts** located un
 folder. Scripts are treated somewhat differently from resources, in that they are renamed
 with the **.bat** extension when built on a Windows machine.
 
+
+Plugins
+-------------
+
+If you have added plugins to your XNAT and these plugins add data types (have a `*beans*.jar`), 
+then you need to include these in many of the pipeline executables. To do so, provide `-PpluginsDir=/path/to/plugins`
+where `/path/to/plugins` is the location of all your plugin jars. If you are building the pipeline
+engine on a machine that differs from the production environment, you can provide a mapping `-PpluginsDirProd=/path/to/plugins/on/prod`
+which will replace the `/path/to/plugins` in the executables.
+
+E.g., My plugins are in `/Users/me/XNATDEV/plugins` on the machine on which I'm building the pipeline engine:
+
+		$ ls /Users/me/XNATDEV/plugins
+		mydata-beans-1.0-SNAPSHOT.jar
+		mydata-1.0-SNAPSHOT.jar
+
+
+And I plan to copy them to production to `/data/xnat/home/plugins`. I should run:
+
+        ./gradlew -PadminEmail=you@yourlab.org -Pdestination=/pipeline/folder \
+                  -PsiteName=YourXNAT -PxnatUrl=http://xnat.yourlab.org \
+                  -PsmtpServer=mail.yourlab.org -PpluginsDir=/Users/me/XNATDEV/plugins
+                  -PpluginsDirProd=/data/xnat/home/plugins
