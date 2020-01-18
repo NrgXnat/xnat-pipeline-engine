@@ -16,7 +16,7 @@ plugins {
     id "io.spring.dependency-management" version "1.0.8.RELEASE"
 }
 
-def vXnatDev = "1.7.6.RAD-SNAPSHOT"
+def vXnatDev = "1.7.6.RAD"
 group "org.nrg.xnat"
 version = vXnatDev
 
