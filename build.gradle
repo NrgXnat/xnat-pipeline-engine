@@ -13,11 +13,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id "java"
-    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
 }
 
 group "org.nrg.xnat"
-version = "1.7.6-SNAPSHOT"
+version = "1.7.6"
 
 def id = "xnat-pipeline-${version}"
 
