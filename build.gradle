@@ -51,6 +51,7 @@ def smtp = "${propertyWithDefault("smtpServer", "localhost")}" as String
 def siteName = "${propertyWithDefault("siteName", "XNAT")}" as String
 def pluginsDir = "${propertyWithDefault("pluginsDir", "")}" as String
 def pluginsDirProd = "${propertyWithDefault("pluginsDirProd", "")}" as String
+def cacheDir = "${propertyWithDefault("cacheDir", "")}" as String
 
 println """Building pipeline engine
 
@@ -60,6 +61,7 @@ println """Building pipeline engine
  * Site name:   ${siteName}
  * Site URL:    ${url}
  * SMTP server: ${smtp}
+ * Cache dir:   ${cacheDir}
  * Plugins dir: ${pluginsDir}
  * Plugins dir (prod): ${pluginsDirProd}
 """
@@ -84,6 +86,12 @@ if ("${pluginsDir}" != "") {
     }
 }
 
+String cacheProjectDirXpath = "fileUtils:GetCachePath(/Pipeline/parameters/parameter[name='resolvedHost']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),/Pipeline/parameters/parameter[name='project']/values/unique/text())"
+if ("${cacheDir}" != "") {
+    cacheDir = cacheDir.replaceAll('([^/])$','$1/')
+    cacheProjectDirXpath = "'${cacheDir}',/Pipeline/parameters/parameter[name='project']/values/unique/text(),'/'"
+}
+
 def pluginsBeans = pluginBeansJars.size() > 0 ? classpathSeparator + pluginBeansJars.join(classpathSeparator) : ""
 
 def tokens = [CONFIG_EXT           : configExt,
@@ -99,7 +107,8 @@ def tokens = [CONFIG_EXT           : configExt,
               YOUR_EMAIL_HERE      : email,
               YOUR_SMTP_SERVER_HERE: smtp,
               YOUR_XNAT_URL_HERE   : url,
-              PLUGIN_BEANS         : pluginsBeans]
+              PLUGIN_BEANS         : pluginsBeans,
+              CACHE_PROJECT_DIR_XPATH : cacheProjectDirXpath]
 
 // Now get all of the script and resource folders.
 def scripts = file("${source}/templates/scripts").exists() ? [file("${source}/templates/scripts")] : []
