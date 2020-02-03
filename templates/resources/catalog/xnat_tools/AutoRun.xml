@@ -12,7 +12,7 @@
     <name>AutoRun</name>
     <location>xnat_tools</location>
     <description>Auto-Archive Pipeline for XNAT </description>
-    <outputFileNamePrefix>^concat(@CACHE_PROJECT_DIR_XPATH@,/Pipeline/parameters/parameter[name='label']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
+    <outputFileNamePrefix>^concat(fileUtils:GetCachePath(/Pipeline/parameters/parameter[name='resolvedHost']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),/Pipeline/parameters/parameter[name='project']/values/unique/text()),/Pipeline/parameters/parameter[name='label']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
     <parameters>
         <parameter>
             <name>resolvedHost</name>
