@@ -13,12 +13,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id "java"
-    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
 }
 
-def vXnatDev = "1.7.6.RAD"
 group "org.nrg.xnat"
-version = vXnatDev
+version = "1.7.7-SNAPSHOT"
 
 def id = "xnat-pipeline-${version}"
 
@@ -29,8 +28,6 @@ repositories {
     mavenCentral()
     maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-release" }
     maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
-    maven { url "https://maven.radiologics.com/repository/snapshots" }
-    maven { url "https://maven.radiologics.com/repository/internal" }
 }
 
 sourceCompatibility = 1.7
