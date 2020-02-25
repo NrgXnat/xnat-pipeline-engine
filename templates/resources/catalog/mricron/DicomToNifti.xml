@@ -128,6 +128,7 @@
         </step>
         <step id="MKDIR_NII" description="Create NIFTI folder">
             <resource name="mkdir" location="commandlineTools">
+                <argument id="p"/>
                 <argument id="dirname">
                     <value>^/Pipeline/parameters/parameter[name='niidir']/values/unique/text()^</value>
                 </argument>
@@ -135,6 +136,7 @@
         </step>
         <step id="MKDIR_RAW_SCAN" description="Create folder for each series in RAW subfolder" workdirectory="^/Pipeline/parameters/parameter[name='rawdir']/values/unique/text()^">
             <resource name="mkdir" location="commandlineTools">
+                <argument id="p"/>
                 <argument id="dirname">
                     <value>^PIPELINE_LOOPON(series)^</value>
                 </argument>
@@ -142,6 +144,7 @@
         </step>
         <step id="MKDIR_NII_SCAN" description="Create folder for each series in NIFTI subfolder" workdirectory="^/Pipeline/parameters/parameter[name='niidir']/values/unique/text()^">
             <resource name="mkdir" location="commandlineTools">
+                <argument id="p"/>
                 <argument id="dirname">
                     <value>^PIPELINE_LOOPON(series)^</value>
                 </argument>
@@ -217,7 +220,7 @@
                     <value>PUT</value>
                 </argument>
                 <argument id="remote">
-                    <value>^concat('"',/Pipeline/parameters/parameter[name='resolved_host']/values/unique/text(),'/data/experiments/',/Pipeline/parameters/parameter[name='id']/values/unique/text(),'/scans/',PIPELINE_LOOPON(series),'/resources/NIFTI/files?overwrite=true&amp;format=NIFTI&amp;content=NIFTI_RAW&amp;reference=',/Pipeline/parameters/parameter[name='niidir']/values/unique/text(),'/',PIPELINE_LOOPON(series),'&amp;event_id=',/Pipeline/parameters/parameter[name='workflowid']/values/unique/text(),'"')^</value>
+                    <value>^concat('"',/Pipeline/parameters/parameter[name='resolved_host']/values/unique/text(),'/data/experiments/',/Pipeline/parameters/parameter[name='id']/values/unique/text(),'/scans/',PIPELINE_LOOPON(series),'/resources/NIFTI/files?overwrite=true&amp;format=NIFTI&amp;content=NIFTI_RAW&amp;event_reason=NIFTI&amp;overwrite=true&amp;event_reason=NIFTI&amp;event_action=Generated%20NIFTI&amp;reference=',/Pipeline/parameters/parameter[name='niidir']/values/unique/text(),'/',PIPELINE_LOOPON(series),'&amp;event_id=',/Pipeline/parameters/parameter[name='workflowid']/values/unique/text(),'"')^</value>
                 </argument>
             </resource>
         </step>

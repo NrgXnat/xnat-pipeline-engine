@@ -46,6 +46,8 @@ def url = "${propertyWithDefault("xnatUrl", "http://localhost:8080").replaceAll(
 def email = "${propertyWithDefault("adminEmail", "admin@yourxnat.org")}" as String
 def smtp = "${propertyWithDefault("smtpServer", "localhost")}" as String
 def siteName = "${propertyWithDefault("siteName", "XNAT")}" as String
+def pluginsDir = "${propertyWithDefault("pluginsDir", "")}" as String
+def pluginsDirProd = "${propertyWithDefault("pluginsDirProd", "")}" as String
 
 println """Building pipeline engine
 
@@ -55,6 +57,8 @@ println """Building pipeline engine
  * Site name:   ${siteName}
  * Site URL:    ${url}
  * SMTP server: ${smtp}
+ * Plugins dir: ${pluginsDir}
+ * Plugins dir (prod): ${pluginsDirProd}
 """
 
 def configExt = (isWindows ? "bat" : "config") as String
@@ -65,6 +69,19 @@ def classpathSeparator = (isWindows ? ";" : ":") as String
 def osArgSym = (isWindows ? "%*" : "\$@") as String
 def platformCall = (isWindows ? "call" : "source") as String
 def shellLine = (isWindows ? "@echo off" : "#!/bin/bash") as String
+
+def pluginBeansJars = []
+if ("${pluginsDir}" != "") {
+    fileTree(dir: "${pluginsDir}", include: '**/*beans*.jar').each { File file ->
+        if ("${pluginsDirProd}" != "") {
+            pluginBeansJars.add file.path.replace("${pluginsDir}","${pluginsDirProd}")
+        } else {
+            pluginBeansJars.add file.path
+        }
+    }
+}
+
+def pluginsBeans = pluginBeansJars.size() > 0 ? classpathSeparator + pluginBeansJars.join(classpathSeparator) : ""
 
 def tokens = [CONFIG_EXT           : configExt,
               CP_SEP               : classpathSeparator,
@@ -78,7 +95,8 @@ def tokens = [CONFIG_EXT           : configExt,
               XNAT_SITE_NAME       : siteName,
               YOUR_EMAIL_HERE      : email,
               YOUR_SMTP_SERVER_HERE: smtp,
-              YOUR_XNAT_URL_HERE   : url]
+              YOUR_XNAT_URL_HERE   : url,
+              PLUGIN_BEANS         : pluginsBeans]
 
 // Now get all of the script and resource folders.
 def scripts = file("${source}/templates/scripts").exists() ? [file("${source}/templates/scripts")] : []
@@ -166,6 +184,7 @@ dependencies {
     compile("org.nrg.xnat:plexiviewer") { transitive = false }
     compile("org.nrg.xnat.pipeline:imagingtools") { transitive = false }
     compile("org.nrg.xnat:xnatsrb") { transitive = false }
+    compile("org.nrg:DicomImageUtils") { transitive = false }
     compile("org.springframework:spring-web") { transitive = false }
     compile("org.springframework:spring-core") { transitive = false }
     compile("org.springframework:spring-aop") { transitive = false }
