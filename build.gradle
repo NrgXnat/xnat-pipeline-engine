@@ -213,7 +213,6 @@ dependencies {
     compile("org.nrg:notify") { transitive = false }
     compile("org.nrg:prefs") { transitive = false }
     compile("org.springframework.security:spring-security-core") { transitive = false }
-    compile("stratum:stratum") { transitive = false }
     compile("com.google.guava:guava") { transitive = false }
     compile("org.apache.httpcomponents:httpcore") { transitive = false }
     compile("org.apache.httpcomponents:httpclient") { transitive = false }
