@@ -17,7 +17,7 @@ plugins {
 }
 
 group "org.nrg.xnat"
-version = "1.7.7-ACTIVE-SNAPSHOT"
+version = "1.8.0-ACTIVE-SNAPSHOT"
 
 def id = "xnat-pipeline-${version}"
 
