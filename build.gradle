@@ -30,8 +30,8 @@ repositories {
     maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 String propertyWithDefault(String name, Object value) {
     hasProperty(name) ? property(name) : value
