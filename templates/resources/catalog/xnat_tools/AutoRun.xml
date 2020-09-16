@@ -50,6 +50,9 @@
                 <argument id="pwd">
                     <value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
                 </argument>
+                <argument id="workflowid">
+                    <value>^/Pipeline/parameters/parameter[name='workflowid']/values/unique/text()^</value>
+                </argument>
                 <argument id="raw"/>
             </resource>
         </step>

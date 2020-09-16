@@ -41,6 +41,10 @@
 			<pip:name>pwd</pip:name>
 			<pip:description>XNAT Password</pip:description>
 		</pip:argument>
+        <pip:argument id="workflowid">
+            <pip:name>workflowid</pip:name>
+            <pip:description>Workflow ID</pip:description>
+        </pip:argument>
 		<pip:argument id="raw">
 			<pip:name>raw</pip:name>
 			<pip:description>Create QC Images for RAW Files</pip:description>
