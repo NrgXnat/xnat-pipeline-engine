@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ pipeline: QCImageCreator.xml
+  ~ XNAT http://www.xnat.org
+  ~ Copyright (c) 2020, Washington University School of Medicine
+  ~ All Rights Reserved
+  ~
+  ~ Released under the Simplified BSD.
+  -->
+
+<Pipeline xmlns="http://nrg.wustl.edu/pipeline" xmlns:fileUtils="org.nrg.imagingtools.utils.FileUtils" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nrg.wustl.edu/pipeline ../../schema/pipeline.xsd">
+    <name>QCImageCreator</name>
+    <location>xnat_tools</location>
+    <description>QCImageCreator Pipeline for XNAT: previously the AutoRun pipeline, now preserved as QCImageCreator if needed</description>
+    <outputFileNamePrefix>^concat(/Pipeline/parameters/parameter[name='cachepath']/values/unique/text(),/Pipeline/parameters/parameter[name='label']/values/unique/text(),'/',/Pipeline/name/text())^</outputFileNamePrefix>
+    <parameters>
+        <parameter>
+            <name>resolvedHost</name>
+            <values>
+                <unique>^if (boolean(/Pipeline/parameters/parameter[name='aliasHost']/values/unique)) then /Pipeline/parameters/parameter[name='aliasHost']/values/unique/text() else /Pipeline/parameters/parameter[name='host']/values/unique/text()^</unique>
+            </values>
+            <description>Use aliasHost if it exists, or host if not</description>
+        </parameter>
+        <parameter>
+            <name>cachepath</name>
+            <values>
+                <unique>^fileUtils:GetCachePath(/Pipeline/parameters/parameter[name='resolvedHost']/values/unique/text(), /Pipeline/parameters/parameter[name='user']/values/unique/text(), /Pipeline/parameters/parameter[name='pwd']/values/unique/text(),/Pipeline/parameters/parameter[name='project']/values/unique/text())^</unique>
+            </values>
+            <description>Project specific cachepath</description>
+        </parameter>
+    </parameters>
+    <steps>
+        <step continueOnFailure="true" description="Create Quality Control Images" id="SNAPSHOTS">
+            <resource location="images/resources" name="WebBasedQCImageCreator">
+                <argument id="session">
+                    <value>^/Pipeline/parameters/parameter[name='label']/values/unique/text()^</value>
+                </argument>
+                <argument id="xnatId">
+                    <value>^/Pipeline/parameters/parameter[name='id']/values/unique/text()^</value>
+                </argument>
+                <argument id="project">
+                    <value>^/Pipeline/parameters/parameter[name='project']/values/unique/text()^</value>
+                </argument>
+                <argument id="host">
+                    <value>^/Pipeline/parameters/parameter[name='resolvedHost']/values/unique/text()^</value>
+                </argument>
+                <argument id="user">
+                    <value>^/Pipeline/parameters/parameter[name='user']/values/unique/text()^</value>
+                </argument>
+                <argument id="pwd">
+                    <value>^/Pipeline/parameters/parameter[name='pwd']/values/unique/text()^</value>
+                </argument>
+                <argument id="workflowid">
+                    <value>^/Pipeline/parameters/parameter[name='workflowid']/values/unique/text()^</value>
+                </argument>
+                <argument id="raw"/>
+            </resource>
+        </step>
+    </steps>
+</Pipeline>
