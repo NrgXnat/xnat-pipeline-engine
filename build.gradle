@@ -17,7 +17,7 @@ plugins {
 }
 
 group "org.nrg.xnat"
-version = "1.8.2-SNAPSHOT"
+version = "APR2021-RC-SNAPSHOT"
 
 def id = "xnat-pipeline-${version}"
 
