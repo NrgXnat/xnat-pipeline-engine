@@ -24,10 +24,9 @@ def id = "xnat-pipeline-${version}"
 repositories {
     mavenLocal()
     maven { url "http://maven.imagej.net/content/groups/public" }
-    jcenter()
-    mavenCentral()
     maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-release" }
     maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
+    mavenCentral()
 }
 
 sourceCompatibility = 1.8
