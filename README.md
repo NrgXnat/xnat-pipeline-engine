@@ -1,8 +1,8 @@
 XNAT Pipeline Engine
 ====================
 
-Version 1.7.2
-Neuroinformatics Research Group (http://nrg.wustl.edu), Washington University in Saint Louis
+Version 1.8.3
+Neuroinformatics Research Group (https://nrg.wustl.edu), Washington University in Saint Louis
 
 Developers
 ----------
@@ -17,7 +17,7 @@ Installation
 ------------
 
 This version of the XNAT pipeline engine is built and installed differently from earlier
-versions. It uses a [Gradle-based](http://www.gradle.org) build script to manage the pipeline
+versions. It uses a [Gradle-based](https://www.gradle.org) build script to manage the pipeline
 resources and dependencies. More importantly, instead of building directly back into the
 pipeline installation folder, it builds to another destination folder. You can specify the
 build property destination with the path to the destination folder or just use the default
@@ -30,14 +30,14 @@ and XNAT server address as parameters (you can also add the optional XNAT site n
 
         ./setup.sh <admin email> <SMTP server> <XNAT url> [XNAT site name] [destination] [modulePath1 modulePath2 modulePath3... modulePathn]
 
-        ./setup.sh you@yourlab.org mail.yourlab.org http://xnat.yourlab.org YourXNAT
+        ./setup.sh you@yourlab.org mail.yourlab.org https://xnat.yourlab.org YourXNAT
 
 2. Call the **gradlew** or **gradlew.bat** script located in the root folder of the pipeline
 build, along with values for all of the required and optional build parameters. Note that
 Gradle build parameters are passed in the form **-P**_param_=_value_.
 
         ./gradlew -PadminEmail=you@yourlab.org -Pdestination=/pipeline/folder \
-                  -PsiteName=YourXNAT -PxnatUrl=http://xnat.yourlab.org \
+                  -PsiteName=YourXNAT -PxnatUrl=https://xnat.yourlab.org \
                   -PsmtpServer=mail.yourlab.org -PmodulePaths=/path1/to/modules,/path2/to/modules \
                   -PpluginsDir=/path/to/plugins -PpluginsDirProd=/path/to/plugins/on/prod
 
@@ -91,6 +91,6 @@ E.g., My plugins are in `/Users/me/XNATDEV/plugins` on the machine on which I'm 
 And I plan to copy them to production to `/data/xnat/home/plugins`. I should run:
 
         ./gradlew -PadminEmail=you@yourlab.org -Pdestination=/pipeline/folder \
-                  -PsiteName=YourXNAT -PxnatUrl=http://xnat.yourlab.org \
+                  -PsiteName=YourXNAT -PxnatUrl=https://xnat.yourlab.org \
                   -PsmtpServer=mail.yourlab.org -PpluginsDir=/Users/me/XNATDEV/plugins
                   -PpluginsDirProd=/data/xnat/home/plugins
