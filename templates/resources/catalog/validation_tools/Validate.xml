@@ -222,7 +222,7 @@
 					<value>GET</value>
 				</argument>
 				<argument id="remote">
-					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'"')^</value>
+					<value>^concat('"',/Pipeline/parameters/parameter[name='host']/values/unique/text(),'/REST/experiments/',/Pipeline/parameters/parameter[name='session']/values/unique/text(),'?format=xml"')^</value>
 				</argument>
 				<argument id="outfile">
 					<value>^/Pipeline/parameters/parameter[name='experimentfile']/values/unique/text()^</value>
