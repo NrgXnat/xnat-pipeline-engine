@@ -13,13 +13,15 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id "java"
-    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "io.spring.dependency-management" version "1.1.7"
 }
 
 group "org.nrg.xnat"
 version = "1.8.10"
 
-def id = "xnat-pipeline-${version}"
+def pipelineVersion = "1.9.0"
+def xnatToolsVersion = "1.9.0"
+def id = "xnat-pipeline-${pipelineVersion}"
 
 repositories {
     mavenLocal()
@@ -163,11 +165,14 @@ dependencyManagement.imports {
         bomProperties([
                 "commons-logging.version": "1.2",
                 "httpcomponents-client.version": "4.3.3",
-                "javassist.version": "3.20.0-GA"
+                "javassist.version": "3.20.0-GA",
+                "org.nrg.xnat.pipeline:xnat-tools.version": "1.9.0"
         ])
     }
 }
 tokens.putAll(dependencyManagement.managedVersions)
+def scriptTokens = new HashMap<>(tokens)
+scriptTokens["org.nrg.xnat.pipeline:xnat-tools"] = xnatToolsVersion
 
 dependencies {
     implementation("org.nrg.xnat:data-client") { transitive = false }
@@ -180,7 +185,7 @@ dependencies {
     implementation("org.nrg:pipelineXNAT") { transitive = false }
     implementation("org.nrg.xnat.pipeline:pipeline-client") { transitive = false }
     implementation("org.nrg.xnat.pipeline:xnat-pipeline") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:xnat-tools") { transitive = false }
+    implementation("org.nrg.xnat.pipeline:xnat-tools:${xnatToolsVersion}") { transitive = false }
     implementation("org.nrg.xnat:plexiviewer") { transitive = false }
     implementation("org.nrg.xnat.pipeline:imagingtools") { transitive = false }
     implementation("org.nrg.xnat:xnatsrb") { transitive = false }
@@ -250,15 +255,20 @@ logger.info "Build-Number:           ${buildNumber}"
 logger.info "Implementation-Version: ${version}"
 
 task buildArchive(type: Zip) {
-    manifest {
-        doFirst {
-            delete fileTree(dir: projectDir, include: "*.mf", exclude: "${id}.mf")
-        }
-        attributes "Application-Name": "XNAT Pipeline Engine",
-                "Build-Date": buildDate,
-                "Build-Number": buildNumber,
-                "Implementation-Version": project.version
-        writeTo "${projectDir}/${id}.mf"
+    // Zip tasks (unlike Jar/War) have no built-in manifest support, and the old trick of
+    // calling manifest {} directly inside a Zip task only ever worked because pre-7.x Gradle
+    // resolved it against Project.manifest(Closure) via loose delegate lookup. That fallback
+    // is gone as of Gradle 9, so we build the Manifest object explicitly via the java
+    // extension and write it out as a plain file alongside the zip contents.
+    doFirst {
+        delete fileTree(dir: projectDir, include: "*.mf", exclude: "${id}.mf")
+
+        java.manifest {
+            attributes "Application-Name": "XNAT Pipeline Engine",
+                    "Build-Date": buildDate,
+                    "Build-Number": buildNumber,
+                    "Implementation-Version": project.version
+        }.writeTo("${projectDir}/${id}.mf")
     }
 
     from("${projectDir}") {
@@ -289,7 +299,9 @@ task copyScripts(type: Copy) {
     from scripts
     into destination
     exclude ".*/**"
-    fileMode = 0755
+    filePermissions {
+        unix("0755")
+    }
     rename { String filename ->
         if (isWindows) {
             "${filename}.bat" as String
@@ -298,14 +310,16 @@ task copyScripts(type: Copy) {
         }
     }
     filter(FixCrLfFilter)
-    filter(ReplaceTokens, tokens: tokens)
+    filter(ReplaceTokens, tokens: scriptTokens)
 }
 
 task copyBinaries(type: Copy) {
     from binaries
     into destination
     exclude ".*/**"
-    fileMode = 0755
+    filePermissions {
+        unix("0755")
+    }
 }
 
 task copyLibs(type: Copy) {
