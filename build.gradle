@@ -19,7 +19,9 @@ plugins {
 group "org.nrg.xnat"
 version = "1.8.10"
 
-def id = "xnat-pipeline-${version}"
+def pipelineVersion = "1.9.0"
+def xnatToolsVersion = "1.9.0"
+def id = "xnat-pipeline-${pipelineVersion}"
 
 repositories {
     mavenLocal()
@@ -163,11 +165,14 @@ dependencyManagement.imports {
         bomProperties([
                 "commons-logging.version": "1.2",
                 "httpcomponents-client.version": "4.3.3",
-                "javassist.version": "3.20.0-GA"
+                "javassist.version": "3.20.0-GA",
+                "org.nrg.xnat.pipeline:xnat-tools.version": "1.9.0"
         ])
     }
 }
 tokens.putAll(dependencyManagement.managedVersions)
+def scriptTokens = new HashMap<>(tokens)
+scriptTokens["org.nrg.xnat.pipeline:xnat-tools"] = xnatToolsVersion
 
 dependencies {
     implementation("org.nrg.xnat:data-client") { transitive = false }
@@ -180,7 +185,7 @@ dependencies {
     implementation("org.nrg:pipelineXNAT") { transitive = false }
     implementation("org.nrg.xnat.pipeline:pipeline-client") { transitive = false }
     implementation("org.nrg.xnat.pipeline:xnat-pipeline") { transitive = false }
-    implementation("org.nrg.xnat.pipeline:xnat-tools") { transitive = false }
+    implementation("org.nrg.xnat.pipeline:xnat-tools:${xnatToolsVersion}") { transitive = false }
     implementation("org.nrg.xnat:plexiviewer") { transitive = false }
     implementation("org.nrg.xnat.pipeline:imagingtools") { transitive = false }
     implementation("org.nrg.xnat:xnatsrb") { transitive = false }
@@ -305,7 +310,7 @@ task copyScripts(type: Copy) {
         }
     }
     filter(FixCrLfFilter)
-    filter(ReplaceTokens, tokens: tokens)
+    filter(ReplaceTokens, tokens: scriptTokens)
 }
 
 task copyBinaries(type: Copy) {
