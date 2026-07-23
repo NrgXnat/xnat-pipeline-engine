@@ -177,7 +177,8 @@ dependencyManagement.dependencies {
     dependency "org.nrg:pipelineXNAT:1.0"
     dependency "org.nrg.xnat.pipeline:pipeline-client:1.8.10"
     dependency "org.nrg.xnat.pipeline:xnat-pipeline:1.8.10"
-    dependency "org.nrg.xnat.pipeline:xnat-tools:1.8.10"
+    // XNAT-8775: xnat-tools 1.9.0 handles a change in XNAT 1.9.0+
+    dependency "org.nrg.xnat.pipeline:xnat-tools:1.9.0"
     dependency "org.nrg.xnat.pipeline:imagingtools:1.8.10"
     dependency "org.nrg.xnat:plexiviewer:1.8.10"
     dependency "org.nrg.xnat:xnatsrb:1.0.1"
