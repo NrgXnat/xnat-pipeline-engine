@@ -13,24 +13,24 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id "java"
-    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "io.spring.dependency-management" version "1.1.7"
 }
 
-group "org.nrg.xnat"
+group = "org.nrg.xnat"
 version = "1.8.11-SNAPSHOT"
 
 def id = "xnat-pipeline-${version}"
 
 repositories {
     mavenLocal()
-    maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-release" }
-    maven { url "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
+    maven { url = "https://nrgxnat.jfrog.io/nrgxnat/libs-release" }
+    maven { url = "https://nrgxnat.jfrog.io/nrgxnat/libs-snapshot" }
     mavenCentral()
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 String propertyWithDefault(String name, Object value) {
@@ -40,7 +40,7 @@ String propertyWithDefault(String name, Object value) {
 // Marshall all of the variables and properties.
 def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
-def source = buildDir.parent
+def source = projectDir.path
 def destination = file(propertyWithDefault("destination", "${buildFile.parent}/build/pipeline"))
 def url = "${propertyWithDefault("xnatUrl", "http://localhost:8080").replaceAll("/+\$", "")}" as String
 def email = "${propertyWithDefault("adminEmail", "admin@yourxnat.org")}" as String
@@ -167,6 +167,26 @@ dependencyManagement.imports {
         ])
     }
 }
+// The parent:1.8.11-SNAPSHOT BOM dropped the pipeline artifact management
+// section that 1.8.10 and earlier carried. Restore those versions explicitly
+// (values taken from the org.nrg:parent:1.8.10 BOM) — they feed both
+// dependency resolution and the template ReplaceTokens map below.
+dependencyManagement.dependencies {
+    dependency "org.nrg:pipelineBase:1.0"
+    dependency "org.nrg:pipelineWorkflow:1.0"
+    dependency "org.nrg:pipelineXNAT:1.0"
+    dependency "org.nrg.xnat.pipeline:pipeline-client:1.8.10"
+    dependency "org.nrg.xnat.pipeline:xnat-pipeline:1.8.10"
+    // XNAT-8775: xnat-tools 1.9.0 handles a change in XNAT 1.9.0+
+    dependency "org.nrg.xnat.pipeline:xnat-tools:1.9.0"
+    dependency "org.nrg.xnat.pipeline:imagingtools:1.8.10"
+    dependency "org.nrg.xnat:plexiviewer:1.8.10"
+    dependency "org.nrg.xnat:xnatsrb:1.0.1"
+    dependency "commons-httpclient:commons-httpclient:3.1"
+    dependency "axis:axis:1.4"
+    dependency "org.dspace:jargon:1.4.25"
+    dependency "javax.activation:activation:1.1.1"
+}
 tokens.putAll(dependencyManagement.managedVersions)
 
 dependencies {
@@ -249,18 +269,18 @@ logger.info "Build-Date:             ${buildDate}"
 logger.info "Build-Number:           ${buildNumber}"
 logger.info "Implementation-Version: ${version}"
 
-task buildArchive(type: Zip) {
-    manifest {
-        doFirst {
-            delete fileTree(dir: projectDir, include: "*.mf", exclude: "${id}.mf")
-        }
-        attributes "Application-Name": "XNAT Pipeline Engine",
-                "Build-Date": buildDate,
-                "Build-Number": buildNumber,
-                "Implementation-Version": project.version
-        writeTo "${projectDir}/${id}.mf"
-    }
+// Gradle 9 removed JavaPluginConvention and with it the standalone manifest {}
+// factory this block used to rely on. The .mf must still be produced at
+// configuration time so copyBuildInfo can pick it up without running buildArchive.
+delete fileTree(dir: projectDir, include: "*.mf", exclude: "${id}.mf")
+file("${projectDir}/${id}.mf").text = """Manifest-Version: 1.0
+Application-Name: XNAT Pipeline Engine
+Build-Date: ${buildDate}
+Build-Number: ${buildNumber}
+Implementation-Version: ${version}
+"""
 
+task buildArchive(type: Zip) {
     from("${projectDir}") {
         into "xnat-pipeline"
     }
@@ -269,7 +289,7 @@ task buildArchive(type: Zip) {
     exclude ".*"
     exclude ".*/**"
     archiveFileName = "${id}.zip"
-    destinationDirectory = file("${buildDir}/libs")
+    destinationDirectory = layout.buildDirectory.dir("libs")
 }
 
 task copyDependencies(type: Copy) {
@@ -289,7 +309,7 @@ task copyScripts(type: Copy) {
     from scripts
     into destination
     exclude ".*/**"
-    fileMode = 0755
+    filePermissions { unix(0755) }
     rename { String filename ->
         if (isWindows) {
             "${filename}.bat" as String
@@ -305,7 +325,7 @@ task copyBinaries(type: Copy) {
     from binaries
     into destination
     exclude ".*/**"
-    fileMode = 0755
+    filePermissions { unix(0755) }
 }
 
 task copyLibs(type: Copy) {
