@@ -254,6 +254,10 @@ logger.info "Build-Date:             ${buildDate}"
 logger.info "Build-Number:           ${buildNumber}"
 logger.info "Implementation-Version: ${version}"
 
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 task buildArchive(type: Zip) {
     // Zip tasks (unlike Jar/War) have no built-in manifest support, and the old trick of
     // calling manifest {} directly inside a Zip task only ever worked because pre-7.x Gradle
