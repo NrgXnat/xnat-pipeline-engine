@@ -19,7 +19,7 @@ plugins {
 group "org.nrg.xnat"
 version = "1.8.10"
 
-def pipelineVersion = "1.9.0"
+def pipelineVersion = "1.9.1"
 def xnatToolsVersion = "1.9.0"
 def id = "xnat-pipeline-${pipelineVersion}"
 
