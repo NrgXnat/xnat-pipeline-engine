@@ -19,7 +19,7 @@ plugins {
 group "org.nrg.xnat"
 version = "1.8.10"
 
-def pipelineVersion = "1.9.0"
+def pipelineVersion = "1.9.1"
 def xnatToolsVersion = "1.9.0"
 def id = "xnat-pipeline-${pipelineVersion}"
 
@@ -253,6 +253,10 @@ def buildNumber = System.getenv().BUILD_NUMBER?.toInteger() ?: "Manual"
 logger.info "Build-Date:             ${buildDate}"
 logger.info "Build-Number:           ${buildNumber}"
 logger.info "Implementation-Version: ${version}"
+
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 
 task buildArchive(type: Zip) {
     // Zip tasks (unlike Jar/War) have no built-in manifest support, and the old trick of
